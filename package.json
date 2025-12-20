@@ -1,14 +1,14 @@
 {
   "name": "mazigho-frontend",
   "version": "1.0.0",
-  "type": "module",
+
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "pnpm build && node dist/index.js",
+    "start": "pnpm build && node index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write ."
   },
