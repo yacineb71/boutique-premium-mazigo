@@ -18,21 +18,44 @@ export default function Contact() {
   });
   const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     if (!formData.name || !formData.email || !formData.message) {
       toast.error("Veuillez remplir tous les champs obligatoires");
       return;
     }
+
     setIsSending(true);
-    // Simuler l'envoi du message
-    setTimeout(() => {
-      toast.success("Message envoyé avec succès !", {
-        description: "Nous vous répondrons dans les plus brefs délais.",
+
+    try {
+      // Préparer les données du formulaire
+      const form = e.currentTarget;
+      const formDataToSend = new FormData(form);
+
+      // Envoyer à Netlify Forms
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formDataToSend as any).toString(),
       });
-      setFormData({ name: "", email: "", subject: "", message: "" });
+
+      if (response.ok) {
+        toast.success("Message envoyé avec succès !", {
+          description: "Nous vous répondrons dans les plus brefs délais.",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        // Réinitialiser le formulaire
+        form.reset();
+      } else {
+        toast.error("Erreur lors de l'envoi du message");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      toast.error("Une erreur s'est produite lors de l'envoi");
+    } finally {
       setIsSending(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -115,12 +138,22 @@ export default function Contact() {
                     <h2 className="text-2xl font-bold text-foreground mb-6">
                       Envoyez-nous un Message
                     </h2>
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form 
+                      onSubmit={handleSubmit} 
+                      className="space-y-6"
+                      name="contact"
+                      method="POST"
+                      data-netlify="true"
+                    >
+                      {/* Champ caché pour Netlify */}
+                      <input type="hidden" name="form-name" value="contact" />
+                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <Label htmlFor="name">Nom complet *</Label>
                           <Input
                             id="name"
+                            name="name"
                             placeholder="Votre nom"
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -131,6 +164,7 @@ export default function Contact() {
                           <Label htmlFor="email">Email *</Label>
                           <Input
                             id="email"
+                            name="email"
                             type="email"
                             placeholder="votre@email.com"
                             value={formData.email}
@@ -144,6 +178,7 @@ export default function Contact() {
                         <Label htmlFor="subject">Sujet</Label>
                         <Input
                           id="subject"
+                          name="subject"
                           placeholder="Objet de votre message"
                           value={formData.subject}
                           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
@@ -154,6 +189,7 @@ export default function Contact() {
                         <Label htmlFor="message">Message *</Label>
                         <Textarea
                           id="message"
+                          name="message"
                           placeholder="Votre message..."
                           rows={6}
                           value={formData.message}
