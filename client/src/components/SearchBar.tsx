@@ -167,7 +167,7 @@ export default function SearchBar() {
           {/* View All Results */}
           {results.length > 5 && (
             <button
-              onClick={() => setLocation(`/recherche?q=${encodeURIComponent(query)}`)}
+              onClick={() => setLocation(`/produits?q=${encodeURIComponent(query)}`)}
               className="w-full px-4 py-3 text-center text-orange-500 font-medium hover:bg-orange-50 transition-colors"
             >
               Voir tous les résultats ({results.length})

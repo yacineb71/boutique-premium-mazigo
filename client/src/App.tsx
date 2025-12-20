@@ -23,6 +23,7 @@ import Register from "./pages/Register";
 import ResetPassword from "./pages/ResetPassword";
 import FAQ from "./pages/FAQ";
 import ThankYou from "./pages/ThankYou";
+import AllProducts from "./pages/AllProducts";
 
 function Router() {
   return (
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/reset-password" component={ResetPassword} />
       <Route path="/faq" component={FAQ} />
       <Route path="/thank-you" component={ThankYou} />
+      <Route path="/produits" component={AllProducts} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
