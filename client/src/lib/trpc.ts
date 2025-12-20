@@ -1,4 +1,2 @@
-import { createTRPCReact } from "@trpc/react-query";
-import type { AppRouter } from "../../../server/routers";
-
-export const trpc = createTRPCReact<AppRouter>();
+// Ce fichier n'est pas utilisé dans la version frontend-only
+// Les appels API sont gérés via localStorage et des fonctions utilitaires
