@@ -1,5 +1,7 @@
 import { getLoginUrl } from "@/const";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { TRPCClientError } from "@trpc/client";
+import { useCallback, useEffect, useMemo } from "react";
 
 type UseAuthOptions = {
   redirectOnUnauthenticated?: boolean;
@@ -9,65 +11,74 @@ type UseAuthOptions = {
 export function useAuth(options?: UseAuthOptions) {
   const { redirectOnUnauthenticated = false, redirectPath = getLoginUrl() } =
     options ?? {};
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const utils = trpc.useUtils();
 
-  // Charger l'utilisateur depuis localStorage au montage
-  useEffect(() => {
-    const storedUser = localStorage.getItem("mazigho_user");
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (e) {
-        setUser(null);
-      }
-    }
-  }, []);
+  const meQuery = trpc.auth.me.useQuery(undefined, {
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      utils.auth.me.setData(undefined, null);
+    },
+  });
 
   const logout = useCallback(async () => {
-    localStorage.removeItem("mazigho_user");
-    localStorage.removeItem("mazigho_token");
-    setUser(null);
-    window.location.href = "/login";
-  }, []);
+    try {
+      await logoutMutation.mutateAsync();
+    } catch (error: unknown) {
+      if (
+        error instanceof TRPCClientError &&
+        error.data?.code === "UNAUTHORIZED"
+      ) {
+        return;
+      }
+      throw error;
+    } finally {
+      utils.auth.me.setData(undefined, null);
+      await utils.auth.me.invalidate();
+    }
+  }, [logoutMutation, utils]);
 
   const state = useMemo(() => {
+    localStorage.setItem(
+      "manus-runtime-user-info",
+      JSON.stringify(meQuery.data)
+    );
     return {
-      user: user ?? null,
-      loading,
-      error: error ?? null,
-      isAuthenticated: Boolean(user),
+      user: meQuery.data ?? null,
+      loading: meQuery.isLoading || logoutMutation.isPending,
+      error: meQuery.error ?? logoutMutation.error ?? null,
+      isAuthenticated: Boolean(meQuery.data),
     };
-  }, [user, loading, error]);
+  }, [
+    meQuery.data,
+    meQuery.error,
+    meQuery.isLoading,
+    logoutMutation.error,
+    logoutMutation.isPending,
+  ]);
 
   useEffect(() => {
     if (!redirectOnUnauthenticated) return;
-    if (loading) return;
+    if (meQuery.isLoading || logoutMutation.isPending) return;
     if (state.user) return;
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
 
-    window.location.href = redirectPath;
+    window.location.href = redirectPath
   }, [
     redirectOnUnauthenticated,
     redirectPath,
-    loading,
+    logoutMutation.isPending,
+    meQuery.isLoading,
     state.user,
   ]);
 
   return {
     ...state,
-    refresh: () => {
-      const storedUser = localStorage.getItem("mazigho_user");
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-        } catch (e) {
-          setUser(null);
-        }
-      }
-    },
+    refresh: () => meQuery.refetch(),
     logout,
   };
 }

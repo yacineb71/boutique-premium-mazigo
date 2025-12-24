@@ -5,49 +5,12 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import Category from "./pages/Category";
-import Product from "./pages/Product";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Cart from "./pages/Cart";
-import Nouveautes from "./pages/Nouveautes";
-import BestSellers from "./pages/BestSellers";
-import Promos from "./pages/Promos";
-import Account from "./pages/Account";
-import Favorites from "./pages/Favorites";
-import Orders from "./pages/Orders";
-import SettingsPage from "./pages/Settings";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ResetPassword from "./pages/ResetPassword";
-import FAQ from "./pages/FAQ";
-import ThankYou from "./pages/ThankYou";
-import AllProducts from "./pages/AllProducts";
 
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/boutique"} component={Shop} />
-      <Route path={"/categorie/:slug"} component={Category} />
-      <Route path={"/produit/:slug"} component={Product} />
-      <Route path={"/a-propos"} component={About} />
-      <Route path={"/contact"} component={Contact} />
-      <Route path={"/panier"} component={Cart} />
-      <Route path={"/nouveautes"} component={Nouveautes} />
-      <Route path={"/best-sellers"} component={BestSellers} />
-      <Route path={"/promos"} component={Promos} />
-      <Route path={"/mon-compte"} component={Account} />
-      <Route path={"/favoris"} component={Favorites} />
-      <Route path={"/commandes"} component={Orders} />
-      <Route path={"/parametres"} component={SettingsPage} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/reset-password" component={ResetPassword} />
-      <Route path="/faq" component={FAQ} />
-      <Route path="/thank-you" component={ThankYou} />
-      <Route path="/produits" component={AllProducts} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
