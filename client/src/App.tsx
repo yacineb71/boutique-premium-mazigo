@@ -1,27 +1,96 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PrivateRoute } from "@/components/PrivateRoute";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminProducts from "./pages/AdminProducts";
+import AdminCategories from "./pages/AdminCategories";
+import AdminOrders from "./pages/AdminOrders";
+import AdminCustomers from "./pages/AdminCustomers";
+import AdminPromotions from "./pages/AdminPromotions";
+import AdminReviews from "./pages/AdminReviews";
+import AdminSettings from "./pages/AdminSettings";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      
+      {/* Admin Routes */}
+      <Route path={"/admin"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminDashboard />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/products"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminProducts />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/categories"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminCategories />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/orders"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminOrders />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/customers"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminCustomers />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/promotions"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminPromotions />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/reviews"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminReviews />
+          </PrivateRoute>
+        )}
+      </Route>
+      
+      <Route path={"/admin/settings"}>
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminSettings />
+          </PrivateRoute>
+        )}
+      </Route>
+
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
 }
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
   return (
