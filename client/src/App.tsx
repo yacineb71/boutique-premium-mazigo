@@ -6,6 +6,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
 import AdminCategories from "./pages/AdminCategories";
@@ -18,10 +20,12 @@ import AdminSettings from "./pages/AdminSettings";
 function Router() {
   return (
     <Switch>
-      <Route path={"/"} component={Home} />
+      <Route path="/" component={Home} />
+      <Route path="/shop" component={Shop} />
+      <Route path="/cart" component={Cart} />
       
       {/* Admin Routes */}
-      <Route path={"/admin"}>
+      <Route path="/admin">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminDashboard />
@@ -29,7 +33,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/products"}>
+      <Route path="/admin/products">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminProducts />
@@ -37,7 +41,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/categories"}>
+      <Route path="/admin/categories">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminCategories />
@@ -45,7 +49,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/orders"}>
+      <Route path="/admin/orders">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminOrders />
@@ -53,7 +57,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/customers"}>
+      <Route path="/admin/customers">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminCustomers />
@@ -61,7 +65,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/promotions"}>
+      <Route path="/admin/promotions">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminPromotions />
@@ -69,7 +73,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/reviews"}>
+      <Route path="/admin/reviews">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminReviews />
@@ -77,7 +81,7 @@ function Router() {
         )}
       </Route>
       
-      <Route path={"/admin/settings"}>
+      <Route path="/admin/settings">
         {() => (
           <PrivateRoute requiredRole="admin">
             <AdminSettings />
@@ -85,7 +89,7 @@ function Router() {
         )}
       </Route>
 
-      <Route path={"/404"} component={NotFound} />
+      <Route path="/404" component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>

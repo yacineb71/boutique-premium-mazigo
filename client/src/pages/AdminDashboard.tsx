@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { BarChart3, Package, ShoppingCart, Users, TrendingUp } from "lucide-react";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import { trpc } from "@/lib/trpc";
 
 ChartJS.register(
   CategoryScale,
@@ -17,9 +18,12 @@ ChartJS.register(
 );
 
 export default function AdminDashboard() {
+  // Récupérer les produits via tRPC
+  const { data: products = [] } = trpc.products.getAll.useQuery();
+
   const stats = [
     { label: "Commandes totales", value: "1,234", icon: ShoppingCart, color: "bg-blue-500" },
-    { label: "Produits", value: "456", icon: Package, color: "bg-green-500" },
+    { label: "Produits", value: products.length.toString(), icon: Package, color: "bg-green-500" },
     { label: "Clients", value: "789", icon: Users, color: "bg-purple-500" },
     { label: "Revenus", value: "€45,678", icon: TrendingUp, color: "bg-orange-500" },
   ];
@@ -150,8 +154,8 @@ export default function AdminDashboard() {
             const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             return `${label}: ${value} (${percentage}%)`;
-          }
-        }
+          },
+        },
       },
     },
   };
@@ -159,23 +163,19 @@ export default function AdminDashboard() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Bienvenue dans le panel d'administration MAZIGHO</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((stat) => {
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <Card key={stat.label} className="p-6">
+              <Card key={index} className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-600 text-sm">{stat.label}</p>
                     <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
                   </div>
                   <div className={`${stat.color} p-3 rounded-lg`}>
-                    <Icon className="text-white" size={24} />
+                    <Icon size={24} className="text-white" />
                   </div>
                 </div>
               </Card>
@@ -183,64 +183,58 @@ export default function AdminDashboard() {
           })}
         </div>
 
+        {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <Card className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Revenus mensuels</h2>
-            <div style={{ height: "300px" }}>
-              <Line data={revenueChartData} options={chartOptions} />
-            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Revenus Mensuels</h3>
+            <Line data={revenueChartData} options={chartOptions} height={300} />
           </Card>
 
           <Card className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Commandes par jour</h2>
-            <div style={{ height: "300px" }}>
-              <Bar data={ordersChartData} options={chartOptions} />
-            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Commandes par Jour</h3>
+            <Bar data={ordersChartData} options={chartOptions} height={300} />
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="p-6 lg:col-span-1">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Distribution des produits</h2>
-            <div style={{ height: "300px" }}>
-              <Doughnut data={productsChartData} options={donutOptions} />
-            </div>
-          </Card>
+        <Card className="p-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Distribution des Produits</h3>
+          <Doughnut data={productsChartData} options={donutOptions} height={300} />
+        </Card>
 
-          <Card className="p-6 lg:col-span-2">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Commandes récentes</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b border-gray-200">
-                  <tr>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Commande</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Client</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Montant</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Statut</th>
+        {/* Recent Orders */}
+        <Card className="p-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Commandes Récentes</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Numéro</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Client</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Montant</th>
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-600">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentOrders.map((order) => (
+                  <tr key={order.id} className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="py-3 px-4 text-sm text-gray-900">{order.orderNumber}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900">{order.customer}</td>
+                    <td className="py-3 px-4 text-sm text-gray-900 font-semibold">{order.amount}</td>
+                    <td className="py-3 px-4 text-sm">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        order.status === "Livré" ? "bg-green-100 text-green-800" :
+                        order.status === "En cours" ? "bg-blue-100 text-blue-800" :
+                        "bg-yellow-100 text-yellow-800"
+                      }`}>
+                        {order.status}
+                      </span>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {recentOrders.map((order) => (
-                    <tr key={order.id} className="border-b border-gray-200 hover:bg-gray-50">
-                      <td className="py-3 px-4 text-sm text-gray-900">{order.orderNumber}</td>
-                      <td className="py-3 px-4 text-sm text-gray-600">{order.customer}</td>
-                      <td className="py-3 px-4 text-sm font-semibold text-gray-900">{order.amount}</td>
-                      <td className="py-3 px-4 text-sm">
-                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                          order.status === "Livré" ? "bg-green-100 text-green-800" :
-                          order.status === "En cours" ? "bg-blue-100 text-blue-800" :
-                          "bg-yellow-100 text-yellow-800"
-                        }`}>
-                          {order.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Card>
-        </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
       </div>
     </AdminLayout>
   );

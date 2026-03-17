@@ -1,12 +1,14 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
+import { useCart } from "@/hooks/useCart";
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
+  const { itemCount } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -34,6 +36,18 @@ export function Header() {
               Contact
             </Link>
           </nav>
+
+          {/* Cart Button */}
+          <Link href="/cart" className="hidden md:flex">
+            <button className="relative p-2 text-gray-600 hover:text-gray-900 transition">
+              <ShoppingCart size={24} />
+              {itemCount > 0 && (
+                <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
+            </button>
+          </Link>
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center gap-4">
@@ -90,6 +104,9 @@ export function Header() {
             </Link>
             <Link href="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
               Contact
+            </Link>
+            <Link href="/cart" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
+              Panier ({itemCount})
             </Link>
             {isAuthenticated ? (
               <>
