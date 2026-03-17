@@ -8,6 +8,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
 import AdminCategories from "./pages/AdminCategories";
@@ -23,6 +25,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/shop" component={Shop} />
       <Route path="/cart" component={Cart} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
       
       {/* Admin Routes */}
       <Route path="/admin">
