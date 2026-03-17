@@ -1,4 +1,4 @@
-import "dotenv/config";
+// import "dotenv/config"; // Commenté car dotenv n'est pas nécessaire en production
 import express from "express";
 import { createServer } from "http";
 import net from "net";
