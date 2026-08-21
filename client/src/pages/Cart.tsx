@@ -140,7 +140,9 @@ export default function Cart() {
                   </div>
                 </div>
 
-                <Button className="w-full mb-3">Procéder au paiement</Button>
+                <Link href="/checkout">
+                  <Button className="w-full mb-3">Procéder au paiement</Button>
+                </Link>
                 <Link href="/shop">
                   <Button variant="outline" className="w-full">
                     Continuer les achats

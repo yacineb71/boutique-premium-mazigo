@@ -3,8 +3,10 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ShoppingCart, Heart, Star } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useCart } from "@/hooks/useCart";
+import { getSearchParam, matchesCatalogSearch } from "@/lib/catalogSearch";
+import { Link, useLocation } from "wouter";
 
 interface Product {
   id: number;
@@ -140,17 +142,25 @@ const PRODUCTS: Product[] = [
   },
 ];
 
+const categories = ["Vêtements", "Cosmétiques", "Accessoires", "Cadeaux", "Jouets"];
+
 export default function Shop() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [location] = useLocation();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(() => {
+    const query = typeof window === "undefined" ? location.split("?", 2)[1] ?? "" : window.location.search;
+    const category = new URLSearchParams(query).get("category");
+    return categories.find((item) => item.toLowerCase() === category?.toLowerCase()) ?? null;
+  });
+  const [searchTerm, setSearchTerm] = useState(() =>
+    getSearchParam(typeof window === "undefined" ? location : window.location.href),
+  );
   const { addToCart } = useCart();
   const [favorites, setFavorites] = useState<number[]>([]);
 
-  const categories = ["Vêtements", "Cosmétiques", "Accessoires", "Cadeaux", "Jouets"];
 
   const filteredProducts = PRODUCTS.filter((product) => {
     const matchesCategory = !selectedCategory || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = matchesCatalogSearch(`${product.name} ${product.category}`, searchTerm);
     return matchesCategory && matchesSearch;
   });
 
@@ -239,7 +249,9 @@ export default function Shop() {
                 </div>
 
                 <div className="p-4">
-                  <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
+                  <Link href={`/product/${product.id}`} className="block">
+                    <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 hover:text-teal-600 transition">{product.name}</h3>
+                  </Link>
 
                   <p className="text-sm text-gray-600 mb-3">{product.category}</p>
 

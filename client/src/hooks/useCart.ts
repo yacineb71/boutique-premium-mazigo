@@ -1,73 +1,64 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  addItem,
+  CART_UPDATED_EVENT,
+  clearPersistedCart,
+  getCartItemCount,
+  getCartTotal,
+  loadCart,
+  removeItem,
+  setItemQuantity,
+  persistCart,
+  type CartItem,
+} from "@/lib/cart";
 
-export interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+export type { CartItem } from "@/lib/cart";
 
 export function useCart() {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [items, setItems] = useState<CartItem[]>(loadCart);
 
-  const saveCart = useCallback((newItems: CartItem[]) => {
-    setItems(newItems);
-    localStorage.setItem("cart", JSON.stringify(newItems));
+  useEffect(() => {
+    const syncCart = () => setItems(loadCart());
+    window.addEventListener(CART_UPDATED_EVENT, syncCart);
+    window.addEventListener("storage", syncCart);
+
+    return () => {
+      window.removeEventListener(CART_UPDATED_EVENT, syncCart);
+      window.removeEventListener("storage", syncCart);
+    };
   }, []);
 
   const addToCart = useCallback(
     (product: { id: number; name: string; price: number; image: string }) => {
-      setItems((prevItems) => {
-        const existingItem = prevItems.find((item) => item.id === product.id);
-        let newItems: CartItem[];
-
-        if (existingItem) {
-          newItems = prevItems.map((item) =>
-            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-          );
-        } else {
-          newItems = [...prevItems, { ...product, quantity: 1 }];
-        }
-
-        localStorage.setItem("cart", JSON.stringify(newItems));
-        return newItems;
+      setItems((previousItems) => {
+        const nextItems = addItem(previousItems, product);
+        persistCart(nextItems);
+        return nextItems;
       });
     },
     []
   );
 
   const removeFromCart = useCallback((productId: number) => {
-    setItems((prevItems) => {
-      const newItems = prevItems.filter((item) => item.id !== productId);
-      localStorage.setItem("cart", JSON.stringify(newItems));
-      return newItems;
+    setItems((previousItems) => {
+      const nextItems = removeItem(previousItems, productId);
+      persistCart(nextItems);
+      return nextItems;
     });
   }, []);
 
   const updateQuantity = useCallback((productId: number, quantity: number) => {
-    setItems((prevItems) => {
-      const newItems =
-        quantity <= 0
-          ? prevItems.filter((item) => item.id !== productId)
-          : prevItems.map((item) =>
-              item.id === productId ? { ...item, quantity } : item
-            );
-      localStorage.setItem("cart", JSON.stringify(newItems));
-      return newItems;
+    setItems((previousItems) => {
+      const nextItems = setItemQuantity(previousItems, productId, quantity);
+      persistCart(nextItems);
+      return nextItems;
     });
   }, []);
 
   const clearCart = useCallback(() => {
     setItems([]);
-    localStorage.removeItem("cart");
+    clearPersistedCart();
   }, []);
-
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return {
     items,
@@ -75,7 +66,7 @@ export function useCart() {
     removeFromCart,
     updateQuantity,
     clearCart,
-    total,
-    itemCount,
+    total: getCartTotal(items),
+    itemCount: getCartItemCount(items),
   };
 }

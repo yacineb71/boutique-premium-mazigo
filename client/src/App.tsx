@@ -4,6 +4,7 @@ import { PrivateRoute } from "@/components/PrivateRoute";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { NavigationLoader } from "./components/NavigationLoader";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -113,6 +114,7 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
+          <NavigationLoader />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
