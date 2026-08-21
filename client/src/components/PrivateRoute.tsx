@@ -1,4 +1,5 @@
 import { useAuth } from "@/_core/hooks/useAuth";
+import React from "react";
 import { Loader2 } from "lucide-react";
 import { useLocation } from "wouter";
 

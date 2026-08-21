@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ProductReview, type Review } from "@/components/ProductReview";
 import { useCart } from "@/hooks/useCart";
 import { useParams, useLocation } from "wouter";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ShoppingCart, Star } from "lucide-react";
 
 // Mock product data

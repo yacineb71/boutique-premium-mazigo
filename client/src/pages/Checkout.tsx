@@ -6,7 +6,7 @@ import { useCart } from "@/hooks/useCart";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 export default function Checkout() {
@@ -40,7 +40,7 @@ export default function Checkout() {
       });
 
       if (result.url) {
-        window.open(result.url, "_blank");
+        (globalThis as Record<string, unknown>).open ? (globalThis as { open: (url: string, target?: string) => void }).open(result.url, "_blank") : window.open(result.url, "_blank");
       }
     } catch (error) {
       console.error("Checkout error:", error);
