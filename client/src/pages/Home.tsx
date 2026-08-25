@@ -8,12 +8,12 @@ import React, { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 
 const universes = [
-  { name: "Mode & accessoires", description: "Les détails qui accompagnent votre style au quotidien.", icon: "◌", category: "Vêtements", image: "/manus-storage/mazigho-mode_f245e1ee.jpg" },
-  { name: "Beauté & bien-être", description: "Des instants de soin et de confort à s’offrir.", icon: "✦", category: "Cosmétiques", image: "/manus-storage/mazigho-beaute_bc46ff74.jpg" },
-  { name: "Maison & cuisine", description: "Des objets simples qui facilitent les petits moments.", icon: "⌂", category: "Cadeaux", image: "/manus-storage/mazigho-maison_1ebe5e16.jpg" },
-  { name: "Sport & plein air", description: "Pour bouger, respirer et profiter davantage.", icon: "↗", category: "Jouets", image: "/manus-storage/mazigho-sport_5eb118df.jpg" },
-  { name: "High-tech utile", description: "Des accessoires pensés pour rester connecté sans effort.", icon: "⌁", category: "Accessoires", image: "/manus-storage/mazigho-tech_470bf66c.jpg" },
-  { name: "Mobilité & auto", description: "Les indispensables pour vos trajets et vos escapades.", icon: "◍", category: "Accessoires", image: "/manus-storage/mazigho-tech_470bf66c.jpg" },
+  { name: "Mode & accessoires", description: "Les détails qui accompagnent votre style au quotidien.", icon: "◌", category: "Vêtements", image: "/manus-storage/mazigho-lifestyle-mode_b8020010.jpg" },
+  { name: "Beauté & bien-être", description: "Des instants de soin et de confort à s’offrir.", icon: "✦", category: "Cosmétiques", image: "/manus-storage/mazigho-lifestyle-beaute_c3f430c7.jpg" },
+  { name: "Maison & cuisine", description: "Des objets simples qui facilitent les petits moments.", icon: "⌂", category: "Cadeaux", image: "/manus-storage/mazigho-lifestyle-maison_b9558176.jpg" },
+  { name: "Sport & plein air", description: "Pour bouger, respirer et profiter davantage.", icon: "↗", category: "Jouets", image: "/manus-storage/mazigho-lifestyle-utile_78e04000.jpg" },
+  { name: "High-tech utile", description: "Des accessoires pensés pour rester connecté sans effort.", icon: "⌁", category: "Accessoires", image: "/manus-storage/mazigho-lifestyle-utile_78e04000.jpg" },
+  { name: "Mobilité & auto", description: "Les indispensables pour vos trajets et vos escapades.", icon: "◍", category: "Accessoires", image: "/manus-storage/mazigho-lifestyle-utile_78e04000.jpg" },
 ];
 
 const searchableUniverses = universes.map((universe) => `${universe.name} ${universe.description}`);
@@ -66,7 +66,7 @@ export default function Home() {
             </div>
 
             <div className="relative mx-auto aspect-[0.88] w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-[#c8a38c]/20 p-4 shadow-2xl shadow-black/20">
-              <img src="/manus-storage/mazigho-hero-banner_05ed2538.jpg" alt="Sélection éditoriale MAZIGHO de mode, soin, maison et accessoires" width="960" height="1080" loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+              <img src="/manus-storage/mazigho-lifestyle-hero_60bee52d.jpg" alt="Sélection éditoriale MAZIGHO de mode, soin, maison et accessoires" width="960" height="1080" loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} />
               <div className="absolute inset-0 bg-gradient-to-t from-[#211e1b]/80 via-[#211e1b]/20 to-transparent" />
               <div className="relative flex h-full flex-col justify-between rounded-[1.5rem] bg-[#211e1b]/10 p-7 text-[#f8f5ef]">
                 <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em]"><span>Édition 01</span><span>2026</span></div>

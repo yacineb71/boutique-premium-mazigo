@@ -3187,3 +3187,10 @@
 - [x] Héberger les assets hors du projet et intégrer les URL durables dans la vitrine
 - [x] Ajouter les tests de références et valider le rendu responsive
 - [x] Valider typage, tests, build et publier
+
+## Nouvelle demande — direction visuelle lifestyle MAZIGHO
+- [x] Remplacer les visuels génériques par des scènes qui expriment la sélection multi-niche et le quotidien
+- [x] Générer une série cohérente de visuels lifestyle pour hero, catégories et cartes produits
+- [x] Préserver les ratios, le safe space du texte et les performances responsive
+- [x] Intégrer les nouveaux assets sans modifier les règles métier ni les données produit
+- [x] Valider visuellement desktop/mobile, typage, tests, build et publier
