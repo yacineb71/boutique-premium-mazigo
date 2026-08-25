@@ -25,6 +25,7 @@ import AdminPromotions from "./pages/AdminPromotions";
 import AdminReviews from "./pages/AdminReviews";
 import AdminSettings from "./pages/AdminSettings";
 import AdminMessages from "./pages/AdminMessages";
+import AdminMedia from "./pages/AdminMedia";
 import { AdminWorkspace, workspacePresets } from "./pages/AdminWorkspace";
 
 function Router() {
@@ -104,6 +105,14 @@ function Router() {
         )}
       </Route>
       
+      <Route path="/admin/media">
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminMedia />
+          </PrivateRoute>
+        )}
+      </Route>
+
       <Route path="/admin/messages">
         {() => (
           <PrivateRoute requiredRole="admin">

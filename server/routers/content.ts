@@ -19,8 +19,14 @@ import {
   updateResponseTemplate,
   updatePromoBanner,
   deleteResponseTemplate,
+  createMediaAsset,
+  deleteMediaAsset,
+  getAllMediaAssets,
+  attachProductMedia,
+  getProductMedia,
 } from "../db";
 import { adminProcedure, publicProcedure, router } from "../_core/trpc";
+import { storagePut } from "../storage";
 
 const idInput = z.object({ id: z.number().int().positive() });
 const messageStatus = z.enum(["new", "read", "archived"]);
@@ -71,6 +77,14 @@ export const contentRouter = router({
     create: adminProcedure.input(z.object({ name: z.string().trim().min(2).max(160), subject: z.string().trim().min(2).max(255), body: z.string().trim().min(2).max(5000), active: z.boolean().default(true) })).mutation(({ input }) => createResponseTemplate({ ...input, active: input.active ? 1 : 0 })),
     update: adminProcedure.input(idInput.extend({ name: z.string().trim().min(2).max(160).optional(), subject: z.string().trim().min(2).max(255).optional(), body: z.string().trim().min(2).max(5000).optional(), active: z.boolean().optional() })).mutation(({ input }) => updateResponseTemplate(input.id, { name: input.name, subject: input.subject, body: input.body, active: input.active === undefined ? undefined : input.active ? 1 : 0 })),
     remove: adminProcedure.input(idInput).mutation(({ input }) => deleteResponseTemplate(input.id)),
+  }),
+  media: router({
+    list: adminProcedure.query(() => getAllMediaAssets()),
+    byProduct: adminProcedure.input(z.object({ productId: z.number().int().positive() })).query(({ input }) => getProductMedia(input.productId)),
+    addUrl: adminProcedure.input(z.object({ url: z.string().url().max(2000), altText: z.string().trim().max(255).optional(), filename: z.string().trim().max(255).optional() })).mutation(({ input, ctx }) => createMediaAsset({ url: input.url, altText: input.altText || null, filename: input.filename || null, createdBy: ctx.user.id, kind: "image" })),
+    upload: adminProcedure.input(z.object({ filename: z.string().trim().min(1).max(255), mimeType: z.enum(["image/jpeg", "image/png", "image/webp", "image/avif"]), base64: z.string().min(100).max(12_000_000), altText: z.string().trim().max(255).optional() })).mutation(async ({ input, ctx }) => { const key = `mazigho-media/${Date.now()}-${input.filename.replace(/[^a-zA-Z0-9._-]/g, "-")}`; const uploaded = await storagePut(key, Buffer.from(input.base64, "base64"), input.mimeType); return createMediaAsset({ url: `/manus-storage/${uploaded.key}`, storageKey: uploaded.key, filename: input.filename, mimeType: input.mimeType, altText: input.altText || null, createdBy: ctx.user.id, kind: "image" }); }),
+    attachToProduct: adminProcedure.input(z.object({ productId: z.number().int().positive(), mediaId: z.number().int().positive(), sortOrder: z.number().int().min(0).default(0) })).mutation(({ input }) => attachProductMedia(input.productId, input.mediaId, input.sortOrder)),
+    remove: adminProcedure.input(idInput).mutation(({ input }) => deleteMediaAsset(input.id)),
   }),
   banners: router({
     active: publicProcedure.query(() => getActivePromoBanners()),

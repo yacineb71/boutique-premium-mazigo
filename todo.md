@@ -3208,3 +3208,13 @@
 - [x] Remplacer les assets génériques dans le hero, les catégories et les cartes produits
 - [x] Conserver les crédits et sources des photos dans la documentation du projet
 - [x] Valider le rendu responsive, les tests, le build et publier
+
+## Nouvelle demande — médiathèque et galerie produit
+- [x] Ajouter une médiathèque admin avec ajout d’image par URL et téléchargement
+- [x] Ajouter la gestion des métadonnées, aperçu, téléchargement et suppression sécurisée des médias
+- [x] Relier plusieurs médias à chaque produit
+- [x] Ajouter un carrousel accessible sur les fiches produits
+- [x] Ajouter animations de survol aux images des catégories
+- [x] Ajouter un chargement progressif avec placeholder et respect de prefers-reduced-motion
+- [x] Ajouter les tests galerie, carrousel et chargement
+- [x] Valider responsive, typage, tests, build et publier

@@ -1,6 +1,6 @@
-import { desc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, InsertResponseTemplate, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies, responseTemplates } from "../drizzle/schema";
+import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, InsertResponseTemplate, MediaAsset, InsertMediaAsset, mediaAssets, productMedia, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies, responseTemplates } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -272,4 +272,38 @@ export async function deletePromoBanner(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   await db.delete(promoBanners).where(eq(promoBanners.id, id));
+}
+
+
+export async function getAllMediaAssets() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(mediaAssets).orderBy(desc(mediaAssets.createdAt));
+}
+
+export async function createMediaAsset(asset: InsertMediaAsset) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  const result = await db.insert(mediaAssets).values(asset);
+  return { id: Number(result[0].insertId), ...asset };
+}
+
+export async function deleteMediaAsset(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(productMedia).where(eq(productMedia.mediaId, id));
+  return db.delete(mediaAssets).where(eq(mediaAssets.id, id));
+}
+
+export async function getProductMedia(productId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ media: mediaAssets, link: productMedia }).from(productMedia).innerJoin(mediaAssets, eq(productMedia.mediaId, mediaAssets.id)).where(eq(productMedia.productId, productId)).orderBy(asc(productMedia.sortOrder));
+}
+
+export async function attachProductMedia(productId: number, mediaId: number, sortOrder = 0) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(productMedia).values({ productId, mediaId, sortOrder });
+  return { productId, mediaId, sortOrder };
 }

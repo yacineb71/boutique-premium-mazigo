@@ -157,3 +157,30 @@ export const responseTemplates = mysqlTable("responseTemplates", {
 
 export type ResponseTemplate = typeof responseTemplates.$inferSelect;
 export type InsertResponseTemplate = typeof responseTemplates.$inferInsert;
+
+
+export const mediaAssets = mysqlTable("mediaAssets", {
+  id: int("id").autoincrement().primaryKey(),
+  url: text("url").notNull(),
+  storageKey: varchar("storageKey", { length: 500 }),
+  filename: varchar("filename", { length: 255 }),
+  mimeType: varchar("mimeType", { length: 100 }),
+  altText: varchar("altText", { length: 255 }),
+  kind: varchar("kind", { length: 32 }).default("image").notNull(),
+  createdBy: int("createdBy"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export const productMedia = mysqlTable("productMedia", {
+  id: int("id").autoincrement().primaryKey(),
+  productId: int("productId").notNull(),
+  mediaId: int("mediaId").notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type MediaAsset = typeof mediaAssets.$inferSelect;
+export type InsertMediaAsset = typeof mediaAssets.$inferInsert;
+export type ProductMedia = typeof productMedia.$inferSelect;
+export type InsertProductMedia = typeof productMedia.$inferInsert;

@@ -50,6 +50,13 @@
       "when": 1787676915834,
       "tag": "0006_regular_silverclaw",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1787679992765,
+      "tag": "0007_wonderful_zarda",
+      "breakpoints": true
     }
   ]
 }

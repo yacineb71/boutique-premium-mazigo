@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/useCart";
 import { useParams, useLocation } from "wouter";
 import React, { useState } from "react";
 import { ShoppingCart } from "lucide-react";
+import { ProductImageCarousel } from "@/components/ProductImageCarousel";
 
 // Mock product data
 const PRODUCTS: Record<string, any> = {
@@ -16,6 +17,7 @@ const PRODUCTS: Record<string, any> = {
     category: "Vêtements",
     price: 29.99,
     image: "/manus-storage/mazigho-stock-mode_ab0ed7cb.webp",
+    images: ["/manus-storage/mazigho-stock-mode_ab0ed7cb.webp", "/manus-storage/mazigho-stock-home_05df7846.webp", "/manus-storage/mazigho-stock-accessoires_b78d9731.webp"],
     description:
       "T-shirt premium en coton 100% biologique. Confortable, durable et écologique.",
     details: [
@@ -31,6 +33,7 @@ const PRODUCTS: Record<string, any> = {
     category: "Cosmétiques",
     price: 49.99,
     image: "/manus-storage/mazigho-stock-beaute_c4796701.webp",
+    images: ["/manus-storage/mazigho-stock-beaute_c4796701.webp", "/manus-storage/mazigho-stock-home_05df7846.webp", "/manus-storage/mazigho-stock-accessoires_b78d9731.webp"],
     description:
       "Crème hydratante luxe pour tous les types de peau. Formule naturelle et efficace.",
     details: [
@@ -80,9 +83,7 @@ export default function ProductDetail() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-2">
             {/* Product Image */}
-            <div className="flex min-h-[28rem] items-center justify-center overflow-hidden rounded-[2rem] bg-[#eee8df] p-4 sm:p-8">
-              <img src={product.image} alt={`${product.name} — ${product.category}`} width="900" height="900" loading="eager" fetchPriority="high" className="h-full max-h-[34rem] w-full rounded-[1.5rem] object-cover shadow-sm" onError={(event) => { event.currentTarget.style.display = "none"; }} />
-            </div>
+            <ProductImageCarousel images={product.images ?? [product.image]} alt={`${product.name} — ${product.category}`} />
 
             {/* Product Info */}
             <div>
