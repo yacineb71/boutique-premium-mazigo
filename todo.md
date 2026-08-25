@@ -3196,11 +3196,11 @@
 - [x] Valider visuellement desktop/mobile, typage, tests, build et publier
 
 ## Nouvelle demande — vraies photos lifestyle
-- [ ] Remplacer les visuels abstraits par des photos réalistes de produits, personnes et décors
-- [ ] Générer des scènes photographiques crédibles pour le hero et les catégories
-- [ ] Générer des visuels produits réalistes adaptés aux cartes et fiches
-- [ ] Intégrer les nouvelles photos avec cadrage, alt et formats responsives
-- [ ] Valider le rendu réaliste desktop/mobile, les tests, le build et publier
+- [x] Remplacer les visuels abstraits par des photos réalistes de produits, personnes et décors (photos stock sous licence)
+- [x] Intégrer des scènes photographiques crédibles pour le hero et les catégories (photos stock sous licence)
+- [x] Intégrer des visuels produits réalistes adaptés aux cartes et fiches (photos stock sous licence)
+- [x] Intégrer les nouvelles photos avec cadrage, alt et formats responsives
+- [x] Valider le rendu réaliste desktop/mobile, les tests, le build et publier
 
 ## Nouvelle demande — photos stock sous licence
 - [x] Sélectionner des photos réalistes de produits, personnes et décors avec licence vérifiable
