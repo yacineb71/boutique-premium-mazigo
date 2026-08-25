@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners } from "../drizzle/schema";
+import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -165,6 +165,13 @@ export async function getAllContactMessages() {
   return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
 }
 
+export async function getContactMessageById(id: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(contactMessages).where(eq(contactMessages.id, id)).limit(1);
+  return result[0];
+}
+
 export async function updateContactMessage(id: number, status: InsertContactMessage["status"]) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
@@ -175,6 +182,18 @@ export async function deleteContactMessage(id: number) {
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   await db.delete(contactMessages).where(eq(contactMessages.id, id));
+}
+
+export async function createContactMessageReply(reply: Omit<InsertContactMessageReply, "id" | "createdAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(contactMessageReplies).values(reply);
+}
+
+export async function getContactMessageReplies(messageId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(contactMessageReplies).where(eq(contactMessageReplies.messageId, messageId)).orderBy(desc(contactMessageReplies.createdAt));
 }
 
 export async function getAllProductReviews() {

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  createContactMessageReply,
   createProductReview,
   createPromoBanner,
   deleteContactMessage,
@@ -7,6 +8,8 @@ import {
   deletePromoBanner,
   getActivePromoBanners,
   getAllContactMessages,
+  getContactMessageById,
+  getContactMessageReplies,
   getAllProductReviews,
   getAllPromoBanners,
   updateContactMessage,
@@ -39,7 +42,17 @@ const bannerFields = z.object({
 export const contentRouter = router({
   messages: router({
     list: adminProcedure.query(() => getAllContactMessages()),
+    replies: adminProcedure.input(idInput).query(({ input }) => getContactMessageReplies(input.id)),
     setStatus: adminProcedure.input(idInput.extend({ status: messageStatus })).mutation(({ input }) => updateContactMessage(input.id, input.status)),
+    reply: adminProcedure.input(idInput.extend({ body: z.string().trim().min(2).max(5000), subject: z.string().trim().min(2).max(255).optional() })).mutation(async ({ input, ctx }) => {
+      const message = await getContactMessageById(input.id);
+      if (!message) throw new Error("Message introuvable");
+      const subject = input.subject?.trim() || `Re: ${message.subject}`;
+      const body = input.body.trim();
+      await createContactMessageReply({ messageId: message.id, adminUserId: ctx.user.id, recipientEmail: message.email, subject, body, deliveryMethod: "mailto" });
+      await updateContactMessage(message.id, "read");
+      return { recipientEmail: message.email, subject, body };
+    }),
     remove: adminProcedure.input(idInput).mutation(({ input }) => deleteContactMessage(input.id)),
   }),
   reviews: router({

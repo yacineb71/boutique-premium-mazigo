@@ -3162,3 +3162,11 @@
 - [x] 2. Vérifier et corriger le responsive
 - [x] 3. Connecter les données réelles
 - [x] 4.
+
+## Nouvelle demande — réponse directe aux messages clients
+- [x] Ajouter une table persistante pour l’historique des réponses liées aux messages
+- [x] Ajouter les procédures admin de création et lecture des réponses
+- [x] Ajouter le compositeur de réponse dans la boîte de réception avec adresse client préremplie
+- [x] Marquer automatiquement le message comme lu après préparation/envoi de la réponse
+- [x] Ajouter les tests d’accès admin, de persistance et de parcours de réponse
+- [x] Valider responsive, typage, tests, build et publier

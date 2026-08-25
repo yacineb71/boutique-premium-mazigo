@@ -36,6 +36,13 @@
       "when": 1787675933456,
       "tag": "0004_lying_vector",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1787676362576,
+      "tag": "0005_flimsy_sentry",
+      "breakpoints": true
     }
   ]
 }

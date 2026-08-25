@@ -130,3 +130,17 @@ export const promoBanners = mysqlTable("promoBanners", {
 
 export type PromoBanner = typeof promoBanners.$inferSelect;
 export type InsertPromoBanner = typeof promoBanners.$inferInsert;
+
+export const contactMessageReplies = mysqlTable("contactMessageReplies", {
+  id: int("id").autoincrement().primaryKey(),
+  messageId: int("messageId").notNull(),
+  adminUserId: int("adminUserId").notNull(),
+  recipientEmail: varchar("recipientEmail", { length: 320 }).notNull(),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  body: text("body").notNull(),
+  deliveryMethod: varchar("deliveryMethod", { length: 32 }).default("mailto").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type ContactMessageReply = typeof contactMessageReplies.$inferSelect;
+export type InsertContactMessageReply = typeof contactMessageReplies.$inferInsert;
