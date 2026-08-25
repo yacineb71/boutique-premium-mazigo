@@ -82,3 +82,51 @@ export const productSupplierMeta = mysqlTable("productSupplierMeta", {
 
 export type ProductSupplierMeta = typeof productSupplierMeta.$inferSelect;
 export type InsertProductSupplierMeta = typeof productSupplierMeta.$inferInsert;
+
+export const contactMessageStatus = mysqlEnum("status", ["new", "read", "archived"]);
+export const contactMessages = mysqlTable("contactMessages", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  subject: varchar("subject", { length: 160 }).notNull(),
+  message: text("message").notNull(),
+  status: contactMessageStatus.default("new").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ContactMessage = typeof contactMessages.$inferSelect;
+export type InsertContactMessage = typeof contactMessages.$inferInsert;
+
+export const reviewStatus = mysqlEnum("status", ["pending", "approved", "rejected"]);
+export const productReviews = mysqlTable("productReviews", {
+  id: int("id").autoincrement().primaryKey(),
+  productId: int("productId").notNull(),
+  authorName: varchar("authorName", { length: 160 }).notNull(),
+  authorEmail: varchar("authorEmail", { length: 320 }),
+  title: varchar("title", { length: 160 }),
+  body: text("body").notNull(),
+  rating: int("rating").notNull(),
+  status: reviewStatus.default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ProductReview = typeof productReviews.$inferSelect;
+export type InsertProductReview = typeof productReviews.$inferInsert;
+
+export const promoBanners = mysqlTable("promoBanners", {
+  id: int("id").autoincrement().primaryKey(),
+  eyebrow: varchar("eyebrow", { length: 120 }),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  ctaLabel: varchar("ctaLabel", { length: 120 }),
+  ctaHref: varchar("ctaHref", { length: 500 }),
+  active: int("active").default(0).notNull(),
+  sortOrder: int("sortOrder").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PromoBanner = typeof promoBanners.$inferSelect;
+export type InsertPromoBanner = typeof promoBanners.$inferInsert;

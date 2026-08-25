@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { notifyOwner } from "../_core/notification";
 import { publicProcedure, router } from "../_core/trpc";
+import { createContactMessage } from "../db";
 
 const contactInput = z.object({
   name: z.string().trim().min(2).max(120),
@@ -17,6 +18,7 @@ export const contactRouter = router({
     return delivered ? { success: true as const, message: "Votre inscription est confirmée." } : { success: false as const, message: "L’inscription n’a pas pu être confirmée. Réessayez plus tard." };
   }),
   send: publicProcedure.input(contactInput).mutation(async ({ input }) => {
+    await createContactMessage({ ...input, status: "new" });
     const delivered = await notifyOwner({
       title: `Message MAZIGHO : ${input.subject}`,
       content: `Nom : ${input.name}\nEmail : ${input.email}\n\n${input.message}`,

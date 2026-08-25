@@ -30,6 +30,14 @@
 - [x] Vérifier les pages admin Clients, Avis et autres rubriques non encore inspectées
 - [x] Documenter l’inventaire et corriger toute action décorative restante
 
+## Nouvelle demande — gestion admin messages, avis et bannières
+- [x] Ajouter une boîte de réception admin persistante pour lire, marquer et supprimer les messages de contact
+- [x] Ajouter la modération admin des avis authentifiés : ajouter, valider et supprimer sans fabriquer de contenu client
+- [x] Ajouter une gestion persistante des bannières promotionnelles de l’accueil : créer, modifier, activer/désactiver et supprimer
+- [x] Relier la bannière active aux données réellement publiées sur la page d’accueil
+- [x] Ajouter les tests de confidentialité, mutations et parcours des trois modules
+- [x] Valider responsive, typage, tests, build et publier
+
 ## Nouvelle demande — FAQ, contact et navigation
 - [x] Ajouter un lien FAQ unique dans le pied de page, avec une page FAQ complète accessible séparément
 - [x] Auditer et fiabiliser le formulaire de contact avec états de chargement, succès et erreur

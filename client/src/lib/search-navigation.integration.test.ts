@@ -17,6 +17,7 @@ vi.mock("wouter", () => ({
   useLocation: () => [routeState.currentLocation, routeState.navigateMock],
 }));
 
+vi.mock("@/lib/trpc", () => ({ trpc: { content: { banners: { active: { useQuery: () => ({ data: [] }) } } } } }));
 vi.mock("@/_core/hooks/useAuth", () => ({
   useAuth: () => ({ user: null, isAuthenticated: false, loading: false, logout: vi.fn() }),
 }));

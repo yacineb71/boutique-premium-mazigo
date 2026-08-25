@@ -2,6 +2,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { buildCatalogSearchRoute, matchesCatalogSearch } from "@/lib/catalogSearch";
+import { trpc } from "@/lib/trpc";
 import { ArrowRight, Search, Sparkles } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -21,6 +22,7 @@ export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
+  const { data: activeBanners } = trpc.content.banners.active.useQuery();
 
   const matchingUniverseCount = useMemo(() => {
     if (!searchTerm.trim()) return universes.length;
@@ -37,6 +39,7 @@ export default function Home() {
       <Header />
 
       <main>
+        {activeBanners && activeBanners.length > 0 ? <section className="border-b border-[#eadfd4] bg-[#b65f3f] px-4 py-4 text-white sm:px-6"><div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 text-center sm:flex-row sm:text-left">{activeBanners.slice(0, 1).map((banner) => <div key={banner.id}><p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/75">{banner.eyebrow || "MAZIGHO"}</p><p className="mt-1 font-display text-xl">{banner.title}</p>{banner.description ? <p className="mt-1 text-sm text-white/80">{banner.description}</p> : null}</div>)}{activeBanners[0].ctaLabel && activeBanners[0].ctaHref ? <Link href={activeBanners[0].ctaHref} className="inline-flex shrink-0 items-center rounded-full bg-[#f8f5ef] px-5 py-2 text-sm font-semibold text-[#211e1b] transition hover:bg-white">{activeBanners[0].ctaLabel}<ArrowRight size={15} className="ml-2"/></Link> : null}</div></section> : null}
         <section className="relative isolate overflow-hidden bg-[#211e1b] text-[#f8f5ef]">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_74%_28%,rgba(196,115,83,0.7),transparent_33%),radial-gradient(circle_at_12%_90%,rgba(105,80,59,0.6),transparent_36%),linear-gradient(112deg,#211e1b_0%,#3a2e29_48%,#8c5947_100%)]" />
           <div className="absolute right-[-8%] top-[-10%] -z-10 h-[32rem] w-[32rem] rounded-full border border-white/10 bg-[#f0d2ba]/10 blur-sm" />

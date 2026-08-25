@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, orders, orderItems, productSupplierMeta, users } from "../drizzle/schema";
+import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -151,4 +151,82 @@ export async function updateOrderFulfillment(orderId: number, values: Partial<Pi
   const db = await getDb();
   if (!db) throw new Error("Database unavailable");
   await db.update(orders).set(values).where(eq(orders.id, orderId));
+}
+
+export async function createContactMessage(message: Omit<InsertContactMessage, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(contactMessages).values(message);
+}
+
+export async function getAllContactMessages() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function updateContactMessage(id: number, status: InsertContactMessage["status"]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(contactMessages).set({ status }).where(eq(contactMessages.id, id));
+}
+
+export async function deleteContactMessage(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(contactMessages).where(eq(contactMessages.id, id));
+}
+
+export async function getAllProductReviews() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(productReviews).orderBy(desc(productReviews.createdAt));
+}
+
+export async function createProductReview(review: Omit<InsertProductReview, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(productReviews).values(review);
+}
+
+export async function updateProductReview(id: number, values: Partial<Pick<InsertProductReview, "status" | "title" | "body" | "rating">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(productReviews).set(values).where(eq(productReviews.id, id));
+}
+
+export async function deleteProductReview(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(productReviews).where(eq(productReviews.id, id));
+}
+
+export async function getActivePromoBanners() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(promoBanners).where(eq(promoBanners.active, 1)).orderBy(desc(promoBanners.sortOrder), desc(promoBanners.createdAt));
+}
+
+export async function getAllPromoBanners() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(promoBanners).orderBy(desc(promoBanners.sortOrder), desc(promoBanners.createdAt));
+}
+
+export async function createPromoBanner(banner: Omit<InsertPromoBanner, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(promoBanners).values(banner);
+}
+
+export async function updatePromoBanner(id: number, values: Partial<Pick<InsertPromoBanner, "eyebrow" | "title" | "description" | "ctaLabel" | "ctaHref" | "active" | "sortOrder">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(promoBanners).set(values).where(eq(promoBanners.id, id));
+}
+
+export async function deletePromoBanner(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(promoBanners).where(eq(promoBanners.id, id));
 }

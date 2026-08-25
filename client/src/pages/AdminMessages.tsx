@@ -1,31 +1,17 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { AdminLayout } from "@/components/AdminLayout";
-import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Inbox, Mail, Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { Check, Inbox, Loader2, Mail, MailOpen, Search, Trash2 } from "lucide-react";
+import { Link } from "wouter";
 
 export default function AdminMessages() {
   const [query, setQuery] = useState("");
-
-  return (
-    <AdminLayout>
-      <div className="space-y-6">
-        <section className="rounded-[1.5rem] border border-[#eadfd4] bg-gradient-to-br from-[#fffaf3] to-[#f4e9df] p-6 sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b65f3f]">Relation & contenu</p>
-          <div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div><h2 className="font-display text-4xl font-semibold tracking-[-0.03em] text-[#211e1b]">Messages</h2><p className="mt-3 max-w-2xl text-[#6d6259]">Centralisez les demandes reçues depuis la boutique et gardez une trace claire des réponses.</p></div>
-            <Link href="/contact" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#b65f3f] px-5 text-sm font-semibold text-white hover:bg-[#964b32]"><Plus size={16} /> Ouvrir le formulaire contact</Link>
-          </div>
-        </section>
-        <Card className="overflow-hidden rounded-[1.25rem] border-[#eadfd4] bg-[#fffdf9]">
-          <div className="flex flex-col gap-4 border-b border-[#eee5dc] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-            <div className="flex items-center gap-3"><Inbox className="text-[#b65f3f]" size={21} /><div><h3 className="text-xl font-semibold text-[#211e1b]">Boîte de réception</h3><p className="mt-1 text-sm text-[#6d6259]">Messages authentifiés et demandes du formulaire de contact.</p></div></div>
-            <label className="relative block w-full sm:max-w-xs"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8b8178]" size={16} /><span className="sr-only">Rechercher un message</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher…" className="h-10 w-full rounded-full border border-[#d5cec4] bg-[#fffdf9] pl-9 pr-4 text-sm text-[#211e1b] outline-none focus:border-[#b65f3f]" /></label>
-          </div>
-          <div className="px-5 py-16 text-center sm:px-6"><span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f1e9df] text-[#b65f3f]"><Mail size={25} /></span><h3 className="mt-5 text-lg font-semibold text-[#211e1b]">{query ? "Aucun message trouvé" : "Aucun message reçu"}</h3><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#6d6259]">{query ? `Aucun message ne correspond à « ${query} ».` : "Les messages apparaîtront ici dès qu’un client vous contactera depuis la boutique."}</p></div>
-        </Card>
-      </div>
-    </AdminLayout>
-  );
+  const utils = trpc.useUtils();
+  const messages = trpc.content.messages.list.useQuery();
+  const setStatus = trpc.content.messages.setStatus.useMutation({ onSuccess: () => utils.content.messages.list.invalidate() });
+  const remove = trpc.content.messages.remove.useMutation({ onSuccess: () => utils.content.messages.list.invalidate() });
+  const filtered = useMemo(() => (messages.data ?? []).filter((item) => `${item.name} ${item.email} ${item.subject} ${item.message}`.toLowerCase().includes(query.toLowerCase())), [messages.data, query]);
+  return <AdminLayout><div className="space-y-6"><section className="rounded-[1.5rem] border border-[#eadfd4] bg-gradient-to-br from-[#fffaf3] to-[#f4e9df] p-6 sm:p-8"><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b65f3f]">Relation & contenu</p><div className="mt-3 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="font-display text-4xl font-semibold tracking-[-0.03em] text-[#211e1b]">Messages</h1><p className="mt-3 max-w-2xl text-[#6d6259]">Lisez et traitez les demandes reçues depuis le formulaire de contact.</p></div><Link href="/contact" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#b65f3f] px-5 text-sm font-semibold text-white hover:bg-[#964b32]">Ouvrir le formulaire</Link></div></section><Card className="overflow-hidden rounded-[1.25rem] border-[#eadfd4] bg-[#fffdf9]"><div className="flex flex-col gap-4 border-b border-[#eee5dc] p-5 sm:flex-row sm:items-center sm:justify-between"><div className="flex items-center gap-3"><Inbox className="text-[#b65f3f]" size={21}/><div><h2 className="text-xl font-semibold text-[#211e1b]">Boîte de réception</h2><p className="mt-1 text-sm text-[#6d6259]">{messages.data?.filter((item) => item.status === "new").length ?? 0} nouveau(x)</p></div></div><label className="relative block w-full sm:max-w-xs"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8b8178]" size={16}/><span className="sr-only">Rechercher un message</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher…" className="h-10 w-full rounded-full border border-[#d5cec4] bg-[#fffdf9] pl-9 pr-4 text-sm text-[#211e1b] outline-none focus:border-[#b65f3f]"/></label></div>{messages.isLoading ? <div className="flex items-center justify-center p-16 text-[#8b8178]"><Loader2 className="mr-2 animate-spin" size={20}/>Chargement…</div> : filtered.length === 0 ? <div className="p-16 text-center"><Mail className="mx-auto mb-3 text-[#b65f3f]" size={32}/><h3 className="font-semibold text-[#211e1b]">{query ? "Aucun message trouvé" : "Aucun message reçu"}</h3><p className="mt-2 text-sm text-[#6d6259]">{query ? "Modifiez votre recherche." : "Les demandes envoyées depuis Contact apparaîtront ici."}</p></div> : <div className="divide-y divide-[#eee5dc]">{filtered.map((item) => <article key={item.id} className={`p-5 sm:p-6 ${item.status === "new" ? "bg-[#fffaf3]" : ""}`}><div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between"><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><span className={`rounded-full px-3 py-1 text-xs font-semibold ${item.status === "new" ? "bg-[#f4dfd3] text-[#9b3d27]" : "bg-[#edf8f1] text-[#276749]"}`}>{item.status === "new" ? "Nouveau" : item.status === "read" ? "Lu" : "Archivé"}</span><time className="text-xs text-[#8b8178]">{new Date(item.createdAt).toLocaleString("fr-FR")}</time></div><h3 className="mt-3 text-lg font-semibold text-[#211e1b]">{item.subject}</h3><p className="mt-1 text-sm font-medium text-[#514942]">{item.name} · {item.email}</p><p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-[#6d6259]">{item.message}</p></div><div className="flex shrink-0 gap-2"><Button type="button" variant="outline" onClick={() => setStatus.mutate({ id: item.id, status: item.status === "new" ? "read" : "new" })} disabled={setStatus.isPending} aria-label={item.status === "new" ? "Marquer comme lu" : "Marquer comme nouveau"}><>{item.status === "new" ? <MailOpen size={16}/> : <Check size={16}/>}</></Button><Button type="button" variant="outline" onClick={() => remove.mutate({ id: item.id })} disabled={remove.isPending} aria-label="Supprimer le message"><Trash2 size={16}/></Button></div></div></article>)}</div>}</Card></div></AdminLayout>;
 }
