@@ -57,6 +57,13 @@
       "when": 1787679992765,
       "tag": "0007_wonderful_zarda",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1787684113453,
+      "tag": "0008_orange_jetstream",
+      "breakpoints": true
     }
   ]
 }

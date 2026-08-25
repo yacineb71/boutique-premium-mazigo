@@ -3226,3 +3226,12 @@
 - [x] Ajouter le glisser-déposer réordonnable avec support clavier de secours
 - [x] Ajouter les tests d’association, de réordonnancement et de confidentialité admin
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — zoom et catalogue administrable
+- [x] Ajouter un zoom au survol et au clic sur les images du carrousel produit
+- [x] Ajouter un modèle produit persistant avec données commerciales et publication
+- [x] Ajouter les procédures admin CRUD du catalogue produit
+- [x] Remplacer les sources statiques de la boutique et des fiches par les données persistantes
+- [x] Créer l’interface admin d’ajout, modification, activation et suppression des produits
+- [x] Ajouter les tests du zoom, du catalogue et de la confidentialité admin
+- [x] Valider responsive, typage, tests, build et publier

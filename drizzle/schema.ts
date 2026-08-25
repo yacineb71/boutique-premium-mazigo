@@ -184,3 +184,21 @@ export type MediaAsset = typeof mediaAssets.$inferSelect;
 export type InsertMediaAsset = typeof mediaAssets.$inferInsert;
 export type ProductMedia = typeof productMedia.$inferSelect;
 export type InsertProductMedia = typeof productMedia.$inferInsert;
+
+
+export const products = mysqlTable("products", {
+  id: int("id").autoincrement().primaryKey(),
+  categoryId: int("categoryId").notNull(),
+  name: varchar("name", { length: 200 }).notNull(),
+  slug: varchar("slug", { length: 200 }).notNull().unique(),
+  description: text("description"),
+  price: int("price").notNull(),
+  originalPrice: int("originalPrice"),
+  stock: int("stock").default(0).notNull(),
+  featured: int("featured").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Product = typeof products.$inferSelect;
+export type InsertProduct = typeof products.$inferInsert;

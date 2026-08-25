@@ -25,6 +25,10 @@ import {
   attachProductMedia,
   getProductMedia,
   reorderProductMedia,
+  getCatalogProducts,
+  createCatalogProduct,
+  updateCatalogProduct,
+  deleteCatalogProduct,
 } from "../db";
 import { adminProcedure, publicProcedure, router } from "../_core/trpc";
 import { storagePut } from "../storage";
@@ -40,7 +44,18 @@ const reviewFields = z.object({
   body: z.string().trim().min(10).max(5000),
   rating: z.number().int().min(1).max(5),
 });
-const bannerFields = z.object({
+  const productFields = z.object({
+    categoryId: z.number().int().positive(),
+    name: z.string().trim().min(2).max(200),
+    slug: z.string().trim().min(2).max(200),
+    description: z.string().trim().max(5000).optional(),
+    price: z.number().int().nonnegative(),
+    originalPrice: z.number().int().nonnegative().optional(),
+    stock: z.number().int().nonnegative().default(0),
+    featured: z.number().int().min(0).max(1).default(0),
+  });
+
+  const bannerFields = z.object({
   eyebrow: z.string().trim().max(120).optional(),
   title: z.string().trim().min(2).max(255),
   description: z.string().trim().max(2000).optional(),
@@ -78,6 +93,13 @@ export const contentRouter = router({
     create: adminProcedure.input(z.object({ name: z.string().trim().min(2).max(160), subject: z.string().trim().min(2).max(255), body: z.string().trim().min(2).max(5000), active: z.boolean().default(true) })).mutation(({ input }) => createResponseTemplate({ ...input, active: input.active ? 1 : 0 })),
     update: adminProcedure.input(idInput.extend({ name: z.string().trim().min(2).max(160).optional(), subject: z.string().trim().min(2).max(255).optional(), body: z.string().trim().min(2).max(5000).optional(), active: z.boolean().optional() })).mutation(({ input }) => updateResponseTemplate(input.id, { name: input.name, subject: input.subject, body: input.body, active: input.active === undefined ? undefined : input.active ? 1 : 0 })),
     remove: adminProcedure.input(idInput).mutation(({ input }) => deleteResponseTemplate(input.id)),
+  }),
+  products: router({
+    list: publicProcedure.query(() => getCatalogProducts()),
+    adminList: adminProcedure.query(() => getCatalogProducts()),
+    create: adminProcedure.input(productFields).mutation(({ input }) => createCatalogProduct({ ...input, description: input.description || null, originalPrice: input.originalPrice ?? null })),
+    update: adminProcedure.input(idInput.merge(productFields.partial())).mutation(({ input }) => updateCatalogProduct(input.id, { ...input, description: input.description || undefined })),
+    remove: adminProcedure.input(idInput).mutation(({ input }) => deleteCatalogProduct(input.id)),
   }),
   media: router({
     list: adminProcedure.query(() => getAllMediaAssets()),

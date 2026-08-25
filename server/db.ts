@@ -1,6 +1,6 @@
 import { and, asc, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, InsertResponseTemplate, MediaAsset, InsertMediaAsset, mediaAssets, productMedia, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies, responseTemplates } from "../drizzle/schema";
+import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, InsertResponseTemplate, InsertProduct, MediaAsset, InsertMediaAsset, mediaAssets, productMedia, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies, responseTemplates, products } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -317,4 +317,32 @@ export async function reorderProductMedia(productId: number, mediaIds: number[])
     await db.update(productMedia).set({ sortOrder }).where(and(eq(productMedia.productId, productId), eq(productMedia.mediaId, mediaId)));
   }
   return getProductMedia(productId);
+}
+
+
+export async function getCatalogProducts() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(products).orderBy(asc(products.id));
+}
+
+export async function createCatalogProduct(input: InsertProduct) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(products).values(input);
+  return getCatalogProducts();
+}
+
+export async function updateCatalogProduct(id: number, input: Partial<InsertProduct>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(products).set(input).where(eq(products.id, id));
+  return getCatalogProducts();
+}
+
+export async function deleteCatalogProduct(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(products).where(eq(products.id, id));
+  return getCatalogProducts();
 }

@@ -14,6 +14,7 @@ import {
   type CatalogSort,
 } from "@/lib/catalogSearch";
 import { Link, useLocation } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 interface Product {
   id: number;
@@ -161,6 +162,9 @@ export default function Shop() {
   );
   const { addToCart } = useCart();
   const [favorites, setFavorites] = useState<number[]>([]);
+  const persistedProductsQuery = trpc.content?.products?.list?.useQuery?.();
+  const persistedProducts = persistedProductsQuery?.data;
+  const catalogProducts: Product[] = persistedProducts?.length ? persistedProducts.map((product) => ({ id: product.id, name: product.name, category: ["", "Vêtements", "Cosmétiques", "Accessoires", "Cadeaux", "Jouets"][product.categoryId] ?? "Autres", price: product.price / 100, image: product.categoryId === 2 ? "/manus-storage/mazigho-stock-beaute_c4796701.webp" : product.categoryId === 3 ? "/manus-storage/mazigho-stock-accessoires_b78d9731.webp" : product.categoryId === 4 || product.categoryId === 5 ? "/manus-storage/mazigho-stock-home_05df7846.webp" : "/manus-storage/mazigho-stock-mode_ab0ed7cb.webp", popularityRank: product.id, inStock: product.stock > 0 })) : PRODUCTS;
 
   useEffect(() => {
     const querySource = getShopQuerySource(location);
@@ -182,7 +186,7 @@ export default function Shop() {
   };
 
   const filteredProducts = sortCatalogProducts(
-    PRODUCTS.filter((product) => {
+    catalogProducts.filter((product) => {
       const matchesCategory = !selectedCategory || product.category === selectedCategory;
       const matchesSearch = matchesCatalogSearch(`${product.name} ${product.category}`, searchTerm);
       return matchesCategory && matchesSearch;
