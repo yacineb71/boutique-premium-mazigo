@@ -1,4 +1,20 @@
 
+## Dernière validation visuelle fournisseur
+- [x] Valider visuellement Admin → Produits & fournisseurs en session admin sur mobile, tablette et desktop
+- [x] Enregistrer le checkpoint final après cette validation
+
+## Derniers contrôles interface fournisseur
+- [x] Tester que les métadonnées fournisseur restent accessibles uniquement aux procédures admin et absentes du catalogue public
+- [x] Effectuer une validation responsive dédiée de l’écran Admin → Produits & fournisseurs
+- [x] Publier un nouveau checkpoint après ces contrôles
+
+## Nouvelle demande — interface fournisseur AliExpress
+- [x] Simplifier la saisie du lien AliExpress, du coût, du SKU et des notes par produit
+- [x] Ajouter une validation claire des URL et montants avec confirmation de sauvegarde
+- [x] Ajouter un aperçu de la marge indicative réservé à l’administrateur
+- [x] Ajouter les tests de validation et de confidentialité de l’interface fournisseur
+- [x] Valider responsive, build et publication de l’interface
+
 ## Compléments de fiabilité du fulfillment manuel
 - [x] Relier les métadonnées fournisseur aux produits source et les réserver aux écrans admin
 - [x] Ajouter un test explicite de création de commande et de passage à `to_order` après paiement confirmé
