@@ -43,6 +43,13 @@
       "when": 1787676362576,
       "tag": "0005_flimsy_sentry",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1787676915834,
+      "tag": "0006_regular_silverclaw",
+      "breakpoints": true
     }
   ]
 }

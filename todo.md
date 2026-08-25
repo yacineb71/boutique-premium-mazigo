@@ -3170,3 +3170,11 @@
 - [x] Marquer automatiquement le message comme lu après préparation/envoi de la réponse
 - [x] Ajouter les tests d’accès admin, de persistance et de parcours de réponse
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — modèles et recherche des messages
+- [x] Ajouter une table persistante de modèles de réponses admin
+- [x] Ajouter les procédures admin CRUD des modèles
+- [x] Permettre d’appliquer un modèle au compositeur de réponse
+- [x] Ajouter recherche texte et filtres de statut aux messages
+- [x] Ajouter tests du CRUD, de l’application des modèles et des filtres
+- [x] Valider responsive, typage, tests, build et publier

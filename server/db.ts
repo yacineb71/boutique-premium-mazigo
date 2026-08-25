@@ -1,6 +1,6 @@
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies } from "../drizzle/schema";
+import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, InsertResponseTemplate, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies, responseTemplates } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -194,6 +194,30 @@ export async function getContactMessageReplies(messageId: number) {
   const db = await getDb();
   if (!db) return [];
   return db.select().from(contactMessageReplies).where(eq(contactMessageReplies.messageId, messageId)).orderBy(desc(contactMessageReplies.createdAt));
+}
+
+export async function getAllResponseTemplates() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(responseTemplates).orderBy(desc(responseTemplates.updatedAt));
+}
+
+export async function createResponseTemplate(template: Omit<InsertResponseTemplate, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(responseTemplates).values(template);
+}
+
+export async function updateResponseTemplate(id: number, values: Partial<Pick<InsertResponseTemplate, "name" | "subject" | "body" | "active">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(responseTemplates).set(values).where(eq(responseTemplates.id, id));
+}
+
+export async function deleteResponseTemplate(id: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.delete(responseTemplates).where(eq(responseTemplates.id, id));
 }
 
 export async function getAllProductReviews() {

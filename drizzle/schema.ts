@@ -144,3 +144,16 @@ export const contactMessageReplies = mysqlTable("contactMessageReplies", {
 
 export type ContactMessageReply = typeof contactMessageReplies.$inferSelect;
 export type InsertContactMessageReply = typeof contactMessageReplies.$inferInsert;
+
+export const responseTemplates = mysqlTable("responseTemplates", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 160 }).notNull(),
+  subject: varchar("subject", { length: 255 }).notNull(),
+  body: text("body").notNull(),
+  active: int("active").default(1).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type ResponseTemplate = typeof responseTemplates.$inferSelect;
+export type InsertResponseTemplate = typeof responseTemplates.$inferInsert;

@@ -12,7 +12,7 @@ const authState = vi.hoisted(() => ({
 }));
 const navigateMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@/lib/trpc", () => ({ trpc: { useUtils: () => ({ content: { messages: { list: { invalidate: vi.fn() } } } }), content: { messages: { list: { useQuery: () => ({ data: [], isLoading: false }) }, replies: { useQuery: () => ({ data: [], isLoading: false }) }, reply: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) }, setStatus: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) }, remove: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) } } } } }));
+vi.mock("@/lib/trpc", () => ({ trpc: { useUtils: () => ({ content: { messages: { list: { invalidate: vi.fn() } } } }), content: { messages: { list: { useQuery: () => ({ data: [], isLoading: false }) }, replies: { useQuery: () => ({ data: [], isLoading: false }) }, reply: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) }, setStatus: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) }, remove: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) } }, templates: { list: { useQuery: () => ({ data: [], isLoading: false }) }, create: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) }, update: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) }, remove: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) } } } } }));
 vi.mock("@/_core/hooks/useAuth", () => ({ useAuth: () => ({ ...authState, logout: vi.fn() }) }));
 vi.mock("wouter", () => ({
   Link: ({ href, children, ...props }: { href: string; children?: ReactNode }) => createElement("a", { href, ...props }, children),

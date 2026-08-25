@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   createContactMessageReply,
   createProductReview,
+  createResponseTemplate,
   createPromoBanner,
   deleteContactMessage,
   deleteProductReview,
@@ -10,11 +11,14 @@ import {
   getAllContactMessages,
   getContactMessageById,
   getContactMessageReplies,
+  getAllResponseTemplates,
   getAllProductReviews,
   getAllPromoBanners,
   updateContactMessage,
   updateProductReview,
+  updateResponseTemplate,
   updatePromoBanner,
+  deleteResponseTemplate,
 } from "../db";
 import { adminProcedure, publicProcedure, router } from "../_core/trpc";
 
@@ -61,6 +65,12 @@ export const contentRouter = router({
     create: adminProcedure.input(reviewFields.extend({ status: reviewStatus.default("pending") })).mutation(({ input }) => createProductReview({ ...input, authorEmail: input.authorEmail || null, title: input.title || null })),
     update: adminProcedure.input(idInput.extend({ status: reviewStatus.optional(), title: z.string().trim().max(160).optional(), body: z.string().trim().min(10).max(5000).optional(), rating: z.number().int().min(1).max(5).optional() })).mutation(({ input }) => updateProductReview(input.id, { status: input.status, title: input.title, body: input.body, rating: input.rating })),
     remove: adminProcedure.input(idInput).mutation(({ input }) => deleteProductReview(input.id)),
+  }),
+  templates: router({
+    list: adminProcedure.query(() => getAllResponseTemplates()),
+    create: adminProcedure.input(z.object({ name: z.string().trim().min(2).max(160), subject: z.string().trim().min(2).max(255), body: z.string().trim().min(2).max(5000), active: z.boolean().default(true) })).mutation(({ input }) => createResponseTemplate({ ...input, active: input.active ? 1 : 0 })),
+    update: adminProcedure.input(idInput.extend({ name: z.string().trim().min(2).max(160).optional(), subject: z.string().trim().min(2).max(255).optional(), body: z.string().trim().min(2).max(5000).optional(), active: z.boolean().optional() })).mutation(({ input }) => updateResponseTemplate(input.id, { name: input.name, subject: input.subject, body: input.body, active: input.active === undefined ? undefined : input.active ? 1 : 0 })),
+    remove: adminProcedure.input(idInput).mutation(({ input }) => deleteResponseTemplate(input.id)),
   }),
   banners: router({
     active: publicProcedure.query(() => getActivePromoBanners()),

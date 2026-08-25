@@ -13,10 +13,16 @@ vi.mock("@/lib/trpc", () => ({
     useUtils: () => ({ content: { messages: { list: { invalidate: vi.fn() }, replies: { invalidate: vi.fn() } } } }),
     content: {
       messages: {
-        list: { useQuery: () => ({ data: [{ id: 12, name: "Client réel", email: "client@example.com", subject: "Question commande", message: "Pouvez-vous m’aider ?", status: "new", createdAt: new Date("2026-08-25T10:00:00Z") }], isLoading: false }) },
+        list: { useQuery: () => ({ data: [{ id: 12, name: "Client réel", email: "client@example.com", subject: "Question commande", message: "Pouvez-vous m’aider ?", status: "new", createdAt: new Date("2026-08-25T10:00:00Z") }, { id: 13, name: "Ancien client", email: "ancien@example.com", subject: "Ancienne demande", message: "Message archivé", status: "archived", createdAt: new Date("2026-08-24T10:00:00Z") }], isLoading: false }) },
         replies: { useQuery: () => ({ data: [], isLoading: false }) },
         setStatus: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) },
         reply: { useMutation: () => ({ mutate: state.replyMutate, isPending: false }) },
+        remove: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) },
+      },
+      templates: {
+        list: { useQuery: () => ({ data: [{ id: 3, name: "Suivi de commande", subject: "Re: {{sujet}}", body: "Bonjour {{nom}}, votre demande est bien reçue.", active: 1 }], isLoading: false }) },
+        create: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) },
+        update: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) },
         remove: { useMutation: () => ({ mutate: vi.fn(), isPending: false }) },
       },
     },
@@ -28,11 +34,13 @@ import AdminMessages from "@/pages/AdminMessages";
 describe("admin message reply flow", () => {
   beforeEach(() => state.replyMutate.mockClear());
 
-  it("opens a reply composer and sends the selected message payload to the protected mutation", () => {
+  it("applies a reusable template and sends the selected message payload to the protected mutation", () => {
     let renderer: ReactTestRenderer;
     act(() => { renderer = create(createElement(AdminMessages)); });
-    const replyButton = renderer!.root.findByProps({ "aria-label": "Répondre au message" });
+    const replyButton = renderer!.root.findAllByProps({ "aria-label": "Répondre au message" })[0];
     act(() => { replyButton.props.onClick(); });
+    const templateButton = renderer!.root.findAllByType("button").find((button) => button.children.includes("Suivi de commande"));
+    act(() => { templateButton!.props.onClick(); });
     const subject = renderer!.root.findByProps({ "aria-label": "Objet de la réponse" });
     const body = renderer!.root.findByProps({ "aria-label": "Texte de la réponse" });
     act(() => {
@@ -42,5 +50,14 @@ describe("admin message reply flow", () => {
     const form = renderer!.root.findByType("form");
     act(() => { form.props.onSubmit({ preventDefault: vi.fn() }); });
     expect(state.replyMutate).toHaveBeenCalledWith({ id: 12, subject: "Re: Question commande", body: "Bonjour, nous revenons vers vous rapidement." });
+  });
+
+  it("filters the inbox by status", () => {
+    let renderer: ReactTestRenderer;
+    act(() => { renderer = create(createElement(AdminMessages)); });
+    const filter = renderer!.root.findByProps({ "aria-label": "Filtrer par statut" });
+    act(() => { filter.props.onChange({ target: { value: "archived" } }); });
+    const subjects = renderer!.root.findAllByType("h3").map((heading) => heading.children.join(""));
+    expect(subjects).toEqual(["Ancienne demande"]);
   });
 });
