@@ -15,7 +15,7 @@ const PRODUCTS: Record<string, any> = {
     name: "T-Shirt Premium Bleu",
     category: "Vêtements",
     price: 29.99,
-    image: "👕",
+    image: "/manus-storage/mazigho-product-mode_d0f02c53.jpg",
     description:
       "T-shirt premium en coton 100% biologique. Confortable, durable et écologique.",
     details: [
@@ -30,7 +30,7 @@ const PRODUCTS: Record<string, any> = {
     name: "Crème Hydratante Luxe",
     category: "Cosmétiques",
     price: 49.99,
-    image: "💄",
+    image: "/manus-storage/mazigho-product-beaute_79556038.jpg",
     description:
       "Crème hydratante luxe pour tous les types de peau. Formule naturelle et efficace.",
     details: [
@@ -80,8 +80,8 @@ export default function ProductDetail() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-2">
             {/* Product Image */}
-            <div className="flex min-h-[28rem] items-center justify-center rounded-[2rem] bg-gradient-to-br from-[#f1e9df] to-[#d7c7b8] p-8">
-              <div className="text-9xl drop-shadow-sm">{product.image}</div>
+            <div className="flex min-h-[28rem] items-center justify-center overflow-hidden rounded-[2rem] bg-[#eee8df] p-4 sm:p-8">
+              <img src={product.image} alt={`${product.name} — ${product.category}`} width="900" height="900" loading="eager" fetchPriority="high" className="h-full max-h-[34rem] w-full rounded-[1.5rem] object-cover shadow-sm" onError={(event) => { event.currentTarget.style.display = "none"; }} />
             </div>
 
             {/* Product Info */}

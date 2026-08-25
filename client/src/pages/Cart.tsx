@@ -46,7 +46,7 @@ export default function Cart() {
                 <div className="space-y-4">
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-4 border-b border-[#e3dbd1] pb-4 last:border-0">
-                      <div className="text-4xl">{item.image}</div>
+                      <img src={item.image} alt={item.name} width="96" height="96" loading="lazy" decoding="async" className="h-20 w-20 shrink-0 rounded-2xl object-cover sm:h-24 sm:w-24" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                       <div className="flex-1">
                         <h3 className="font-semibold text-[#211e1b]">{item.name}</h3>
                         <p className="font-semibold text-[#b65f3f]">€{item.price.toFixed(2)}</p>

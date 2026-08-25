@@ -31,7 +31,7 @@ const PRODUCTS: Product[] = [
     name: "T-Shirt Premium Bleu",
     category: "Vêtements",
     price: 29.99,
-    image: "👕",
+    image: "/manus-storage/mazigho-product-mode_d0f02c53.jpg",
     popularityRank: 12,
     inStock: true,
   },
@@ -40,7 +40,7 @@ const PRODUCTS: Product[] = [
     name: "Crème Hydratante Luxe",
     category: "Cosmétiques",
     price: 49.99,
-    image: "💄",
+    image: "/manus-storage/mazigho-product-beaute_79556038.jpg",
     popularityRank: 11,
     inStock: true,
   },
@@ -49,7 +49,7 @@ const PRODUCTS: Product[] = [
     name: "Sac à Main Élégant",
     category: "Accessoires",
     price: 89.99,
-    image: "👜",
+    image: "/manus-storage/mazigho-product-accessoire_2094edea.jpg",
     popularityRank: 9,
     inStock: true,
   },
@@ -58,7 +58,7 @@ const PRODUCTS: Product[] = [
     name: "Montre Classique",
     category: "Accessoires",
     price: 199.99,
-    image: "⌚",
+    image: "/manus-storage/mazigho-product-tech_5e9bdbeb.jpg",
     popularityRank: 10,
     inStock: true,
   },
@@ -67,7 +67,7 @@ const PRODUCTS: Product[] = [
     name: "Parfum Premium",
     category: "Cosmétiques",
     price: 79.99,
-    image: "🌹",
+    image: "/manus-storage/mazigho-product-beaute_79556038.jpg",
     popularityRank: 8,
     inStock: true,
   },
@@ -76,7 +76,7 @@ const PRODUCTS: Product[] = [
     name: "Ceinture Cuir",
     category: "Accessoires",
     price: 39.99,
-    image: "🎀",
+    image: "/manus-storage/mazigho-product-accessoire_2094edea.jpg",
     popularityRank: 7,
     inStock: true,
   },
@@ -85,7 +85,7 @@ const PRODUCTS: Product[] = [
     name: "Jeans Slim Fit",
     category: "Vêtements",
     price: 59.99,
-    image: "👖",
+    image: "/manus-storage/mazigho-product-mode_d0f02c53.jpg",
     popularityRank: 6,
     inStock: true,
   },
@@ -94,7 +94,7 @@ const PRODUCTS: Product[] = [
     name: "Robe Soirée",
     category: "Vêtements",
     price: 129.99,
-    image: "👗",
+    image: "/manus-storage/mazigho-product-mode_d0f02c53.jpg",
     popularityRank: 5,
     inStock: true,
   },
@@ -103,7 +103,7 @@ const PRODUCTS: Product[] = [
     name: "Peluche Douce",
     category: "Jouets",
     price: 24.99,
-    image: "🧸",
+    image: "/manus-storage/mazigho-product-maison_7a4c8ae4.jpg",
     popularityRank: 4,
     inStock: true,
   },
@@ -112,7 +112,7 @@ const PRODUCTS: Product[] = [
     name: "Coffret Cadeau Luxe",
     category: "Cadeaux",
     price: 99.99,
-    image: "🎁",
+    image: "/manus-storage/mazigho-product-maison_7a4c8ae4.jpg",
     popularityRank: 3,
     inStock: true,
   },
@@ -121,7 +121,7 @@ const PRODUCTS: Product[] = [
     name: "Chaussures Confort",
     category: "Vêtements",
     price: 79.99,
-    image: "👟",
+    image: "/manus-storage/mazigho-product-mode_d0f02c53.jpg",
     popularityRank: 2,
     inStock: true,
   },
@@ -130,7 +130,7 @@ const PRODUCTS: Product[] = [
     name: "Chapeau Élégant",
     category: "Accessoires",
     price: 44.99,
-    image: "🎩",
+    image: "/manus-storage/mazigho-product-accessoire_2094edea.jpg",
     popularityRank: 1,
     inStock: true,
   },
@@ -285,8 +285,8 @@ export default function Shop() {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {filteredProducts.map((product) => (
               <Card key={product.id} className="group overflow-hidden rounded-3xl border-[#ded5ca] bg-[#fbf9f5] shadow-sm transition duration-500 ease-out hover:-translate-y-2 hover:scale-[1.015] hover:border-[#c56f4b]/60 hover:shadow-[0_20px_45px_rgba(85,56,43,0.18)] focus-within:-translate-y-2 focus-within:border-[#c56f4b]/60 motion-reduce:transition-none motion-reduce:hover:transform-none">
-                <div className="relative overflow-hidden bg-gradient-to-br from-[#f1e9df] to-[#ddd1c3] p-8 text-center after:absolute after:inset-0 after:bg-[#b65f3f]/10 after:opacity-0 after:transition-opacity after:duration-500 group-hover:after:opacity-100 group-focus-within:after:opacity-100">
-                  <div className="relative z-10 mb-4 text-6xl transition-transform duration-500 ease-out group-hover:scale-110 motion-reduce:transform-none">{product.image}</div>
+                <div className="relative aspect-square overflow-hidden bg-[#eee8df] text-center after:absolute after:inset-0 after:bg-[#b65f3f]/10 after:opacity-0 after:transition-opacity after:duration-500 group-hover:after:opacity-100 group-focus-within:after:opacity-100">
+                  <img src={product.image} alt={`${product.name} — ${product.category}`} width="640" height="640" loading="lazy" decoding="async" className="relative z-10 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 motion-reduce:transform-none" onError={(event) => { event.currentTarget.style.display = "none"; }} />
                   <Link href={`/product/${product.id}`} className="absolute bottom-4 left-1/2 z-20 inline-flex -translate-x-1/2 translate-y-2 items-center gap-1 rounded-full bg-[#211e1b]/90 px-4 py-2 text-xs font-semibold text-[#f8f5ef] opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 focus-visible:translate-y-0 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c56f4b] motion-reduce:translate-y-0 motion-reduce:transition-none" aria-label={`Voir ${product.name}`}>
                     Voir le produit <ArrowRight size={14} />
                   </Link>

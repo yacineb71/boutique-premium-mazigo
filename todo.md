@@ -3178,3 +3178,12 @@
 - [x] Ajouter recherche texte et filtres de statut aux messages
 - [x] Ajouter tests du CRUD, de l’application des modèles et des filtres
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — images de la vitrine
+- [x] Auditer les catégories, bannières, cartes et autres emplacements nécessitant un visuel
+- [x] Générer une série d’images cohérente avec l’identité éditoriale MAZIGHO
+- [x] Produire les variantes adaptées aux ratios et tailles desktop/mobile
+- [x] Optimiser les images en WebP avec dimensions, srcSet, sizes et textes alternatifs
+- [x] Héberger les assets hors du projet et intégrer les URL durables dans la vitrine
+- [x] Ajouter les tests de références et valider le rendu responsive
+- [x] Valider typage, tests, build et publier

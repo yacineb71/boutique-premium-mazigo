@@ -8,12 +8,12 @@ import React, { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 
 const universes = [
-  { name: "Mode & accessoires", description: "Les détails qui accompagnent votre style au quotidien.", icon: "◌", category: "Vêtements", tone: "from-[#d8c0a7] via-[#b98768] to-[#5f4435]" },
-  { name: "Beauté & bien-être", description: "Des instants de soin et de confort à s’offrir.", icon: "✦", category: "Cosmétiques", tone: "from-[#e7c4b5] via-[#b8745f] to-[#6c4035]" },
-  { name: "Maison & cuisine", description: "Des objets simples qui facilitent les petits moments.", icon: "⌂", category: "Cadeaux", tone: "from-[#d4c6ac] via-[#9f8766] to-[#4e4439]" },
-  { name: "Sport & plein air", description: "Pour bouger, respirer et profiter davantage.", icon: "↗", category: "Jouets", tone: "from-[#b8c2b1] via-[#71816d] to-[#374338]" },
-  { name: "High-tech utile", description: "Des accessoires pensés pour rester connecté sans effort.", icon: "⌁", category: "Accessoires", tone: "from-[#b6c5cd] via-[#738c9a] to-[#35424c]" },
-  { name: "Mobilité & auto", description: "Les indispensables pour vos trajets et vos escapades.", icon: "◍", category: "Accessoires", tone: "from-[#c8b6a9] via-[#876c60] to-[#463b38]" },
+  { name: "Mode & accessoires", description: "Les détails qui accompagnent votre style au quotidien.", icon: "◌", category: "Vêtements", image: "/manus-storage/mazigho-mode_f245e1ee.jpg" },
+  { name: "Beauté & bien-être", description: "Des instants de soin et de confort à s’offrir.", icon: "✦", category: "Cosmétiques", image: "/manus-storage/mazigho-beaute_bc46ff74.jpg" },
+  { name: "Maison & cuisine", description: "Des objets simples qui facilitent les petits moments.", icon: "⌂", category: "Cadeaux", image: "/manus-storage/mazigho-maison_1ebe5e16.jpg" },
+  { name: "Sport & plein air", description: "Pour bouger, respirer et profiter davantage.", icon: "↗", category: "Jouets", image: "/manus-storage/mazigho-sport_5eb118df.jpg" },
+  { name: "High-tech utile", description: "Des accessoires pensés pour rester connecté sans effort.", icon: "⌁", category: "Accessoires", image: "/manus-storage/mazigho-tech_470bf66c.jpg" },
+  { name: "Mobilité & auto", description: "Les indispensables pour vos trajets et vos escapades.", icon: "◍", category: "Accessoires", image: "/manus-storage/mazigho-tech_470bf66c.jpg" },
 ];
 
 const searchableUniverses = universes.map((universe) => `${universe.name} ${universe.description}`);
@@ -66,7 +66,9 @@ export default function Home() {
             </div>
 
             <div className="relative mx-auto aspect-[0.88] w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-[#c8a38c]/20 p-4 shadow-2xl shadow-black/20">
-              <div className="flex h-full flex-col justify-between rounded-[1.5rem] bg-[linear-gradient(145deg,rgba(241,218,197,0.9),rgba(116,75,58,0.78))] p-7 text-[#211e1b]">
+              <img src="/manus-storage/mazigho-hero-banner_05ed2538.jpg" alt="Sélection éditoriale MAZIGHO de mode, soin, maison et accessoires" width="960" height="1080" loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" onError={(event) => { event.currentTarget.style.display = "none"; }} />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#211e1b]/80 via-[#211e1b]/20 to-transparent" />
+              <div className="relative flex h-full flex-col justify-between rounded-[1.5rem] bg-[#211e1b]/10 p-7 text-[#f8f5ef]">
                 <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em]"><span>Édition 01</span><span>2026</span></div>
                 <div>
                   <div className="mb-5 text-7xl opacity-80">✦</div>
@@ -91,7 +93,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl">
             <div className="mb-9 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="mazigho-eyebrow mb-3">EXPLORER MAZIGHO</p><h2 className="font-display text-4xl sm:text-5xl">Découvrez nos univers</h2></div><Link href="/shop" className="text-sm font-semibold text-[#b65f3f] underline decoration-[#b65f3f]/40 underline-offset-4">Voir toute la boutique <ArrowRight size={15} className="ml-1 inline" /></Link></div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {universes.map((universe) => <Link key={universe.name} href={`/shop?category=${encodeURIComponent(universe.category)}`} className={`group relative min-h-64 overflow-hidden rounded-3xl bg-gradient-to-br ${universe.tone} p-6 text-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl`}><div className="absolute -right-8 -top-10 h-36 w-36 rounded-full border border-white/20 bg-white/10" /><div className="relative flex h-full flex-col justify-between"><span className="text-4xl text-white/80">{universe.icon}</span><div><h3 className="font-display text-2xl">{universe.name}</h3><p className="mt-2 max-w-xs text-sm leading-5 text-white/80">{universe.description}</p><span className="mt-5 inline-flex items-center text-xs font-semibold uppercase tracking-[0.16em] text-white/90">Explorer <ArrowRight size={14} className="ml-2 transition group-hover:translate-x-1" /></span></div></div></Link>)}
+              {universes.map((universe) => <Link key={universe.name} href={`/shop?category=${encodeURIComponent(universe.category)}`} className="group relative min-h-64 overflow-hidden rounded-3xl bg-[#211e1b] p-6 text-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"><img src={universe.image} alt="" width="640" height="800" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" onError={(event) => { event.currentTarget.style.display = "none"; }} /><div className="absolute inset-0 bg-gradient-to-t from-[#211e1b]/90 via-[#211e1b]/25 to-transparent" /><div className="relative flex h-full flex-col justify-between"><span className="text-4xl text-white/80">{universe.icon}</span><div><h3 className="font-display text-2xl">{universe.name}</h3><p className="mt-2 max-w-xs text-sm leading-5 text-white/80">{universe.description}</p><span className="mt-5 inline-flex items-center text-xs font-semibold uppercase tracking-[0.16em] text-white/90">Explorer <ArrowRight size={14} className="ml-2 transition group-hover:translate-x-1" /></span></div></div></Link>)}
             </div>
           </div>
         </section>
