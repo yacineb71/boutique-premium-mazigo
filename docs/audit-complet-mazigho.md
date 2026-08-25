@@ -19,10 +19,10 @@ Deux corrections importantes ont été appliquées pendant l’audit. La fiche p
 | Panier et checkout | États vide et rempli présents, Stripe branché en CHF | Orange | Tester un paiement sandbox réel et documenter les emails client |
 | Contact et newsletter | Procédures serveur réelles et coordonnées confirmées | Orange | Ajouter une délivrabilité email réelle et confirmer l’email définitif |
 | Avis clients | États vides honnêtes et modération admin disponible | Vert | Ne publier que des avis reçus et vérifiables |
-| Administration | Sidebar structurée, catalogue CRUD, médias, messages, commandes et contenu présents | Vert | Compléter les KPI et les journaux d’activité réels |
+| Administration | Sidebar structurée, catalogue CRUD, médias, messages, commandes et contenu présents ; page clients sans données fictives | Vert | Alimenter les KPI et la liste clients avec les données persistantes réelles |
 | Sécurité d’accès | Routes admin protégées par session et rôle ; séparation testée | Vert | Ajouter une vérification d’en-têtes et une politique de session documentée |
 | Dépendances | 42 alertes de production restantes : 5 hautes, 0 critique | Orange | Traiter les alertes transitives restantes et mettre en place une veille dépendances |
-| Performance | Build réussi, bundle principal d’environ 830 Ko avant compression ; mesures DOMContentLoaded/LCP ajoutées | Orange | Découper les routes et charger les modules lourds à la demande |
+| Performance | Build réussi, bundle principal d’environ 827 Ko avant compression ; mesures DOMContentLoaded/LCP ajoutées | Orange | Découper les routes et charger les modules lourds à la demande |
 | GitHub | Une branche `main`, aucun fichier volumineux ou secret détecté, artefact racine supprimé | Vert | Décider si le dépôt public doit devenir privé avant les données commerciales |
 
 ## Parcours client contrôlés
@@ -33,7 +33,7 @@ Les coordonnées commerciales confirmées sont désormais : **Bahloul Yacine**, 
 
 ## Administration et confidentialité
 
-Les captures et tests montrent une administration autonome avec navigation persistante, catalogue administrable, médiathèque, gestion des messages, avis, promotions, fournisseurs et commandes. Les routes `/admin/*` sont couvertes par le garde d’accès et les tests de visiteur ou d’utilisateur standard. Les métadonnées fournisseur restent dans les procédures privées. Le lien d’accès administrateur n’est rendu que pour un utilisateur authentifié ayant le rôle admin ; il n’est pas affiché aux visiteurs ni aux clients standards.
+Les captures et tests montrent une administration autonome avec navigation persistante, catalogue administrable, médiathèque, gestion des messages, avis, promotions, fournisseurs et commandes. Les anciennes lignes clients statiques ont été retirées : en l’absence de source persistante dédiée, l’interface affiche désormais un état vide honnête plutôt que des personnes ou montants inventés. Les routes `/admin/*` sont couvertes par le garde d’accès et les tests de visiteur ou d’utilisateur standard. Les métadonnées fournisseur restent dans les procédures privées. Le lien d’accès administrateur n’est rendu que pour un utilisateur authentifié ayant le rôle admin ; il n’est pas affiché aux visiteurs ni aux clients standards.
 
 Le checkout invite désormais explicitement un visiteur non connecté à se connecter au lieu de le renvoyer silencieusement vers l’accueil, et affiche un message récupérable si Stripe échoue. Les zones encore incomplètes sont principalement opérationnelles : les ventes et commandes restent affichées comme indisponibles lorsqu’aucune source réelle n’est branchée, l’activité récente n’est pas encore alimentée par un journal général, et le traitement fournisseur reste manuel. Ces états sont honnêtes et préférables à des chiffres simulés, mais ils doivent être finalisés avant une exploitation à volume réel.
 

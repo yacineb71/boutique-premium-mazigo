@@ -3305,3 +3305,11 @@
 - [x] Remplacer la redirection silencieuse du checkout vers l’accueil par une invitation explicite à se connecter
 - [x] Afficher une erreur utilisateur compréhensible si la création de session Stripe échoue
 - [x] Ajouter un test de non-redirection silencieuse et vérifier le checkout après publication
+
+## Correctif confirmé par capture — libellés livraison en CHF
+- [x] Remplacer les libellés de livraison affichant encore « (€) » par « (CHF) » dans les paramètres admin et les écrans concernés
+- [x] Tester l’enregistrement des paramètres de livraison après harmonisation CHF
+
+## Audit complémentaire — clients administratifs
+- [x] Supprimer les clients fictifs statiques de l’administration ou les remplacer par une source persistante réelle
+- [x] Afficher un état vide honnête lorsqu’aucun client réel n’est encore enregistré

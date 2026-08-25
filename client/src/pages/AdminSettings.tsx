@@ -100,7 +100,7 @@ export default function AdminSettings() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Livraison Gratuite à partir de (€)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Livraison Gratuite à partir de (CHF)</label>
               <input
                 type="number"
                 name="shippingFree"
@@ -111,7 +111,7 @@ export default function AdminSettings() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Coût de Livraison Standard (€)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Coût de Livraison Standard (CHF)</label>
               <input
                 type="number"
                 name="shippingCost"
