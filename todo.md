@@ -3313,3 +3313,14 @@
 ## Audit complémentaire — clients administratifs
 - [x] Supprimer les clients fictifs statiques de l’administration ou les remplacer par une source persistante réelle
 - [x] Afficher un état vide honnête lorsqu’aucun client réel n’est encore enregistré
+
+## Blocage confirmé — création de session Stripe côté serveur
+- [x] Identifier l’erreur exacte de création de session Stripe dans les journaux de production
+- [x] Corriger le code responsable de l’échec de session Stripe en CHF
+- [x] Ajouter une couverture de test pour l’erreur Stripe observée
+- [ ] Revalider une session Stripe depuis le checkout connecté après activation d’une clé
+
+## Blocage confirmé — aucune clé Stripe disponible
+- [x] Afficher un état « paiement en ligne temporairement indisponible » lorsque la configuration Stripe n’est pas disponible
+- [x] Ajouter un test garantissant qu’aucune tentative de session Stripe n’est présentée comme réussie sans configuration
+- [x] Documenter la création/activation du compte Stripe et l’ajout sécurisé de la clé de test dans les étapes de mise en service

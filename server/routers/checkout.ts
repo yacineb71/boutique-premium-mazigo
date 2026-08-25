@@ -1,9 +1,21 @@
 import { protectedProcedure, router } from "../_core/trpc";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import Stripe from "stripe";
 import { createOrderWithItems, markOrderPaidByStripeSession } from "../db";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY?.trim();
+const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
+
+export function formatStripeCheckoutError(error: unknown, configured = Boolean(stripeSecretKey), operation: "create" | "retrieve" = "create") {
+  const code = typeof error === "object" && error !== null && "code" in error ? String((error as { code?: unknown }).code ?? "") : "";
+  if (!configured || code === "api_key_expired" || code === "authentication_required") {
+    return "Le paiement en ligne est temporairement indisponible. La configuration Stripe doit être mise à jour.";
+  }
+  return operation === "retrieve"
+    ? "Le statut du paiement n’a pas pu être vérifié. Veuillez réessayer dans quelques instants."
+    : "La session de paiement n’a pas pu être créée. Veuillez réessayer dans quelques instants.";
+}
 
 type CheckoutDraftItem = { id: number; name: string; price: number; quantity: number; category: string; supplierUrl?: string };
 
@@ -50,6 +62,9 @@ export const checkoutRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      if (!stripe) {
+        throw new TRPCError({ code: "PRECONDITION_FAILED", message: formatStripeCheckoutError(undefined, false) });
+      }
       try {
         const lineItems = input.cartItems.map((item) => ({
           price_data: {
@@ -66,6 +81,7 @@ export const checkoutRouter = router({
         const origin = ctx.req.headers.origin || "http://localhost:3000";
 
         const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card", "twint"],
           line_items: lineItems,
           mode: "payment",
           success_url: `${origin}/orders?session_id={CHECKOUT_SESSION_ID}`,
@@ -91,13 +107,16 @@ export const checkoutRouter = router({
         };
       } catch (error) {
         console.error("Stripe error:", error);
-        throw new Error("Failed to create checkout session");
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: formatStripeCheckoutError(error) });
       }
     }),
 
   getSessionStatus: protectedProcedure
     .input(z.object({ sessionId: z.string() }))
     .query(async ({ input }) => {
+      if (!stripe) {
+        throw new TRPCError({ code: "PRECONDITION_FAILED", message: formatStripeCheckoutError(undefined, false, "retrieve") });
+      }
       try {
         const session = await stripe.checkout.sessions.retrieve(input.sessionId);
         if (paymentStatusToFulfillment(session.payment_status)) {
@@ -110,7 +129,7 @@ export const checkoutRouter = router({
         };
       } catch (error) {
         console.error("Stripe error:", error);
-        throw new Error("Failed to retrieve session");
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: formatStripeCheckoutError(error, Boolean(stripeSecretKey), "retrieve") });
       }
     }),
 });
