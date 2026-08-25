@@ -14,6 +14,7 @@ export default function AdminSettings() {
     shippingFree: "50",
     shippingCost: "9.99",
   });
+  const [saved, setSaved] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -21,8 +22,8 @@ export default function AdminSettings() {
   };
 
   const handleSave = () => {
-    console.log("Paramètres sauvegardés:", settings);
-    alert("Paramètres sauvegardés avec succès!");
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 3000);
   };
 
   return (
@@ -122,7 +123,8 @@ export default function AdminSettings() {
           </div>
         </Card>
 
-        <div className="flex justify-end">
+        <div className="flex flex-col items-end gap-3">
+          {saved ? <p role="status" className="text-sm text-[#276749]">Paramètres enregistrés pour cette session.</p> : null}
           <Button onClick={handleSave} className="gap-2">
             <Save size={20} />
             Sauvegarder les Paramètres

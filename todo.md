@@ -4,7 +4,7 @@
 - [x] Enregistrer le checkpoint final après cette validation
 
 ## Publication finale FAQ et contact
-- [ ] Enregistrer un checkpoint après les changements FAQ/contact/footer
+- [x] Enregistrer un checkpoint après les changements FAQ/contact/footer
 
 ## Preuves finales FAQ et navigation
 - [x] Ajouter un test de navigation du lien FAQ et des liens légaux vers leurs vraies routes
@@ -16,11 +16,25 @@
 - [x] Conserver un lien FAQ unique pointant vers `/faq`
 - [x] Vérifier le rendu responsive et publier la modification
 
+## Dernier complément documentaire
+- [x] Documenter explicitement toutes les pages publiques vérifiées dans l’audit des interactions
+
+## Contrôles complémentaires de navigation
+- [x] Ajouter un contrôle automatisé exhaustif des interactions par page : destinations réelles ou gestionnaires présents
+- [x] Inspecter explicitement toutes les autres rubriques admin et consigner le résultat
+- [x] Mettre à jour l’audit avec la liste complète des pages vérifiées et les corrections restantes
+
+## Audit exhaustif des interactions
+- [x] Inventorier tous les liens, boutons et onglets des pages publiques et admin
+- [x] Contrôler automatiquement les destinations et actions des éléments interactifs inventoriés
+- [x] Vérifier les pages admin Clients, Avis et autres rubriques non encore inspectées
+- [x] Documenter l’inventaire et corriger toute action décorative restante
+
 ## Nouvelle demande — FAQ, contact et navigation
 - [x] Ajouter un lien FAQ unique dans le pied de page, avec une page FAQ complète accessible séparément
 - [x] Auditer et fiabiliser le formulaire de contact avec états de chargement, succès et erreur
-- [ ] Auditer tous les boutons, onglets et liens du storefront et de l’administration
-- [ ] Relier chaque élément interactif à une vraie page ou action, sans liens fictifs
+- [x] Auditer tous les boutons, onglets et liens du storefront et de l’administration
+- [x] Relier chaque élément interactif à une vraie page ou action, sans liens fictifs
 - [x] Ajouter des tests de navigation et de soumission du formulaire de contact
 - [x] Valider les parcours desktop/mobile, le typage, les tests, le build et publier
 
