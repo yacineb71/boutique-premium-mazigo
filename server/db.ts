@@ -1,4 +1,4 @@
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, InsertContactMessage, InsertProductReview, InsertPromoBanner, InsertContactMessageReply, InsertResponseTemplate, MediaAsset, InsertMediaAsset, mediaAssets, productMedia, orders, orderItems, productSupplierMeta, users, contactMessages, productReviews, promoBanners, contactMessageReplies, responseTemplates } from "../drizzle/schema";
 import { ENV } from './_core/env';
@@ -306,4 +306,15 @@ export async function attachProductMedia(productId: number, mediaId: number, sor
   if (!db) throw new Error("Database not available");
   await db.insert(productMedia).values({ productId, mediaId, sortOrder });
   return { productId, mediaId, sortOrder };
+}
+
+
+export async function reorderProductMedia(productId: number, mediaIds: number[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  for (let sortOrder = 0; sortOrder < mediaIds.length; sortOrder += 1) {
+    const mediaId = mediaIds[sortOrder];
+    await db.update(productMedia).set({ sortOrder }).where(and(eq(productMedia.productId, productId), eq(productMedia.mediaId, mediaId)));
+  }
+  return getProductMedia(productId);
 }

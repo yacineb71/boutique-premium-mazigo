@@ -24,6 +24,7 @@ import {
   getAllMediaAssets,
   attachProductMedia,
   getProductMedia,
+  reorderProductMedia,
 } from "../db";
 import { adminProcedure, publicProcedure, router } from "../_core/trpc";
 import { storagePut } from "../storage";
@@ -84,6 +85,7 @@ export const contentRouter = router({
     addUrl: adminProcedure.input(z.object({ url: z.string().url().max(2000), altText: z.string().trim().max(255).optional(), filename: z.string().trim().max(255).optional() })).mutation(({ input, ctx }) => createMediaAsset({ url: input.url, altText: input.altText || null, filename: input.filename || null, createdBy: ctx.user.id, kind: "image" })),
     upload: adminProcedure.input(z.object({ filename: z.string().trim().min(1).max(255), mimeType: z.enum(["image/jpeg", "image/png", "image/webp", "image/avif"]), base64: z.string().min(100).max(12_000_000), altText: z.string().trim().max(255).optional() })).mutation(async ({ input, ctx }) => { const key = `mazigho-media/${Date.now()}-${input.filename.replace(/[^a-zA-Z0-9._-]/g, "-")}`; const uploaded = await storagePut(key, Buffer.from(input.base64, "base64"), input.mimeType); return createMediaAsset({ url: `/manus-storage/${uploaded.key}`, storageKey: uploaded.key, filename: input.filename, mimeType: input.mimeType, altText: input.altText || null, createdBy: ctx.user.id, kind: "image" }); }),
     attachToProduct: adminProcedure.input(z.object({ productId: z.number().int().positive(), mediaId: z.number().int().positive(), sortOrder: z.number().int().min(0).default(0) })).mutation(({ input }) => attachProductMedia(input.productId, input.mediaId, input.sortOrder)),
+    reorderProduct: adminProcedure.input(z.object({ productId: z.number().int().positive(), mediaIds: z.array(z.number().int().positive()).max(24) })).mutation(({ input }) => reorderProductMedia(input.productId, input.mediaIds)),
     remove: adminProcedure.input(idInput).mutation(({ input }) => deleteMediaAsset(input.id)),
   }),
   banners: router({

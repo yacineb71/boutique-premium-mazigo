@@ -11,14 +11,18 @@ describe("media gallery and product visuals", () => {
     expect(app).toContain("<AdminMedia />");
     expect(media).toContain("trpc.content.media.addUrl");
     expect(media).toContain("trpc.content.media.upload");
+    expect(media).toContain("trpc.content.media.attachToProduct");
+    expect(media).toContain("trpc.content.media.reorderProduct");
   });
 
   it("provides product carousel controls and multiple image sources", () => {
     const carousel = read("../components/ProductImageCarousel.tsx");
     const detail = read("../pages/ProductDetail.tsx");
+    const media = read("../pages/AdminMedia.tsx");
     expect(carousel).toContain("Photo précédente");
     expect(carousel).toContain("Photo suivante");
     expect(detail).toContain("images: [");
+    expect(media).toContain("draggable");
   });
 
   it("uses progressive loading hooks for category images", () => {

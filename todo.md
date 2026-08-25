@@ -3218,3 +3218,11 @@
 - [x] Ajouter un chargement progressif avec placeholder et respect de prefers-reduced-motion
 - [x] Ajouter les tests galerie, carrousel et chargement
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — association et ordre des photos produit
+- [x] Ajouter une procédure admin pour associer un média existant à une fiche produit
+- [x] Ajouter une procédure admin pour enregistrer l’ordre des médias d’un produit
+- [x] Ajouter le sélecteur de produit et l’action d’association dans la médiathèque
+- [x] Ajouter le glisser-déposer réordonnable avec support clavier de secours
+- [x] Ajouter les tests d’association, de réordonnancement et de confidentialité admin
+- [x] Valider responsive, typage, tests, build et publier
