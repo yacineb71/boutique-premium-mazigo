@@ -1,5 +1,9 @@
 
 ## Nouvelle séquence de validation et publication
+- [x] Ajouter le tri de la boutique par prix croissant et décroissant
+- [x] Ajouter le tri de la boutique par popularité
+- [x] Préserver la combinaison recherche URL + catégorie + tri
+- [x] Ajouter et exécuter les tests Vitest des options de tri
 - [x] Ajouter une barre de recherche sur la page d’accueil avec filtrage rapide du catalogue
 - [x] Ajouter un test d'intégration complet Home → Shop → ProductDetail → Panier → Checkout (succès createSession)
 - [x] Ajouter un vrai test incluant ProductDetail dans le parcours d'achat
