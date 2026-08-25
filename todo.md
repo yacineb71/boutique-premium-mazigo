@@ -3235,3 +3235,11 @@
 - [x] Créer l’interface admin d’ajout, modification, activation et suppression des produits
 - [x] Ajouter les tests du zoom, du catalogue et de la confidentialité admin
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — filtres du catalogue admin
+- [x] Ajouter un filtre par catégorie
+- [x] Ajouter un filtre par niveau de stock
+- [x] Ajouter un filtre par statut de publication
+- [x] Permettre la combinaison des filtres avec la recherche existante
+- [x] Ajouter les tests de filtrage et d’état vide
+- [x] Valider responsive, typage, tests, build et publier
