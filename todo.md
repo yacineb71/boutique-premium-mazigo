@@ -3324,3 +3324,8 @@
 - [x] Afficher un état « paiement en ligne temporairement indisponible » lorsque la configuration Stripe n’est pas disponible
 - [x] Ajouter un test garantissant qu’aucune tentative de session Stripe n’est présentée comme réussie sans configuration
 - [x] Documenter la création/activation du compte Stripe et l’ajout sécurisé de la clé de test dans les étapes de mise en service
+
+## Blocage confirmé — webhook Stripe « En construction »
+- [x] Vérifier si l’intégration Manus propose réellement un webhook sandbox actif pour ce projet
+- [x] Vérifier la présence d’un endpoint webhook applicatif et sa configuration de signature
+- [x] Documenter la limite si le bouton Manus reste indisponible sans action externe
