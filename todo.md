@@ -3243,3 +3243,11 @@
 - [x] Permettre la combinaison des filtres avec la recherche existante
 - [x] Ajouter les tests de filtrage et d’état vide
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — recherche, prix et export du catalogue admin
+- [x] Ajouter une recherche textuelle par nom ou description
+- [x] Ajouter les champs de prix minimum et maximum aux filtres
+- [x] Ajouter l’export CSV de la liste actuellement filtrée
+- [x] Échapper correctement les valeurs CSV et préciser l’encodage UTF-8
+- [x] Ajouter les tests de recherche, fourchette et export
+- [x] Valider responsive, typage, tests, build et publier
