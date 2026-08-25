@@ -3251,3 +3251,12 @@
 - [x] Échapper correctement les valeurs CSV et préciser l’encodage UTF-8
 - [x] Ajouter les tests de recherche, fourchette et export
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — productivité du catalogue admin
+- [x] Ajouter une pagination des produits filtrés
+- [x] Ajouter un export Excel avec plusieurs feuilles
+- [x] Ajouter la sélection multiple par cases à cocher
+- [x] Ajouter la modification et suppression en masse sécurisées
+- [x] Ajouter l’édition rapide du prix et du stock dans le tableau
+- [x] Ajouter les tests des opérations de masse, pagination et export Excel
+- [x] Valider responsive, typage, tests, build et publier
