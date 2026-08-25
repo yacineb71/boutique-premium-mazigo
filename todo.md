@@ -3329,3 +3329,8 @@
 - [x] Vérifier si l’intégration Manus propose réellement un webhook sandbox actif pour ce projet
 - [x] Vérifier la présence d’un endpoint webhook applicatif et sa configuration de signature
 - [x] Documenter la limite si le bouton Manus reste indisponible sans action externe
+
+## Blocage confirmé — réponse webhook non JSON
+- [x] Vérifier la réponse HTTP réelle de `/api/stripe/webhook` sur le domaine publié
+- [x] Corriger le routage ou le format JSON renvoyé au test webhook Manus
+- [ ] Revalider le webhook depuis le panneau Stripe Manus après publication
