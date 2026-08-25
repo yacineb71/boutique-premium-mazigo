@@ -126,6 +126,19 @@ try:
     cdp = CDP(connect(page["webSocketDebuggerUrl"]))
     cdp.call("Page.enable")
     cdp.call("Runtime.enable")
+    cdp.call("Page.addScriptToEvaluateOnNewDocument", {"source": """
+      (() => {
+        const originalFetch = window.fetch.bind(window);
+        window.fetch = async (...args) => {
+          const request = args[0];
+          const url = typeof request === 'string' ? request : request?.url || '';
+          if (url.includes('/api/trpc/auth.me')) {
+            return new Response(JSON.stringify({result: {data: {json: {id: 'visual-admin', name: 'Administrateur MAZIGHO', email: 'admin@mazigho.local', role: 'admin'}}}}), {status: 200, headers: {'content-type': 'application/json'}});
+          }
+          return originalFetch(...args);
+        };
+      })();
+    """})
     results = []
     for route in ["/", "/shop", "/product/1", "/cart", "/checkout", "/admin"]:
         cdp.call("Page.navigate", {"url": PREVIEW + route})

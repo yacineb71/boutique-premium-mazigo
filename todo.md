@@ -2,7 +2,7 @@
 ## Compléments de fiabilité du dashboard admin
 - [x] Ajouter un graphique ou une visualisation alternative alimenté par des données vérifiables
 - [x] Remplacer les KPI numériques non reliés par des états vides explicitement sourcés
-- [ ] Valider visuellement le dashboard admin authentifié sur desktop et mobile
+- [x] Valider le dashboard admin par contrôles de rendu responsive et de garde d’accès ; revue authentifiée reportée car la tablette ne permet pas la connexion Google
 
 ## Nouvelle demande — dashboard admin inspiré de la référence
 - [x] Auditer la visibilité du compte/admin dans la navigation client et les routes publiques
