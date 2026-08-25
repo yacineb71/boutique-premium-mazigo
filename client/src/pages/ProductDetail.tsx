@@ -93,7 +93,7 @@ export default function ProductDetail() {
             <div>
               <h1 className="mb-4 font-display text-4xl font-semibold text-[#211e1b]">{product.name}</h1>
 
-              <div className="mb-6 text-4xl font-semibold text-[#b65f3f]">€{product.price.toFixed(2)}</div>
+              <div className="mb-6 text-4xl font-semibold text-[#b65f3f]">CHF {product.price.toFixed(2)}</div>
 
               <p className="mb-6 leading-7 text-[#6d6259]">{product.description}</p>
 

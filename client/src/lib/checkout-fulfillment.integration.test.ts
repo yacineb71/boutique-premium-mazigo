@@ -31,6 +31,7 @@ describe("checkout to manual fulfillment", () => {
     const caller = checkoutRouter.createCaller(context);
     const result = await caller.createSession({ cartItems: [{ id: 1, name: "Produit", price: 29.9, quantity: 1, category: "Cadeaux" }] });
     expect(result.sessionId).toBe("cs_test_manual");
+    expect(mocks.stripe.checkout.sessions.create).toHaveBeenCalledWith(expect.objectContaining({ line_items: [expect.objectContaining({ price_data: expect.objectContaining({ currency: "chf", unit_amount: 2990 }) })] }));
     expect(mocks.createOrderWithItems).toHaveBeenCalledWith(expect.objectContaining({ userId: 42, stripeSessionId: "cs_test_manual", status: "awaiting_payment", total: "29.90" }), expect.arrayContaining([expect.objectContaining({ productId: 1, quantity: 1 })]));
   });
 

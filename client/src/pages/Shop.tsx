@@ -316,7 +316,7 @@ export default function Shop() {
                   <p className="mb-3 text-sm text-[#6d6259]">{product.category}</p>
 
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl font-semibold text-[#b65f3f]">€{product.price.toFixed(2)}</span>
+                    <span className="text-2xl font-semibold text-[#b65f3f]">CHF {product.price.toFixed(2)}</span>
                   </div>
 
                   <Button

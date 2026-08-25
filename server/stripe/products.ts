@@ -6,21 +6,21 @@ export const STRIPE_PRODUCTS = {
     name: "Premium Subscription",
     description: "Accès illimité aux produits premium",
     price: 9.99,
-    currency: "eur",
+    currency: "chf",
     interval: "month",
   },
   one_time_purchase: {
     name: "Achat Unique",
     description: "Achat unique de produits",
     price: 0, // Variable, sera défini au checkout
-    currency: "eur",
+    currency: "chf",
   },
 };
 
 export const getCheckoutLineItems = (cartItems: any[]) => {
   return cartItems.map((item) => ({
     price_data: {
-      currency: "eur",
+      currency: "chf",
       product_data: {
         name: item.name,
         description: item.category,

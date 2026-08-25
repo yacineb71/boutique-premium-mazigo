@@ -53,7 +53,7 @@ export const checkoutRouter = router({
       try {
         const lineItems = input.cartItems.map((item) => ({
           price_data: {
-            currency: "eur",
+            currency: "chf",
             product_data: {
               name: item.name,
               description: item.category,

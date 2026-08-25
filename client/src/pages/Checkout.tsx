@@ -69,16 +69,16 @@ export default function Checkout() {
               {items.map((item: any) => (
                 <div key={item.id} className="flex items-center justify-between border-b border-[#e3dbd1] pb-4 last:border-0">
                   <div><p className="font-semibold text-[#211e1b]">{item.name}</p><p className="text-sm text-[#6d6259]">Quantité : {item.quantity}</p></div>
-                  <p className="font-semibold text-[#211e1b]">€{(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-semibold text-[#211e1b]">CHF {(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               ))}
             </div>
           </Card>
 
           <Card className="mb-6 rounded-3xl border-[#ded5ca] bg-[#ede7de] p-6">
-            <div className="mb-4 flex items-center justify-between"><span className="text-[#6d6259]">Sous-total</span><span className="font-semibold">€{total.toFixed(2)}</span></div>
+            <div className="mb-4 flex items-center justify-between"><span className="text-[#6d6259]">Sous-total</span><span className="font-semibold">CHF {total.toFixed(2)}</span></div>
             <div className="mb-4 flex items-center justify-between"><span className="text-[#6d6259]">Livraison</span><span className="font-semibold">Gratuite</span></div>
-            <div className="flex items-center justify-between border-t border-[#d5cec4] pt-4"><span className="text-lg font-semibold">Total</span><span className="text-2xl font-semibold text-[#b65f3f]">€{total.toFixed(2)}</span></div>
+            <div className="flex items-center justify-between border-t border-[#d5cec4] pt-4"><span className="text-lg font-semibold">Total</span><span className="text-2xl font-semibold text-[#b65f3f]">CHF {total.toFixed(2)}</span></div>
           </Card>
 
           <div className="space-y-4">

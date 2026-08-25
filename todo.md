@@ -3284,7 +3284,19 @@
 - [x] Vérifier l’arbre de dépendances et consigner les vulnérabilités transitives restantes
 - [x] Supprimer le `.gitkeep` obsolète à la racine sans retirer les placeholders utiles
 - [x] Préparer une feuille de route priorisée avant ouverture commerciale
-- [ ] Résoudre la vulnérabilité critique transitive de la chaîne AWS/fast-xml-parser
-- [ ] Confirmer les coordonnées commerciales et les textes légaux définitifs
+- [x] Résoudre la vulnérabilité critique transitive de la chaîne AWS/fast-xml-parser
+- [ ] Confirmer les textes légaux définitifs
 - [ ] Valider un paiement Stripe sandbox complet avec webhook et email transactionnel réel
-- [ ] Découper le bundle client principal et ajouter la surveillance de performance
+- [x] Découper le bundle client principal
+- [ ] Ajouter la surveillance de performance légère
+
+## Confirmation utilisateur — coordonnées commerciales et Stripe
+- [x] Remplacer les coordonnées génériques par les coordonnées confirmées de Bahloul Yacine, Aigle, Suisse
+- [x] Mettre à jour devise CHF, email et téléphone dans les informations publiques
+- [x] Préparer le parcours de paiement Stripe sandbox avec confirmation du propriétaire
+- [ ] Valider un paiement Stripe sandbox de bout en bout avec webhook et état de commande
+
+## Limitation confirmée — validation Stripe sans prise de contrôle tablette
+- [x] Valider automatiquement la création de session Stripe en CHF et le parcours protégé
+- [ ] Effectuer le paiement sandbox réel depuis une session MAZIGHO connectée par le propriétaire
+- [ ] Vérifier le webhook et le passage de la commande à l’état payé depuis le compte Stripe actif

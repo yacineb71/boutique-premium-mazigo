@@ -34,9 +34,9 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { icon: Mail, title: "Email", value: "contact@mazigho.com", description: "Réponse dès que possible" },
-    { icon: Phone, title: "Téléphone", value: "+33 1 23 45 67 89", description: "Lun–Ven · 9h–18h" },
-    { icon: MapPin, title: "Adresse", value: "Paris, France", description: "Écrivez-nous avant de vous déplacer" },
+    { icon: Mail, title: "Email", value: "yacbhl71@gmail.com", description: "Réponse dès que possible" },
+    { icon: Phone, title: "Téléphone", value: "+41 76 220 41 20", description: "Lun–Ven · 9h–18h" },
+    { icon: MapPin, title: "Adresse", value: "Chemin des Lieugex 17, 1860 Aigle, Suisse", description: "Écrivez-nous avant de vous déplacer" },
     { icon: Clock, title: "Disponibilité", value: "Support en ligne", description: "Via le formulaire de contact" },
   ];
 

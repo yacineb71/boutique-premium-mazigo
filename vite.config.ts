@@ -24,6 +24,16 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ["react", "react-dom", "wouter"],
+          ui: ["@radix-ui/react-dialog", "@radix-ui/react-dropdown-menu", "@radix-ui/react-select", "lucide-react"],
+          data: ["@tanstack/react-query", "@trpc/client", "@trpc/react-query", "superjson"],
+          charts: ["chart.js", "react-chartjs-2", "recharts"],
+        },
+      },
+    },
   },
   server: {
     host: true,
