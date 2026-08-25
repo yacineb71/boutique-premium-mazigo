@@ -15,12 +15,12 @@ export default function AdminCategories() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Gestion des Catégories</h1>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="font-display text-3xl font-semibold text-gray-900 sm:text-4xl">Gestion des Catégories</h1>
             <p className="text-gray-600 mt-2">Organisez vos catégories de produits</p>
           </div>
-          <Button className="gap-2">
+          <Button className="w-full gap-2 rounded-full bg-[#211e1b] text-white hover:bg-[#3a332f] sm:w-auto">
             <Plus size={20} />
             Ajouter une Catégorie
           </Button>

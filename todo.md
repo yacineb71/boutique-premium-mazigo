@@ -1,5 +1,17 @@
 
 ## Nouvelle séquence de validation et publication
+- [x] Auditer les anciennes couleurs sur toutes les pages publiques et l’administration
+- [x] Centraliser la palette ivoire, charbon et terracotta dans les styles globaux
+- [x] Harmoniser Home, Shop, ProductDetail, Cart, Checkout, About et Contact
+- [x] Vérifier explicitement Home et Shop après harmonisation couleur
+- [x] Harmoniser les composants partagés, états et administration
+- [x] Auditer explicitement Produits, Catégories, Commandes, Clients, Promotions, Avis et Paramètres après harmonisation couleur
+- [x] Documenter la revue des composants partagés Header, Footer, Newsletter, loader, formulaires et cartes d’état
+- [x] Vérifier responsive, tests et build après harmonisation
+- [x] Valider desktop, tablette et mobile sur Home, Shop, ProductDetail, Cart, Checkout, About, Contact et Admin après harmonisation
+- [x] Corriger le chevauchement mobile des en-têtes Catégories et Promotions dans l’administration
+- [x] Corriger les avertissements CSS générés par les sélecteurs hover de compatibilité de palette
+- [x] Corriger les héros About et Contact pour garantir un contraste charbon/terracotta visible
 - [x] Analyser mazigho.ch : navigation, palette, typographie, hero, cartes et footer
 - [x] Définir les écarts entre mazigho.ch et la boutique MAZIGHO actuelle
 - [x] Adapter l’identité visuelle et les sections principales sans supprimer recherche, tri, panier ni checkout

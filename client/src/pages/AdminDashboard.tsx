@@ -22,10 +22,10 @@ export default function AdminDashboard() {
   const { data: products = [] } = trpc.products.getAll.useQuery();
 
   const stats = [
-    { label: "Commandes totales", value: "1,234", icon: ShoppingCart, color: "bg-blue-500" },
-    { label: "Produits", value: products.length.toString(), icon: Package, color: "bg-green-500" },
-    { label: "Clients", value: "789", icon: Users, color: "bg-purple-500" },
-    { label: "Revenus", value: "€45,678", icon: TrendingUp, color: "bg-orange-500" },
+    { label: "Commandes totales", value: "1,234", icon: ShoppingCart, color: "bg-[#8b5a45]" },
+    { label: "Produits", value: products.length.toString(), icon: Package, color: "bg-[#b65f3f]" },
+    { label: "Clients", value: "789", icon: Users, color: "bg-[#5b4035]" },
+    { label: "Revenus", value: "€45,678", icon: TrendingUp, color: "bg-[#d77956]" },
   ];
 
   const recentOrders = [
@@ -40,13 +40,13 @@ export default function AdminDashboard() {
       {
         label: "Revenus (€)",
         data: [3200, 4100, 3800, 5200, 4900, 6100, 5800, 7200, 6900, 8100, 7800, 9200],
-        borderColor: "#0ea5e9",
-        backgroundColor: "rgba(14, 165, 233, 0.1)",
+        borderColor: "#b65f3f",
+        backgroundColor: "rgba(182, 95, 63, 0.12)",
         borderWidth: 3,
         fill: true,
         tension: 0.4,
         pointRadius: 5,
-        pointBackgroundColor: "#0ea5e9",
+        pointBackgroundColor: "#b65f3f",
         pointBorderColor: "#fff",
         pointBorderWidth: 2,
       },
@@ -60,13 +60,13 @@ export default function AdminDashboard() {
         label: "Commandes",
         data: [12, 19, 15, 25, 22, 30, 28],
         backgroundColor: [
-          "#3b82f6",
-          "#10b981",
-          "#f59e0b",
-          "#ef4444",
-          "#8b5cf6",
-          "#06b6d4",
-          "#ec4899",
+          "#8b5a45",
+          "#b65f3f",
+          "#d77956",
+          "#a94c3a",
+          "#5b4035",
+          "#c58b68",
+          "#d9a078",
         ],
         borderRadius: 8,
         borderSkipped: false,
@@ -80,11 +80,11 @@ export default function AdminDashboard() {
       {
         data: [120, 95, 85, 70, 60],
         backgroundColor: [
-          "#3b82f6",
-          "#ec4899",
-          "#f59e0b",
-          "#10b981",
-          "#8b5cf6",
+          "#8b5a45",
+          "#b65f3f",
+          "#d77956",
+          "#c58b68",
+          "#5b4035",
         ],
         borderColor: "#fff",
         borderWidth: 2,
@@ -224,7 +224,7 @@ export default function AdminDashboard() {
                       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         order.status === "Livré" ? "bg-green-100 text-green-800" :
                         order.status === "En cours" ? "bg-blue-100 text-blue-800" :
-                        "bg-yellow-100 text-yellow-800"
+                        "bg-[#f1e0d5] text-[#8b5a45]"
                       }`}>
                         {order.status}
                       </span>
