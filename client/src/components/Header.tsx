@@ -1,10 +1,26 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
-import { Menu, X, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { getLoginUrl } from "@/const";
+import { Menu, Search, ShoppingBag, UserRound, X } from "lucide-react";
+import React, { useState } from "react";
 import { Link } from "wouter";
 import { useCart } from "@/hooks/useCart";
+
+const navLinks = [
+  { label: "Accueil", href: "/" },
+  { label: "Boutique", href: "/shop" },
+  { label: "À découvrir", href: "/shop" },
+  { label: "Best-sellers", href: "/shop?sort=popular" },
+  { label: "Contact", href: "/contact" },
+];
+
+const categoryLinks = [
+  { label: "Mode & accessoires", href: "/shop?category=V%C3%AAtements" },
+  { label: "Beauté & bien-être", href: "/shop?category=Cosm%C3%A9tiques" },
+  { label: "Maison & cuisine", href: "/shop?category=Cadeaux" },
+  { label: "Sport & plein air", href: "/shop?category=Jouets" },
+  { label: "High-tech utile", href: "/shop?category=Accessoires" },
+];
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -12,124 +28,74 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <img src={APP_LOGO} alt={APP_TITLE} className="w-8 h-8" />
-            <span className="font-bold text-lg text-gray-900">{APP_TITLE}</span>
+    <header className="sticky top-0 z-50 bg-[#fbf9f5]/95 text-[#211e1b] shadow-[0_1px_0_rgba(33,30,27,0.08)] backdrop-blur">
+      <div className="bg-[#211e1b] px-4 py-2 text-center text-[0.68rem] font-medium tracking-[0.16em] text-[#f8f5ef]">
+        UNE SÉLECTION PENSÉE POUR LE QUOTIDIEN <span className="mx-2 text-[#d77956]">·</span> LIVRAISON TRANSPARENTE SELON LA DESTINATION
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex min-h-[4.6rem] items-center justify-between gap-4">
+          <Link href="/" className="flex shrink-0 items-center gap-3" onClick={() => setMobileMenuOpen(false)}>
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#211e1b] font-display text-xl text-[#f8f5ef]">M</span>
+            <span>
+              <span className="block text-lg font-semibold tracking-[0.18em]">MAZIGHO</span>
+              <span className="hidden text-[0.58rem] uppercase tracking-[0.2em] text-[#8b8178] sm:block">Trouvailles du quotidien</span>
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-gray-600 hover:text-gray-900 transition">
-              Accueil
-            </Link>
-            <Link href="/shop" className="text-gray-600 hover:text-gray-900 transition">
-              Boutique
-            </Link>
-            <Link href="/about" className="text-gray-600 hover:text-gray-900 transition">
-              À Propos
-            </Link>
-            <Link href="/contact" className="text-gray-600 hover:text-gray-900 transition">
-              Contact
-            </Link>
+          <nav className="hidden items-center gap-5 xl:flex" aria-label="Navigation principale">
+            {navLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="text-[0.78rem] font-medium tracking-wide text-[#514942] transition hover:text-[#b65f3f]">
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Cart Button */}
-          <Link href="/cart" className="hidden md:flex">
-            <button className="relative p-2 text-gray-600 hover:text-gray-900 transition">
-              <ShoppingCart size={24} />
-              {itemCount > 0 && (
-                <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {itemCount}
-                </span>
-              )}
-            </button>
-          </Link>
-
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden items-center gap-2 md:flex">
+            <Link href="/shop" aria-label="Rechercher un produit" className="rounded-full p-2 text-[#514942] transition hover:bg-[#eee8df] hover:text-[#b65f3f]">
+              <Search size={18} />
+            </Link>
+            <Link href="/cart" aria-label={`Panier, ${itemCount} article${itemCount > 1 ? "s" : ""}`} className="relative rounded-full p-2 text-[#514942] transition hover:bg-[#eee8df] hover:text-[#b65f3f]">
+              <ShoppingBag size={19} />
+              {itemCount > 0 && <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#b65f3f] px-1 text-[0.6rem] text-white">{itemCount}</span>}
+            </Link>
             {isAuthenticated ? (
-              <>
-                {user?.role === "admin" && (
-                  <Link href="/admin">
-                    <Button variant="outline" size="sm">
-                      Admin
-                    </Button>
-                  </Link>
-                )}
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-600">{user?.name || user?.email}</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => logout()}
-                  >
-                    Déconnexion
-                  </Button>
-                </div>
-              </>
+              <div className="ml-2 flex items-center gap-2">
+                {user?.role === "admin" && <Link href="/admin"><Button variant="outline" size="sm" className="border-[#211e1b] text-[#211e1b]">Admin</Button></Link>}
+                <Button variant="outline" size="sm" onClick={() => logout()} className="border-[#d5cec4] text-[#514942]">Déconnexion</Button>
+              </div>
             ) : (
-              <Button
-                size="sm"
-                onClick={() => window.location.href = getLoginUrl()}
-              >
-                Connexion
+              <Button size="sm" onClick={() => { window.location.href = getLoginUrl(); }} className="ml-2 rounded-full bg-[#b65f3f] px-5 text-white hover:bg-[#964b32]">
+                <UserRound size={15} className="mr-2" /> Mon compte
               </Button>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
+          <button className="rounded-full p-2 text-[#211e1b] md:hidden" aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"} onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        <div className="hidden items-center gap-6 border-t border-[#e8e1d8] py-2.5 md:flex xl:hidden">
+          {navLinks.slice(0, 4).map((link) => <Link key={link.label} href={link.href} className="text-xs font-medium text-[#514942] hover:text-[#b65f3f]">{link.label}</Link>)}
+          <Link href="/shop" className="ml-auto text-xs font-semibold text-[#b65f3f]">Voir toute la boutique</Link>
+        </div>
+
         {mobileMenuOpen && (
-          <div className="md:hidden pb-4 space-y-2">
-            <Link href="/" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              Accueil
-            </Link>
-            <Link href="/shop" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              Boutique
-            </Link>
-            <Link href="/about" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              À Propos
-            </Link>
-            <Link href="/contact" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              Contact
-            </Link>
-            <Link href="/cart" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-              Panier ({itemCount})
-            </Link>
-            {isAuthenticated ? (
-              <>
-                {user?.role === "admin" && (
-                  <Link href="/admin" className="block px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
-                    Admin
-                  </Link>
-                )}
-                <button
-                  onClick={() => logout()}
-                  className="w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
-                >
-                  Déconnexion
-                </button>
-              </>
-            ) : (
-              <Button
-                className="w-full"
-                onClick={() => window.location.href = getLoginUrl()}
-              >
-                Connexion
-              </Button>
-            )}
+          <div className="border-t border-[#e8e1d8] pb-5 pt-4 md:hidden">
+            <div className="grid gap-1">
+              {navLinks.map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-3 py-3 text-sm font-medium text-[#514942] hover:bg-[#eee8df]">{link.label}</Link>
+              ))}
+            </div>
+            <div className="mt-3 border-t border-[#e8e1d8] pt-3">
+              <p className="mazigho-eyebrow px-3 pb-2">Nos univers</p>
+              {categoryLinks.map((link) => <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm text-[#6d6259] hover:bg-[#eee8df]">{link.label}</Link>)}
+            </div>
+            <div className="mt-3 flex gap-2 px-3">
+              <Link href="/cart" onClick={() => setMobileMenuOpen(false)} className="flex-1 rounded-full border border-[#d5cec4] px-4 py-2 text-center text-sm">Panier ({itemCount})</Link>
+              {isAuthenticated ? <button onClick={() => logout()} className="flex-1 rounded-full bg-[#211e1b] px-4 py-2 text-sm text-white">Déconnexion</button> : <button onClick={() => { window.location.href = getLoginUrl(); }} className="flex-1 rounded-full bg-[#b65f3f] px-4 py-2 text-sm text-white">Mon compte</button>}
+            </div>
           </div>
         )}
       </div>

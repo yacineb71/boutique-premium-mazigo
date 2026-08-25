@@ -208,17 +208,18 @@ export default function Shop() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-[#f8f5ef] text-[#211e1b]">
       <Header />
 
-      <section className="bg-gradient-to-r from-teal-50 to-cyan-50 py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Notre Boutique</h1>
-          <p className="text-gray-600 text-lg">Découvrez notre sélection complète de produits premium</p>
+      <section className="bg-[#ede7de] px-4 py-14">
+        <div className="mx-auto max-w-7xl">
+          <p className="mazigho-eyebrow mb-3">EXPLORER MAZIGHO</p>
+          <h1 className="font-display text-5xl font-semibold tracking-[-0.03em] text-[#211e1b]">Notre Boutique</h1>
+          <p className="mt-4 max-w-xl text-lg leading-7 text-[#6d6259]">Découvrez une sélection de trouvailles pensées pour accompagner chaque moment du quotidien.</p>
         </div>
       </section>
 
-      <section className="bg-white border-b border-gray-200 py-6 px-4 sticky top-16 z-40">
+      <section className="sticky top-[7.1rem] z-40 border-b border-[#ded5ca] bg-[#fbf9f5]/95 px-4 py-6 backdrop-blur">
         <div className="max-w-7xl mx-auto">
           <div className="mb-6">
             <input
@@ -226,7 +227,7 @@ export default function Shop() {
               placeholder="Rechercher un produit..."
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="w-full rounded-full border border-[#d5cec4] bg-white px-5 py-3 text-[#211e1b] outline-none placeholder:text-[#8b8178] focus:ring-2 focus:ring-[#c56f4b]"
             />
           </div>
 
@@ -254,8 +255,8 @@ export default function Shop() {
                   }}
                   className={`px-4 py-2 rounded-full whitespace-nowrap transition ${
                     selectedCategory === cat
-                      ? "bg-teal-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-[#211e1b] text-white"
+                        : "bg-[#eee8df] text-[#514942] hover:bg-[#e3d9cd]"
                   }`}
                 >
                   {cat}
@@ -276,7 +277,7 @@ export default function Shop() {
                   setSortOption(nextSort);
                   navigateWithFilters({ sort: nextSort });
                 }}
-                className="min-w-44 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="min-w-44 rounded-full border border-[#d5cec4] bg-white px-4 py-2 text-sm text-[#514942] outline-none focus:ring-2 focus:ring-[#c56f4b]"
               >
                 <option value="relevance">Pertinence</option>
                 <option value="price-asc">Prix : croissant</option>
@@ -288,20 +289,20 @@ export default function Shop() {
         </div>
       </section>
 
-      <section className="flex-1 py-12 px-4">
+      <section className="flex-1 bg-[#f8f5ef] px-4 py-14">
         <div className="max-w-7xl mx-auto">
-          <p className="text-gray-600 mb-6">
+          <p className="mb-6 text-sm font-medium uppercase tracking-[0.12em] text-[#8b8178]">
             {filteredProducts.length} produit{filteredProducts.length > 1 ? "s" : ""} trouvé{filteredProducts.length > 1 ? "s" : ""}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {filteredProducts.map((product) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition">
-                <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 p-8 text-center">
+              <Card key={product.id} className="overflow-hidden rounded-3xl border-[#ded5ca] bg-[#fbf9f5] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <div className="relative bg-gradient-to-br from-[#f1e9df] to-[#ddd1c3] p-8 text-center">
                   <div className="text-6xl mb-4">{product.image}</div>
                   <button
                     onClick={() => toggleFavorite(product.id)}
-                    className="absolute top-4 right-4 p-2 bg-white rounded-full shadow hover:shadow-md transition"
+                    className="absolute right-4 top-4 rounded-full border border-[#ded5ca] bg-[#fbf9f5] p-2 shadow-sm transition hover:shadow-md"
                     aria-label={`Ajouter ${product.name} aux favoris`}
                   >
                     <Heart
@@ -313,12 +314,12 @@ export default function Shop() {
 
                 <div className="p-4">
                   <Link href={`/product/${product.id}`} className="block">
-                    <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 hover:text-teal-600 transition">
+                    <h3 className="mb-2 line-clamp-2 font-semibold text-[#211e1b] transition hover:text-[#b65f3f]">
                       {product.name}
                     </h3>
                   </Link>
 
-                  <p className="text-sm text-gray-600 mb-3">{product.category}</p>
+                  <p className="mb-3 text-sm text-[#6d6259]">{product.category}</p>
 
                   <div className="flex items-center gap-1 mb-3">
                     {[...Array(5)].map((_, i) => (
@@ -328,16 +329,16 @@ export default function Shop() {
                         className={i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
                       />
                     ))}
-                    <span className="text-xs text-gray-600 ml-1">({product.reviews})</span>
+                    <span className="ml-1 text-xs text-[#8b8178]">({product.reviews})</span>
                   </div>
 
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-2xl font-bold text-teal-600">€{product.price.toFixed(2)}</span>
+                    <span className="text-2xl font-semibold text-[#b65f3f]">€{product.price.toFixed(2)}</span>
                   </div>
 
                   <Button
                     onClick={() => addToCart(product)}
-                    className="w-full gap-2"
+                    className="w-full gap-2 rounded-full bg-[#211e1b] text-white hover:bg-[#3a332f]"
                     disabled={!product.inStock}
                   >
                     <ShoppingCart size={18} />
@@ -350,7 +351,7 @@ export default function Shop() {
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-gray-600 text-lg">Aucun produit trouvé</p>
+              <p className="text-lg text-[#6d6259]">Aucun produit trouvé</p>
             </div>
           )}
         </div>

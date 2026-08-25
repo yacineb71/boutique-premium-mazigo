@@ -1,5 +1,15 @@
 
 ## Nouvelle séquence de validation et publication
+- [x] Analyser mazigho.ch : navigation, palette, typographie, hero, cartes et footer
+- [x] Définir les écarts entre mazigho.ch et la boutique MAZIGHO actuelle
+- [x] Adapter l’identité visuelle et les sections principales sans supprimer recherche, tri, panier ni checkout
+- [x] Remplacer ou retirer les liens fictifs / routes non implémentées (`/favoris`, `href="#"`, `sort=recent`)
+- [x] Valider après refonte Home, Shop, ProductDetail, Cart, Checkout et Admin sur desktop, tablette et mobile
+- [x] Valider ProductDetail et Cart sur tablette, ainsi que Admin sur mobile après la refonte
+- [x] Vérifier le parcours post-refonte Header → Shop → ProductDetail → Cart → Checkout
+- [x] Ajouter un vrai test d’intégration Header → Shop → ProductDetail → Cart → Checkout avec composants rendus et actions utilisateur
+- [x] Corriger l’incohérence de libellé Panier vide détectée par le test checkout
+- [x] Vérifier le rendu responsive et les parcours existants après adaptation
 - [x] Ajouter le tri de la boutique par prix croissant et décroissant
 - [x] Ajouter le tri de la boutique par popularité
 - [x] Préserver la combinaison recherche URL + catégorie + tri

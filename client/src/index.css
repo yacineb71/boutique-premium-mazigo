@@ -175,3 +175,34 @@
     }
   }
 }
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    background: #f8f5ef;
+    color: #211e1b;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
+    font-family: "Playfair Display", Georgia, serif;
+  }
+}
+
+@layer components {
+  .mazigho-eyebrow {
+    @apply text-[0.68rem] font-semibold uppercase tracking-[0.28em];
+    color: #b65f3f;
+  }
+
+  .mazigho-rule {
+    border-color: rgba(33, 30, 27, 0.12);
+  }
+}

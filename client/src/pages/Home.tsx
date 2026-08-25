@@ -1,57 +1,30 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { buildCatalogSearchRoute, matchesCatalogSearch } from "@/lib/catalogSearch";
-import { Search, ShoppingBag, Shield, Sparkles, Truck } from "lucide-react";
+import { ArrowRight, Search, Sparkles } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 
-const categories = [
-  { name: "Vêtements", image: "👕", count: "120+ produits" },
-  { name: "Cosmétiques", image: "💄", count: "85+ produits" },
-  { name: "Accessoires", image: "👜", count: "95+ produits" },
-  { name: "Cadeaux", image: "🎁", count: "70+ produits" },
-  { name: "Jouets", image: "🧸", count: "60+ produits" },
+const universes = [
+  { name: "Mode & accessoires", description: "Les détails qui accompagnent votre style au quotidien.", icon: "◌", category: "Vêtements", tone: "from-[#d8c0a7] via-[#b98768] to-[#5f4435]" },
+  { name: "Beauté & bien-être", description: "Des instants de soin et de confort à s’offrir.", icon: "✦", category: "Cosmétiques", tone: "from-[#e7c4b5] via-[#b8745f] to-[#6c4035]" },
+  { name: "Maison & cuisine", description: "Des objets simples qui facilitent les petits moments.", icon: "⌂", category: "Cadeaux", tone: "from-[#d4c6ac] via-[#9f8766] to-[#4e4439]" },
+  { name: "Sport & plein air", description: "Pour bouger, respirer et profiter davantage.", icon: "↗", category: "Jouets", tone: "from-[#b8c2b1] via-[#71816d] to-[#374338]" },
+  { name: "High-tech utile", description: "Des accessoires pensés pour rester connecté sans effort.", icon: "⌁", category: "Accessoires", tone: "from-[#b6c5cd] via-[#738c9a] to-[#35424c]" },
+  { name: "Mobilité & auto", description: "Les indispensables pour vos trajets et vos escapades.", icon: "◍", category: "Accessoires", tone: "from-[#c8b6a9] via-[#876c60] to-[#463b38]" },
 ];
 
-const searchableCategories = categories.map((category) => `${category.name} ${category.count}`);
+const searchableUniverses = universes.map((universe) => `${universe.name} ${universe.description}`);
 
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const features = [
-    {
-      icon: ShoppingBag,
-      title: "Large Sélection",
-      description: "Découvrez notre collection complète de vêtements, cosmétiques, accessoires, cadeaux et jouets.",
-    },
-    {
-      icon: Truck,
-      title: "Livraison Rapide",
-      description: "Livraison gratuite à partir de 50€. Recevez vos commandes en 2-3 jours ouvrables.",
-    },
-    {
-      icon: Shield,
-      title: "Paiement Sécurisé",
-      description: "Vos transactions sont protégées par les meilleurs systèmes de sécurité.",
-    },
-    {
-      icon: Sparkles,
-      title: "Qualité Premium",
-      description: "Tous nos produits sont sélectionnés pour leur qualité et leur durabilité.",
-    },
-  ];
-
-  const matchingCategoryCount = useMemo(() => {
-    if (!searchTerm.trim()) {
-      return categories.length;
-    }
-
-    return searchableCategories.filter((value) => matchesCatalogSearch(value, searchTerm)).length;
+  const matchingUniverseCount = useMemo(() => {
+    if (!searchTerm.trim()) return universes.length;
+    return searchableUniverses.filter((value) => matchesCatalogSearch(value, searchTerm)).length;
   }, [searchTerm]);
 
   const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
@@ -60,115 +33,75 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="min-h-screen bg-[#f8f5ef] text-[#211e1b]">
       <Header />
 
-      <section className="bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-16 text-white sm:py-20">
-        <div className="mx-auto max-w-7xl text-center">
-          <h1 className="mb-6 text-4xl font-bold sm:text-5xl md:text-6xl">Bienvenue chez MAZIGHO</h1>
-          <p className="mx-auto mb-8 max-w-4xl text-lg text-teal-50 sm:text-xl md:text-2xl">
-            Votre boutique premium pour vêtements, cosmétiques, accessoires, cadeaux et jouets
-          </p>
+      <main>
+        <section className="relative isolate overflow-hidden bg-[#211e1b] text-[#f8f5ef]">
+          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_74%_28%,rgba(196,115,83,0.7),transparent_33%),radial-gradient(circle_at_12%_90%,rgba(105,80,59,0.6),transparent_36%),linear-gradient(112deg,#211e1b_0%,#3a2e29_48%,#8c5947_100%)]" />
+          <div className="absolute right-[-8%] top-[-10%] -z-10 h-[32rem] w-[32rem] rounded-full border border-white/10 bg-[#f0d2ba]/10 blur-sm" />
+          <div className="mx-auto grid min-h-[39rem] max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
+            <div className="max-w-2xl">
+              <p className="mazigho-eyebrow mb-5 text-[#e7a17f]">MAZIGHO · SÉLECTION DU MOMENT</p>
+              <h1 className="font-display text-5xl font-semibold leading-[0.98] tracking-[-0.04em] sm:text-6xl lg:text-7xl">Découvrez nos<br /><em className="font-normal text-[#e7a17f]">meilleures offres.</em></h1>
+              <p className="mt-7 max-w-lg text-base leading-7 text-[#e9ded4] sm:text-lg">Des trouvailles utiles, belles et accessibles pour simplifier votre quotidien avec style.</p>
 
-          <form onSubmit={submitSearch} className="mx-auto mb-6 flex max-w-2xl flex-col gap-3 rounded-2xl bg-white/15 p-3 text-left shadow-lg backdrop-blur-sm sm:flex-row">
-            <label htmlFor="home-search" className="sr-only">Rechercher un produit ou une catégorie</label>
-            <div className="flex min-w-0 flex-1 items-center gap-3 rounded-xl bg-white px-4 py-3 text-gray-900">
-              <Search aria-hidden="true" className="h-5 w-5 shrink-0 text-teal-600" />
-              <input
-                id="home-search"
-                type="search"
-                value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Rechercher un produit ou une catégorie…"
-                className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-gray-500"
-              />
+              <form onSubmit={submitSearch} className="mt-9 flex max-w-xl flex-col gap-2 rounded-2xl bg-white/10 p-2 backdrop-blur sm:flex-row">
+                <label htmlFor="home-search" className="sr-only">Rechercher un produit ou une catégorie</label>
+                <div className="flex min-w-0 flex-1 items-center gap-3 rounded-xl bg-[#f8f5ef] px-4 py-3 text-[#211e1b]">
+                  <Search aria-hidden="true" className="h-5 w-5 shrink-0 text-[#b65f3f]" />
+                  <input id="home-search" type="search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Rechercher un produit…" className="min-w-0 flex-1 bg-transparent outline-none placeholder:text-[#8b8178]" />
+                </div>
+                <button type="submit" className="rounded-xl bg-[#c56f4b] px-6 py-3 font-semibold text-white transition hover:bg-[#a95538]">Rechercher</button>
+              </form>
+              <p className="mt-3 text-xs text-[#d7c5b8]" aria-live="polite">{searchTerm.trim() ? `${matchingUniverseCount} univers correspondant${matchingUniverseCount > 1 ? "s" : ""}` : "Une expérience simple, de l’inspiration au panier."}</p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link href="/shop" className="inline-flex items-center justify-center rounded-full bg-[#f8f5ef] px-6 py-3 text-sm font-semibold text-[#211e1b] transition hover:bg-white">Découvrir la boutique <ArrowRight size={16} className="ml-2" /></Link>
+                <Link href="/shop?sort=popular" className="inline-flex items-center justify-center rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Voir les best-sellers</Link>
+              </div>
             </div>
-            <Button type="submit" size="lg" className="bg-yellow-400 text-gray-950 hover:bg-yellow-300 sm:px-7">
-              Rechercher
-            </Button>
-          </form>
-          <p className="mb-8 text-sm text-teal-50" aria-live="polite">
-            {searchTerm.trim()
-              ? `${matchingCategoryCount} catégorie${matchingCategoryCount > 1 ? "s" : ""} correspondante${matchingCategoryCount > 1 ? "s" : ""}`
-              : "Trouvez rapidement ce qui vous ferait plaisir"}
-          </p>
 
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Link href="/shop">
-              <Button size="lg" className="w-full bg-white text-teal-600 hover:bg-gray-100 sm:w-auto">
-                Découvrir la Boutique
-              </Button>
-            </Link>
-            {!isAuthenticated && (
-              <Link href="/api/oauth/callback">
-                <Button size="lg" variant="outline" className="w-full border-white text-white hover:bg-white/10 sm:w-auto">
-                  Se Connecter
-                </Button>
-              </Link>
-            )}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-12 text-center text-3xl font-bold">Pourquoi Choisir MAZIGHO ?</h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <Card key={feature.title} className="p-6 text-center">
-                  <div className="mb-4 flex justify-center">
-                    <div className="rounded-full bg-teal-100 p-4"><Icon className="text-teal-600" size={32} /></div>
-                  </div>
-                  <h3 className="mb-2 text-lg font-bold">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-16">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="mb-12 text-center text-3xl font-bold">Nos Catégories</h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {categories.map((category) => (
-              <Link key={category.name} href={`/shop?category=${encodeURIComponent(category.name.toLowerCase())}`}>
-                <Card className="cursor-pointer p-8 text-center transition hover:shadow-lg">
-                  <div className="mb-4 text-6xl">{category.image}</div>
-                  <h3 className="mb-2 text-lg font-bold">{category.name}</h3>
-                  <p className="text-sm text-gray-600">{category.count}</p>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-teal-600 px-4 py-16 text-white">
-        <div className="mx-auto max-w-7xl text-center">
-          <h2 className="mb-6 text-3xl font-bold">Prêt à Faire Vos Achats ?</h2>
-          <p className="mb-8 text-lg text-teal-50">Explorez notre collection complète et trouvez exactement ce que vous cherchez.</p>
-          <Link href="/shop">
-            <Button size="lg" className="bg-white text-teal-600 hover:bg-gray-100">Commencer à Magasiner</Button>
-          </Link>
-        </div>
-      </section>
-
-      {isAuthenticated && (
-        <section className="border-t border-blue-200 bg-blue-50 px-4 py-8">
-          <div className="mx-auto max-w-7xl">
-            <p className="text-center text-blue-900">
-              Bienvenue, <strong>{user?.name || user?.email}</strong> !
-              {user?.role === "admin" && (
-                <> {" "}Vous avez accès à l'<Link href="/admin" className="text-blue-600 hover:underline">admin panel</Link></>
-              )}
-            </p>
+            <div className="relative mx-auto aspect-[0.88] w-full max-w-md overflow-hidden rounded-[2rem] border border-white/20 bg-[#c8a38c]/20 p-4 shadow-2xl shadow-black/20">
+              <div className="flex h-full flex-col justify-between rounded-[1.5rem] bg-[linear-gradient(145deg,rgba(241,218,197,0.9),rgba(116,75,58,0.78))] p-7 text-[#211e1b]">
+                <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.2em]"><span>Édition 01</span><span>2026</span></div>
+                <div>
+                  <div className="mb-5 text-7xl opacity-80">✦</div>
+                  <p className="mazigho-eyebrow text-[#6b4132]">L’INSPIRATION MAZIGHO</p>
+                  <h2 className="mt-3 font-display text-4xl leading-tight">Des trouvailles qui embellissent le quotidien.</h2>
+                </div>
+                <div className="flex items-center justify-between border-t border-[#211e1b]/20 pt-4 text-xs font-medium uppercase tracking-[0.16em]"><span>Mode · maison · soin</span><span>CHF</span></div>
+              </div>
+            </div>
           </div>
         </section>
-      )}
+
+        <section className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 md:grid-cols-3 lg:px-8">
+          {[
+            ["Une sélection qui a du sens", "Des trouvailles utiles pour chaque moment du quotidien."],
+            ["Prix affichés clairement", "Une expérience pensée pour vous laisser décider sereinement."],
+            ["Un parcours simple", "Du produit au panier en quelques clics, sans détour."],
+          ].map(([title, text]) => <div key={title} className="border-t border-[#211e1b]/15 pt-5"><p className="mazigho-eyebrow mb-3">MAZIGHO</p><h3 className="font-display text-2xl">{title}</h3><p className="mt-2 text-sm leading-6 text-[#6d6259]">{text}</p></div>)}
+        </section>
+
+        <section className="bg-[#ede7de] px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-9 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="mazigho-eyebrow mb-3">EXPLORER MAZIGHO</p><h2 className="font-display text-4xl sm:text-5xl">Découvrez nos univers</h2></div><Link href="/shop" className="text-sm font-semibold text-[#b65f3f] underline decoration-[#b65f3f]/40 underline-offset-4">Voir toute la boutique <ArrowRight size={15} className="ml-1 inline" /></Link></div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {universes.map((universe) => <Link key={universe.name} href={`/shop?category=${encodeURIComponent(universe.category)}`} className={`group relative min-h-64 overflow-hidden rounded-3xl bg-gradient-to-br ${universe.tone} p-6 text-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl`}><div className="absolute -right-8 -top-10 h-36 w-36 rounded-full border border-white/20 bg-white/10" /><div className="relative flex h-full flex-col justify-between"><span className="text-4xl text-white/80">{universe.icon}</span><div><h3 className="font-display text-2xl">{universe.name}</h3><p className="mt-2 max-w-xs text-sm leading-5 text-white/80">{universe.description}</p><span className="mt-5 inline-flex items-center text-xs font-semibold uppercase tracking-[0.16em] text-white/90">Explorer <ArrowRight size={14} className="ml-2 transition group-hover:translate-x-1" /></span></div></div></Link>)}
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8">
+          <div className="relative min-h-[27rem] overflow-hidden rounded-[2rem] bg-[radial-gradient(circle_at_60%_25%,#e7c1a8,transparent_28%),linear-gradient(145deg,#a87257,#3b302c)] p-8 text-[#f8f5ef] sm:p-12"><div className="absolute bottom-[-3rem] right-[-2rem] h-64 w-64 rounded-full border-[22px] border-white/10" /><div className="relative flex h-full flex-col justify-between"><p className="mazigho-eyebrow text-[#f1b18d]">NOTRE INSPIRATION</p><div><span className="font-display text-8xl leading-none text-white/30">“</span><h2 className="font-display text-4xl leading-tight sm:text-5xl">L’histoire inspirante de MAZIGHO.</h2></div><p className="max-w-sm text-sm leading-6 text-white/75">Choisir avec attention. Simplifier la recherche. Inspirer le quotidien.</p></div></div>
+          <div><p className="mazigho-eyebrow mb-4">L’ESPRIT MAZIGHO</p><h2 className="font-display text-4xl leading-tight sm:text-5xl">Des trouvailles pour accompagner les moments qui comptent.</h2><p className="mt-6 leading-7 text-[#6d6259]">MAZIGHO est né d’une idée simple : rendre les bonnes découvertes plus accessibles. Nous réunissons mode, bien-être, maison et accessoires dans une boutique claire, chaleureuse et pensée pour vous laisser explorer librement.</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/about" className="inline-flex items-center rounded-full bg-[#211e1b] px-6 py-3 text-sm font-semibold text-white hover:bg-[#3a332f]">Découvrir l’univers</Link><Link href="/contact" className="inline-flex items-center rounded-full border border-[#b8ada1] px-6 py-3 text-sm font-semibold text-[#514942] hover:bg-[#eee8df]">Nous contacter</Link></div></div>
+        </section>
+
+        <section className="bg-[#211e1b] px-4 py-16 text-[#f8f5ef] sm:px-6 lg:px-8"><div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 sm:flex-row sm:items-center"><div><p className="mazigho-eyebrow mb-3 text-[#e7a17f]">LA SÉLECTION DU MOMENT</p><h2 className="font-display text-4xl sm:text-5xl">Le détail qui fait la différence.</h2><p className="mt-3 max-w-xl text-[#cfc2b7]">Explorez le catalogue et trouvez la pièce qui donnera une nouvelle allure à votre quotidien.</p></div><Link href="/shop" className="inline-flex shrink-0 items-center rounded-full bg-[#c56f4b] px-7 py-3 text-sm font-semibold text-white hover:bg-[#a95538]">Découvrir la sélection <ArrowRight size={16} className="ml-2" /></Link></div></section>
+
+        {isAuthenticated && <section className="border-b border-[#e3dbd1] bg-[#f0e9df] px-4 py-5"><p className="mx-auto max-w-7xl text-center text-sm text-[#514942]">Bienvenue, <strong>{user?.name || user?.email}</strong> ! {user?.role === "admin" && <Link href="/admin" className="font-semibold text-[#b65f3f] underline">Accéder à l’admin</Link>}</p></section>}
+      </main>
 
       <Footer />
     </div>
