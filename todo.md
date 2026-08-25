@@ -3260,3 +3260,31 @@
 - [x] Ajouter l’édition rapide du prix et du stock dans le tableau
 - [x] Ajouter les tests des opérations de masse, pagination et export Excel
 - [x] Valider responsive, typage, tests, build et publier
+
+## Nouvelle demande — audit complet client et administration
+- [x] Inventorier routes, dépendances, schéma, procédures et données réelles
+- [x] Auditer les parcours client, responsive, accessibilité, médias et checkout
+- [x] Auditer l’administration, les droits, le catalogue, les commandes et les contenus
+- [x] Vérifier les erreurs runtime, logs, typage, tests, build et performance
+- [x] Corriger les problèmes prioritaires identifiés
+- [x] Renforcer la couverture de tests et effectuer une validation visuelle
+- [x] Rédiger une feuille de route priorisée des travaux restants
+- [x] Publier les corrections validées et livrer l’audit
+
+## Nouvelle demande — nettoyage GitHub
+- [x] Inventorier les fichiers, branches et artefacts obsolètes du dépôt connecté
+- [x] Vérifier les références avant toute suppression
+- [x] Retirer uniquement les fichiers obsolètes sans toucher aux données ni secrets
+- [x] Vérifier le statut GitHub et le build après nettoyage
+
+## Audit final et professionnalisation — clôture
+- [x] Rédiger le rapport d’audit client, admin, technique et GitHub dans `docs/audit-complet-mazigho.md`
+- [x] Documenter les risques résiduels : vulnérabilités transitives, bundle principal, coordonnées et opérations manuelles
+- [x] Mettre à jour les dépendances directes Axios et Drizzle ORM vers les versions corrigées
+- [x] Vérifier l’arbre de dépendances et consigner les vulnérabilités transitives restantes
+- [x] Supprimer le `.gitkeep` obsolète à la racine sans retirer les placeholders utiles
+- [x] Préparer une feuille de route priorisée avant ouverture commerciale
+- [ ] Résoudre la vulnérabilité critique transitive de la chaîne AWS/fast-xml-parser
+- [ ] Confirmer les coordonnées commerciales et les textes légaux définitifs
+- [ ] Valider un paiement Stripe sandbox complet avec webhook et email transactionnel réel
+- [ ] Découper le bundle client principal et ajouter la surveillance de performance

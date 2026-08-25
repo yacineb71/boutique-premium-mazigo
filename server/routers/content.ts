@@ -26,6 +26,7 @@ import {
   getProductMedia,
   reorderProductMedia,
   getCatalogProducts,
+  getCatalogProductById,
   createCatalogProduct,
   updateCatalogProduct,
   deleteCatalogProduct,
@@ -96,6 +97,7 @@ export const contentRouter = router({
   }),
   products: router({
     list: publicProcedure.query(() => getCatalogProducts()),
+    byId: publicProcedure.input(idInput).query(({ input }) => getCatalogProductById(input.id)),
     adminList: adminProcedure.query(() => getCatalogProducts()),
     create: adminProcedure.input(productFields).mutation(({ input }) => createCatalogProduct({ ...input, description: input.description || null, originalPrice: input.originalPrice ?? null })),
     update: adminProcedure.input(idInput.merge(productFields.partial())).mutation(({ input }) => updateCatalogProduct(input.id, { ...input, description: input.description || undefined })),
@@ -104,6 +106,7 @@ export const contentRouter = router({
   media: router({
     list: adminProcedure.query(() => getAllMediaAssets()),
     byProduct: adminProcedure.input(z.object({ productId: z.number().int().positive() })).query(({ input }) => getProductMedia(input.productId)),
+    publicByProduct: publicProcedure.input(z.object({ productId: z.number().int().positive() })).query(({ input }) => getProductMedia(input.productId)),
     addUrl: adminProcedure.input(z.object({ url: z.string().url().max(2000), altText: z.string().trim().max(255).optional(), filename: z.string().trim().max(255).optional() })).mutation(({ input, ctx }) => createMediaAsset({ url: input.url, altText: input.altText || null, filename: input.filename || null, createdBy: ctx.user.id, kind: "image" })),
     upload: adminProcedure.input(z.object({ filename: z.string().trim().min(1).max(255), mimeType: z.enum(["image/jpeg", "image/png", "image/webp", "image/avif"]), base64: z.string().min(100).max(12_000_000), altText: z.string().trim().max(255).optional() })).mutation(async ({ input, ctx }) => { const key = `mazigho-media/${Date.now()}-${input.filename.replace(/[^a-zA-Z0-9._-]/g, "-")}`; const uploaded = await storagePut(key, Buffer.from(input.base64, "base64"), input.mimeType); return createMediaAsset({ url: `/manus-storage/${uploaded.key}`, storageKey: uploaded.key, filename: input.filename, mimeType: input.mimeType, altText: input.altText || null, createdBy: ctx.user.id, kind: "image" }); }),
     attachToProduct: adminProcedure.input(z.object({ productId: z.number().int().positive(), mediaId: z.number().int().positive(), sortOrder: z.number().int().min(0).default(0) })).mutation(({ input }) => attachProductMedia(input.productId, input.mediaId, input.sortOrder)),

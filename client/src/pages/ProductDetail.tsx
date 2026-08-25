@@ -8,6 +8,7 @@ import { useParams, useLocation } from "wouter";
 import React, { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { ProductImageCarousel } from "@/components/ProductImageCarousel";
+import { trpc } from "@/lib/trpc";
 
 // Mock product data
 const PRODUCTS: Record<string, any> = {
@@ -50,8 +51,11 @@ export default function ProductDetail() {
   const [, setLocation] = useLocation();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-
-  const product = id ? PRODUCTS[id] : null;
+  const productQuery = trpc.content?.products?.byId?.useQuery?.(id ? { id: Number(id) } : { id: 0 }, { enabled: Boolean(id) });
+  const mediaQuery = trpc.content?.media?.publicByProduct?.useQuery?.(id ? { productId: Number(id) } : { productId: 0 }, { enabled: Boolean(id) });
+  const persistedProduct = productQuery?.data;
+  const categoryLabels = ["", "Vêtements", "Cosmétiques", "Accessoires", "Cadeaux", "Jouets"];
+  const product = persistedProduct ? { id: persistedProduct.id, name: persistedProduct.name, category: categoryLabels[persistedProduct.categoryId] ?? "Autres", price: persistedProduct.price / 100, image: mediaQuery?.data?.[0]?.media.url ?? "/manus-storage/mazigho-stock-mode_ab0ed7cb.webp", images: mediaQuery?.data?.map((media) => media.media.url) ?? [], description: persistedProduct.description ?? "Une trouvaille pensée pour accompagner votre quotidien.", details: ["Sélection MAZIGHO", persistedProduct.stock > 0 ? "Disponible" : "Actuellement indisponible"] } : (id ? PRODUCTS[id] : null);
 
   if (!product) {
     return (

@@ -326,6 +326,13 @@ export async function getCatalogProducts() {
   return db.select().from(products).orderBy(asc(products.id));
 }
 
+export async function getCatalogProductById(id: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db.select().from(products).where(eq(products.id, id)).limit(1);
+  return rows[0] ?? null;
+}
+
 export async function createCatalogProduct(input: InsertProduct) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
