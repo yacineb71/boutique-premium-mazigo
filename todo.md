@@ -1,4 +1,26 @@
 
+## Dernier contrôle d’accès sans session
+- [x] Vérifier la redirection sans session sur chaque nouvelle route admin dédiée
+
+## Derniers contrôles du back-office
+- [x] Tester chaque nouvelle route admin avec garde sans session et rendu admin autorisé
+- [x] Documenter séparément la garde d’accès validée et la revue responsive authentifiée reportée sur tablette
+
+## Compléments nécessaires au back-office complet
+- [x] Ajouter une vraie rubrique Messages et des routes dédiées pour les sous-rubriques actuellement regroupées
+- [x] Ajouter au dashboard une activité récente et un état de stock issus de données vérifiables ou d’états vides explicites
+- [x] Étendre les tests à l’accès protégé et à la navigation de chaque rubrique admin
+- [x] Documenter la validation responsive réalisée et la limite de session admin tablette
+
+## Nouvelle demande — back-office complet inspiré de la référence
+- [x] Définir une architecture admin multi-rubriques visible uniquement après authentification admin
+- [x] Ajouter une sidebar persistante avec sections Pilotage, Catalogue, Préparation, Relation & contenu et Configuration
+- [x] Ajouter des sous-rubriques admin dédiées : suivi administratif, collections, traductions, fournisseurs, messages, contenu, SEO et informations légales
+- [x] Enrichir le dashboard avec alertes, actions rapides, état du catalogue, stocks et activité récente
+- [x] Rendre les rubriques accessibles et cohérentes sur mobile, tablette et desktop
+- [x] Ajouter les tests de navigation et d’accès aux nouvelles rubriques
+- [x] Valider tests, build et publication du back-office complet
+
 ## Compléments de fiabilité du dashboard admin
 - [x] Ajouter un graphique ou une visualisation alternative alimenté par des données vérifiables
 - [x] Remplacer les KPI numériques non reliés par des états vides explicitement sourcés

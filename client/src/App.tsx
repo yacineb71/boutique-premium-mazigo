@@ -21,6 +21,8 @@ import AdminCustomers from "./pages/AdminCustomers";
 import AdminPromotions from "./pages/AdminPromotions";
 import AdminReviews from "./pages/AdminReviews";
 import AdminSettings from "./pages/AdminSettings";
+import AdminMessages from "./pages/AdminMessages";
+import { AdminWorkspace, workspacePresets } from "./pages/AdminWorkspace";
 
 function Router() {
   return (
@@ -90,6 +92,36 @@ function Router() {
         )}
       </Route>
       
+      <Route path="/admin/messages">
+        {() => (
+          <PrivateRoute requiredRole="admin">
+            <AdminMessages />
+          </PrivateRoute>
+        )}
+      </Route>
+
+      <Route path="/admin/collections">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.collections} /></PrivateRoute>}
+      </Route>
+      <Route path="/admin/translations">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.translations} /></PrivateRoute>}
+      </Route>
+      <Route path="/admin/suppliers">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.suppliers} /></PrivateRoute>}
+      </Route>
+      <Route path="/admin/suppliers/import">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.supplierImport} /></PrivateRoute>}
+      </Route>
+      <Route path="/admin/content">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.content} /></PrivateRoute>}
+      </Route>
+      <Route path="/admin/seo">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.seo} /></PrivateRoute>}
+      </Route>
+      <Route path="/admin/legal">
+        {() => <PrivateRoute requiredRole="admin"><AdminWorkspace {...workspacePresets.legal} /></PrivateRoute>}
+      </Route>
+
       <Route path="/admin/settings">
         {() => (
           <PrivateRoute requiredRole="admin">

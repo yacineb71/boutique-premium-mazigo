@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { AdminLayout } from "@/components/AdminLayout";
 import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 import {
@@ -23,6 +24,7 @@ export default function AdminDashboard() {
     return counts;
   }, {});
   const categories = Object.entries(categoryCounts).sort(([, a], [, b]) => b - a);
+  const lowStockProducts = products.filter((product) => product.inStock === false);
 
   const stats = [
     { label: "Ventes encaissées", value: "—", detail: "Aucune source de commandes réglées", icon: WalletCards, tone: "bg-[#f1e9df] text-[#b65f3f]" },
@@ -32,7 +34,8 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <AdminLayout>
+      <div className="space-y-6">
       <section className="rounded-[1.5rem] border border-[#eadfd4] bg-gradient-to-br from-[#fffaf3] via-[#fbf5eb] to-[#f4e9df] p-6 sm:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -99,10 +102,22 @@ export default function AdminDashboard() {
         </div>
       </section>
 
-      <section className="grid gap-3 sm:grid-cols-3">
-        {[{ label: "Ajouter un produit", href: "/admin/products", icon: Package }, { label: "Traiter les commandes", href: "/admin/orders", icon: ShoppingCart }, { label: "Éditer le contenu", href: "/admin/settings", icon: Sparkles }].map((item) => { const Icon = item.icon; return <Link key={item.label} href={item.href} className="flex items-center gap-3 rounded-2xl border border-[#eadfd4] bg-[#fffdf9] p-4 transition hover:border-[#d9a078]"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f1e9df] text-[#b65f3f]"><Icon size={18} /></span><span className="text-sm font-semibold text-[#514942]">{item.label}</span><ArrowUpRight className="ml-auto text-[#8b8178]" size={16} /></Link>; })}
+      <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
+        <Card className="overflow-hidden rounded-[1.25rem] border-[#eadfd4] bg-[#fffdf9]">
+          <div className="border-b border-[#eee5dc] p-5 sm:p-6"><div className="flex items-center gap-3"><AlertCircle className="text-[#b65f3f]" size={21} /><div><h3 className="text-xl font-semibold text-[#211e1b]">Alertes de stock</h3><p className="mt-1 text-sm text-[#6d6259]">Produits dont la quantité disponible nécessite une vérification.</p></div></div></div>
+          {lowStockProducts.length === 0 ? <div className="px-5 py-12 text-center sm:px-6"><Package className="mx-auto mb-3 text-[#41a46d]" size={28} /><p className="font-semibold text-[#211e1b]">Aucune alerte de stock</p><p className="mt-1 text-sm leading-6 text-[#6d6259]">Aucun produit marqué comme indisponible dans le catalogue chargé.</p></div> : <div className="divide-y divide-[#eee5dc]">{lowStockProducts.map((product) => <div key={product.id} className="flex items-center justify-between gap-4 p-4"><span className="truncate text-sm font-semibold text-[#514942]">{product.name}</span><span className="shrink-0 rounded-full bg-[#f6edc9] px-3 py-1 text-xs font-semibold text-[#8b5a45]">Indisponible</span></div>)}</div>}
+        </Card>
+        <Card className="overflow-hidden rounded-[1.25rem] border-[#eadfd4] bg-[#fffdf9]">
+          <div className="border-b border-[#eee5dc] p-5 sm:p-6"><div className="flex items-center gap-3"><ClipboardList className="text-[#b65f3f]" size={21} /><div><h3 className="text-xl font-semibold text-[#211e1b]">Activité récente</h3><p className="mt-1 text-sm text-[#6d6259]">Les dernières actions administratives enregistrées.</p></div></div></div>
+          <div className="px-5 py-12 text-center sm:px-6"><ClipboardList className="mx-auto mb-3 text-[#8b8178]" size={28} /><p className="font-semibold text-[#211e1b]">Aucune activité enregistrée</p><p className="mt-1 text-sm leading-6 text-[#6d6259]">Les actions apparaîtront ici dès qu’un événement sera enregistré.</p></div>
+        </Card>
       </section>
-    </div>
+
+      <section className="grid gap-3 sm:grid-cols-3">
+        {[{ label: "Ajouter un produit", href: "/admin/products", icon: Package }, { label: "Traiter les commandes", href: "/admin/orders", icon: ShoppingCart }, { label: "Éditer le contenu", href: "/admin/content", icon: Sparkles }].map((item) => { const Icon = item.icon; return <Link key={item.label} href={item.href} className="flex items-center gap-3 rounded-2xl border border-[#eadfd4] bg-[#fffdf9] p-4 transition hover:border-[#d9a078]"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f1e9df] text-[#b65f3f]"><Icon size={18} /></span><span className="text-sm font-semibold text-[#514942]">{item.label}</span><ArrowUpRight className="ml-auto text-[#8b8178]" size={16} /></Link>; })}
+      </section>
+      </div>
+    </AdminLayout>
   );
 }
 

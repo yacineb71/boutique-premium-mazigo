@@ -1,3 +1,4 @@
+import React from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import {
   ArrowLeft,
@@ -31,7 +32,7 @@ type AdminMenuItem = {
   href: string;
 };
 
-const menuSections: Array<{ label: string; items: AdminMenuItem[] }> = [
+export const menuSections: Array<{ label: string; items: AdminMenuItem[] }> = [
   {
     label: "Pilotage",
     items: [
@@ -44,15 +45,15 @@ const menuSections: Array<{ label: string; items: AdminMenuItem[] }> = [
     items: [
       { icon: Package, label: "Produits", href: "/admin/products" },
       { icon: FolderOpen, label: "Catégories", href: "/admin/categories" },
-      { icon: Palette, label: "Collections créatives", href: "/admin/categories" },
-      { icon: Languages, label: "Langues & traductions", href: "/admin/settings" },
+      { icon: Palette, label: "Collections créatives", href: "/admin/collections" },
+      { icon: Languages, label: "Langues & traductions", href: "/admin/translations" },
     ],
   },
   {
     label: "Préparation",
     items: [
-      { icon: Truck, label: "Importer fournisseur", href: "/admin/products" },
-      { icon: Truck, label: "Hub fournisseurs", href: "/admin/products" },
+      { icon: Truck, label: "Importer fournisseur", href: "/admin/suppliers/import" },
+      { icon: Truck, label: "Hub fournisseurs", href: "/admin/suppliers" },
       { icon: ShoppingCart, label: "Commandes", href: "/admin/orders" },
     ],
   },
@@ -60,16 +61,17 @@ const menuSections: Array<{ label: string; items: AdminMenuItem[] }> = [
     label: "Relation & contenu",
     items: [
       { icon: Users, label: "Utilisateurs", href: "/admin/customers" },
+      { icon: MessageSquare, label: "Messages", href: "/admin/messages" },
       { icon: MessageSquare, label: "Avis clients", href: "/admin/reviews" },
-      { icon: FileText, label: "Contenu", href: "/admin/settings" },
+      { icon: FileText, label: "Contenu", href: "/admin/content" },
       { icon: Tag, label: "Promotions", href: "/admin/promotions" },
     ],
   },
   {
     label: "Configuration",
     items: [
-      { icon: FileText, label: "SEO & indexation", href: "/admin/settings" },
-      { icon: FileText, label: "Informations légales", href: "/admin/settings" },
+      { icon: FileText, label: "SEO & indexation", href: "/admin/seo" },
+      { icon: FileText, label: "Informations légales", href: "/admin/legal" },
       { icon: Settings, label: "Paramètres", href: "/admin/settings" },
     ],
   },
