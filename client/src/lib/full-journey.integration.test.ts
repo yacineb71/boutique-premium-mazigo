@@ -173,7 +173,7 @@ describe("full journey and error handling integration", () => {
       await paymentButton.props.onClick();
     });
 
-    expect(globalThis.alert).toHaveBeenCalledWith("Erreur lors de la création de la session de paiement");
+    expect(checkoutRenderer!.root.findAllByProps({ role: "alert" }).some((node) => node.children.join("").includes("La session de paiement n’a pas pu être créée"))).toBe(true);
   });
 
   it("exhibits loading state during createSession mutation", async () => {

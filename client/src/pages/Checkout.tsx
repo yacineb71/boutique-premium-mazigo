@@ -6,20 +6,29 @@ import { useCart } from "@/hooks/useCart";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useLocation } from "wouter";
+import { getLoginUrl } from "@/const";
 import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 export default function Checkout() {
   const { items } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [, setLocation] = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const createSessionMutation = trpc.checkout.createSession.useMutation();
   const total = items.reduce((sum: number, item: any) => sum + item.price * item.quantity, 0);
 
   const handleCheckout = async () => {
+    setCheckoutError(null);
+    if (authLoading) return;
     if (!isAuthenticated) {
-      setLocation("/");
+      const loginUrl = getLoginUrl();
+      if (typeof window === "undefined") {
+        setLocation(loginUrl);
+      } else {
+        window.location.href = loginUrl;
+      }
       return;
     }
 
@@ -32,7 +41,7 @@ export default function Checkout() {
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      alert("Erreur lors de la création de la session de paiement");
+      setCheckoutError("La session de paiement n’a pas pu être créée. Vérifiez votre connexion puis réessayez.");
     } finally {
       setIsLoading(false);
     }
@@ -82,8 +91,15 @@ export default function Checkout() {
           </Card>
 
           <div className="space-y-4">
-            <Button onClick={handleCheckout} disabled={isLoading} className="w-full rounded-full bg-[#211e1b] text-white hover:bg-[#3a332f]" size="lg">
-              {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Traitement…</> : "Procéder au paiement"}
+            {!authLoading && !isAuthenticated && (
+              <div className="rounded-2xl border border-[#e9b08d] bg-[#fff4eb] p-4 text-sm text-[#6d3d2c]" role="status">
+                <p className="font-semibold">Connexion requise pour payer</p>
+                <p className="mt-1">Connectez-vous à votre compte MAZIGHO pour poursuivre vers Stripe Checkout.</p>
+              </div>
+            )}
+            {checkoutError && <p className="rounded-2xl border border-[#e9b08d] bg-[#fff4eb] p-4 text-sm text-[#6d3d2c]" role="alert">{checkoutError}</p>}
+            <Button onClick={handleCheckout} disabled={isLoading || authLoading} className="w-full rounded-full bg-[#211e1b] text-white hover:bg-[#3a332f]" size="lg">
+              {isLoading || authLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{authLoading ? "Vérification du compte…" : "Traitement…"}</> : !isAuthenticated ? "Se connecter pour payer" : "Procéder au paiement"}
             </Button>
             <Button onClick={() => setLocation("/cart")} variant="outline" className="w-full rounded-full border-[#d5cec4]" size="lg">Retour au panier</Button>
           </div>

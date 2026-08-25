@@ -33,6 +33,7 @@ vi.mock("lucide-react", () => ({
 }));
 
 vi.mock("@/components/Header", () => ({ Header: () => createElement("header", null, "Header") }));
+vi.mock("@/const", () => ({ getLoginUrl: () => "/login" }));
 vi.mock("@/components/Footer", () => ({ Footer: () => createElement("footer", null, "Footer") }));
 vi.mock("@/components/ui/card", () => ({
   Card: ({ children, ...props }: { children?: unknown; [key: string]: unknown }) =>
@@ -127,7 +128,7 @@ describe("access and checkout integration", () => {
     expect(routeState.navigateMock).toHaveBeenCalledWith("/shop");
   });
 
-  it("routes an unauthenticated checkout attempt to Home without creating a Stripe session", async () => {
+  it("invites an unauthenticated checkout visitor to login without creating a Stripe session", async () => {
     cartState.items = [{ id: 8, name: "Robe Soirée", price: 129.99, quantity: 1, category: "Vêtements" }];
     let renderer: ReactTestRenderer;
     act(() => {
@@ -136,7 +137,23 @@ describe("access and checkout integration", () => {
 
     const paymentButton = renderer!.root.findAllByType("button")[0];
     await act(async () => paymentButton.props.onClick());
-    expect(routeState.navigateMock).toHaveBeenCalledWith("/");
+    expect(routeState.navigateMock).toHaveBeenCalledWith("/login");
     expect(mutateAsyncMock).not.toHaveBeenCalled();
+    expect(renderer!.root.findAllByType("p").some((node) => node.children.join("").includes("Connexion requise pour payer"))).toBe(true);
+  });
+
+  it("shows a recoverable message when Stripe session creation fails", async () => {
+    authState.isAuthenticated = true;
+    authState.user = { role: "user" };
+    cartState.items = [{ id: 8, name: "Robe Soirée", price: 129.99, quantity: 1, category: "Vêtements" }];
+    mutateAsyncMock.mockRejectedValueOnce(new Error("Stripe unavailable"));
+    let renderer: ReactTestRenderer;
+    act(() => {
+      renderer = create(createElement(Checkout));
+    });
+
+    const paymentButton = renderer!.root.findAllByType("button")[0];
+    await act(async () => paymentButton.props.onClick());
+    expect(renderer!.root.findAllByProps({ role: "alert" }).map((node) => node.children.join(" ")).join(" ")).toContain("La session de paiement n’a pas pu être créée");
   });
 });

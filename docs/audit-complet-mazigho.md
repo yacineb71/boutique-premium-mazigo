@@ -5,7 +5,7 @@
 
 ## Synthèse exécutive
 
-MAZIGHO dispose d’une base fonctionnelle solide : la vitrine est navigable, le catalogue est persistant, le panier et le parcours checkout sont présents, l’espace administrateur est séparé par authentification et rôle, et les flux de contact, avis, médias, commandes et préparation fournisseur sont couverts par des procédures serveur. Les contrôles automatisés exécutés pendant l’audit donnent **62 tests Vitest réussis**, un typage TypeScript sans erreur et un build de production réussi.
+MAZIGHO dispose d’une base fonctionnelle solide : la vitrine est navigable, le catalogue est persistant, le panier et le parcours checkout sont présents, l’espace administrateur est séparé par authentification et rôle, et les flux de contact, avis, médias, commandes et préparation fournisseur sont couverts par des procédures serveur. Les contrôles automatisés exécutés pendant l’audit donnent **63 tests Vitest réussis**, un typage TypeScript sans erreur et un build de production réussi.
 
 Deux corrections importantes ont été appliquées pendant l’audit. La fiche produit utilise maintenant la source persistante du catalogue et les médias associés administrativement, au lieu de dépendre uniquement de données statiques de secours. Une dépendance directe Axios et Drizzle ORM a été mise à jour vers des versions corrigées. Le seul fichier clairement obsolète identifié dans le dépôt, le `.gitkeep` vide à la racine, a été retiré ; les placeholders nécessaires à `client/public` et `drizzle/migrations` ont été conservés.
 
@@ -22,7 +22,7 @@ Deux corrections importantes ont été appliquées pendant l’audit. La fiche p
 | Administration | Sidebar structurée, catalogue CRUD, médias, messages, commandes et contenu présents | Vert | Compléter les KPI et les journaux d’activité réels |
 | Sécurité d’accès | Routes admin protégées par session et rôle ; séparation testée | Vert | Ajouter une vérification d’en-têtes et une politique de session documentée |
 | Dépendances | 42 alertes de production restantes : 5 hautes, 0 critique | Orange | Traiter les alertes transitives restantes et mettre en place une veille dépendances |
-| Performance | Build réussi, bundle client principal supérieur à 1 Mo | Orange | Découper les routes et charger les modules lourds à la demande |
+| Performance | Build réussi, bundle principal d’environ 830 Ko avant compression ; mesures DOMContentLoaded/LCP ajoutées | Orange | Découper les routes et charger les modules lourds à la demande |
 | GitHub | Une branche `main`, aucun fichier volumineux ou secret détecté, artefact racine supprimé | Vert | Décider si le dépôt public doit devenir privé avant les données commerciales |
 
 ## Parcours client contrôlés
@@ -35,11 +35,11 @@ Les coordonnées commerciales confirmées sont désormais : **Bahloul Yacine**, 
 
 Les captures et tests montrent une administration autonome avec navigation persistante, catalogue administrable, médiathèque, gestion des messages, avis, promotions, fournisseurs et commandes. Les routes `/admin/*` sont couvertes par le garde d’accès et les tests de visiteur ou d’utilisateur standard. Les métadonnées fournisseur restent dans les procédures privées. Le lien d’accès administrateur n’est rendu que pour un utilisateur authentifié ayant le rôle admin ; il n’est pas affiché aux visiteurs ni aux clients standards.
 
-Les zones encore incomplètes sont principalement opérationnelles : les ventes et commandes restent affichées comme indisponibles lorsqu’aucune source réelle n’est branchée, l’activité récente n’est pas encore alimentée par un journal général, et le traitement fournisseur reste manuel. Ces états sont honnêtes et préférables à des chiffres simulés, mais ils doivent être finalisés avant une exploitation à volume réel.
+Le checkout invite désormais explicitement un visiteur non connecté à se connecter au lieu de le renvoyer silencieusement vers l’accueil, et affiche un message récupérable si Stripe échoue. Les zones encore incomplètes sont principalement opérationnelles : les ventes et commandes restent affichées comme indisponibles lorsqu’aucune source réelle n’est branchée, l’activité récente n’est pas encore alimentée par un journal général, et le traitement fournisseur reste manuel. Ces états sont honnêtes et préférables à des chiffres simulés, mais ils doivent être finalisés avant une exploitation à volume réel.
 
 ## Audit technique et dépôt
 
-Le serveur de développement a été redémarré et répond correctement. Le typage TypeScript, les 20 fichiers de test et les 62 tests passent. Le build Vite et le bundle serveur réussissent. Le build produit désormais plusieurs chunks dédiés aux familles React, UI, données et graphiques. Le chunk applicatif principal reste d’environ 828 Ko avant compression. Une mesure légère du DOMContentLoaded et du LCP est désormais envoyée au canal analytique Umami lorsque celui-ci est disponible ; une séparation plus fine par routes reste recommandée.
+Le serveur de développement a été redémarré et répond correctement. Le typage TypeScript, les 20 fichiers de test et les 63 tests passent. Le build Vite et le bundle serveur réussissent. Le build produit désormais plusieurs chunks dédiés aux familles React, UI, données et graphiques. Le chunk applicatif principal reste d’environ 828 Ko avant compression. Une mesure légère du DOMContentLoaded et du LCP est désormais envoyée au canal analytique Umami lorsque celui-ci est disponible ; une séparation plus fine par routes reste recommandée.
 
 L’audit `pnpm audit --prod` a d’abord identifié 81 alertes. Après la mise à niveau de tRPC et de la chaîne AWS S3, il reste 42 alertes de production : 7 faibles, 30 modérées, 5 hautes et 0 critique. L’alerte critique `fast-xml-parser` a été éliminée ; la chaîne AWS utilise maintenant une version corrigée. Les alertes restantes concernent notamment des dépendances transitives de la couche de rendu Markdown/diagrammes et doivent faire l’objet d’une veille et de mises à niveau coordonnées.
 

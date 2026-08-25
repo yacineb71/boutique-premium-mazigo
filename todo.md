@@ -3300,3 +3300,8 @@
 - [x] Valider automatiquement la création de session Stripe en CHF et le parcours protégé
 - [ ] Effectuer le paiement sandbox réel depuis une session MAZIGHO connectée par le propriétaire
 - [ ] Vérifier le webhook et le passage de la commande à l’état payé depuis le compte Stripe actif
+
+## Bug découvert — checkout et session non reconnue
+- [x] Remplacer la redirection silencieuse du checkout vers l’accueil par une invitation explicite à se connecter
+- [x] Afficher une erreur utilisateur compréhensible si la création de session Stripe échoue
+- [x] Ajouter un test de non-redirection silencieuse et vérifier le checkout après publication
