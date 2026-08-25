@@ -1,4 +1,17 @@
 
+## Compléments de fiabilité du dashboard admin
+- [x] Ajouter un graphique ou une visualisation alternative alimenté par des données vérifiables
+- [x] Remplacer les KPI numériques non reliés par des états vides explicitement sourcés
+- [ ] Valider visuellement le dashboard admin authentifié sur desktop et mobile
+
+## Nouvelle demande — dashboard admin inspiré de la référence
+- [x] Auditer la visibilité du compte/admin dans la navigation client et les routes publiques
+- [x] Repenser AdminLayout avec une sidebar dédiée, un header admin et une hiérarchie proche de la référence
+- [x] Refaire AdminDashboard avec KPI, graphiques et états vides issus de données fiables
+- [x] Supprimer entièrement le lien Admin de l’en-tête public et refuser `/admin` aux utilisateurs non autorisés
+- [x] Ajouter des tests de séparation client/admin et de garde de route
+- [x] Valider le dashboard admin sur mobile et desktop, puis exécuter tests et build
+
 ## Nouvelle séquence de validation et publication
 - [x] Ajouter des effets de survol interactifs et accessibles aux cartes produits
 - [x] Ajouter un bouton global de bascule clair/sombre dans la navigation

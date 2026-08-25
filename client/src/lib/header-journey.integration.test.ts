@@ -12,6 +12,11 @@ const themeState = vi.hoisted(() => ({
   toggleMock: vi.fn(),
 }));
 
+const authState = vi.hoisted(() => ({
+  user: null as null | { role: "admin" | "user"; name?: string; email?: string },
+  isAuthenticated: false,
+}));
+
 routeState.navigateMock.mockImplementation((nextLocation: string) => {
   routeState.currentLocation = nextLocation;
 });
@@ -30,7 +35,7 @@ vi.mock("wouter", () => ({
 }));
 
 vi.mock("@/_core/hooks/useAuth", () => ({
-  useAuth: () => ({ user: null, isAuthenticated: false, loading: false, logout: vi.fn() }),
+  useAuth: () => ({ ...authState, loading: false, logout: vi.fn() }),
 }));
 
 vi.mock("@/hooks/useCart", () => ({ useCart: () => ({ itemCount: 0 }) }));
@@ -49,6 +54,8 @@ describe("post-redesign header purchase journey", () => {
     routeState.navigateMock.mockClear();
     themeState.theme = "light";
     themeState.toggleMock.mockClear();
+    authState.user = null;
+    authState.isAuthenticated = false;
   });
 
   it("exposes an accessible theme toggle in the Header", () => {
@@ -67,6 +74,15 @@ describe("post-redesign header purchase journey", () => {
       themeButton!.props.onClick();
     });
     expect(themeState.toggleMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not expose the admin account to a standard customer", () => {
+    let renderer: ReactTestRenderer;
+    act(() => {
+      renderer = create(createElement(Header));
+    });
+
+    expect(renderer!.root.findAllByType("a").some((link) => link.children.join("") === "Admin")).toBe(false);
   });
 
   it("opens the mobile menu and keeps the theme control accessible", () => {

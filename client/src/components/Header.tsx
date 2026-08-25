@@ -24,7 +24,7 @@ const categoryLinks = [
 ];
 
 export function Header() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   const { itemCount } = useCart();
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -72,7 +72,6 @@ export function Header() {
             </Link>
             {isAuthenticated ? (
               <div className="ml-2 flex items-center gap-2">
-                {user?.role === "admin" && <Link href="/admin"><Button variant="outline" size="sm" className="border-[#211e1b] text-[#211e1b]">Admin</Button></Link>}
                 <Button variant="outline" size="sm" onClick={() => logout()} className="border-[#d5cec4] text-[#514942]">Déconnexion</Button>
               </div>
             ) : (
