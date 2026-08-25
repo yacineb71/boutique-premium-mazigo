@@ -5,7 +5,7 @@
 
 ## Synthèse exécutive
 
-MAZIGHO dispose d’une base fonctionnelle solide : la vitrine est navigable, le catalogue est persistant, le panier et le parcours checkout sont présents, l’espace administrateur est séparé par authentification et rôle, et les flux de contact, avis, médias, commandes et préparation fournisseur sont couverts par des procédures serveur. Les contrôles automatisés exécutés pendant l’audit donnent **61 tests Vitest réussis**, un typage TypeScript sans erreur et un build de production réussi.
+MAZIGHO dispose d’une base fonctionnelle solide : la vitrine est navigable, le catalogue est persistant, le panier et le parcours checkout sont présents, l’espace administrateur est séparé par authentification et rôle, et les flux de contact, avis, médias, commandes et préparation fournisseur sont couverts par des procédures serveur. Les contrôles automatisés exécutés pendant l’audit donnent **62 tests Vitest réussis**, un typage TypeScript sans erreur et un build de production réussi.
 
 Deux corrections importantes ont été appliquées pendant l’audit. La fiche produit utilise maintenant la source persistante du catalogue et les médias associés administrativement, au lieu de dépendre uniquement de données statiques de secours. Une dépendance directe Axios et Drizzle ORM a été mise à jour vers des versions corrigées. Le seul fichier clairement obsolète identifié dans le dépôt, le `.gitkeep` vide à la racine, a été retiré ; les placeholders nécessaires à `client/public` et `drizzle/migrations` ont été conservés.
 
@@ -39,7 +39,7 @@ Les zones encore incomplètes sont principalement opérationnelles : les ventes 
 
 ## Audit technique et dépôt
 
-Le serveur de développement a été redémarré et répond correctement. Le typage TypeScript, les 19 fichiers de test et les 61 tests passent. Le build Vite et le bundle serveur réussissent. Le build produit désormais plusieurs chunks dédiés aux familles React, UI, données et graphiques. Le chunk applicatif principal reste d’environ 827 Ko avant compression ; une séparation plus fine par routes et une mesure RUM restent recommandées.
+Le serveur de développement a été redémarré et répond correctement. Le typage TypeScript, les 20 fichiers de test et les 62 tests passent. Le build Vite et le bundle serveur réussissent. Le build produit désormais plusieurs chunks dédiés aux familles React, UI, données et graphiques. Le chunk applicatif principal reste d’environ 828 Ko avant compression. Une mesure légère du DOMContentLoaded et du LCP est désormais envoyée au canal analytique Umami lorsque celui-ci est disponible ; une séparation plus fine par routes reste recommandée.
 
 L’audit `pnpm audit --prod` a d’abord identifié 81 alertes. Après la mise à niveau de tRPC et de la chaîne AWS S3, il reste 42 alertes de production : 7 faibles, 30 modérées, 5 hautes et 0 critique. L’alerte critique `fast-xml-parser` a été éliminée ; la chaîne AWS utilise maintenant une version corrigée. Les alertes restantes concernent notamment des dépendances transitives de la couche de rendu Markdown/diagrammes et doivent faire l’objet d’une veille et de mises à niveau coordonnées.
 
@@ -65,7 +65,7 @@ Enrichir la fiche produit administrable avec variantes, SKU, poids, dimensions, 
 
 ### Phase 4 — performance et conversion
 
-Le bundle a été découpé par familles React, UI, données et graphiques. Il reste à charger les outils administratifs à la demande, optimiser les images par largeur réellement affichée et ajouter une mesure de performance légère. Compléter les états de chargement, d’erreur et hors-stock. Ajouter une confirmation de commande détaillée, les emails transactionnels, le suivi colis et une page de compte client plus complète.
+Le bundle a été découpé par familles React, UI, données et graphiques. Il reste à charger les outils administratifs à la demande et à optimiser les images par largeur réellement affichée. Compléter les états de chargement, d’erreur et hors-stock. Ajouter une confirmation de commande détaillée, les emails transactionnels, le suivi colis et une page de compte client plus complète.
 
 ### Phase 5 — préparation commerciale
 

@@ -3288,7 +3288,7 @@
 - [ ] Confirmer les textes légaux définitifs
 - [ ] Valider un paiement Stripe sandbox complet avec webhook et email transactionnel réel
 - [x] Découper le bundle client principal
-- [ ] Ajouter la surveillance de performance légère
+- [x] Ajouter la surveillance de performance légère
 
 ## Confirmation utilisateur — coordonnées commerciales et Stripe
 - [x] Remplacer les coordonnées génériques par les coordonnées confirmées de Bahloul Yacine, Aigle, Suisse
