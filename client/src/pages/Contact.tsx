@@ -2,212 +2,43 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { trpc } from "@/lib/trpc";
+import { Mail, Phone, MapPin, Clock, Loader2, Send } from "lucide-react";
 import { useState } from "react";
 
+const initialForm = { name: "", email: "", subject: "", message: "" };
+
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+  const [formData, setFormData] = useState(initialForm);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const sendMessage = trpc.contact.send.useMutation({
+    onSuccess: (result) => {
+      if (result.success) {
+        setFeedback({ type: "success", message: result.message });
+        setFormData(initialForm);
+      } else setFeedback({ type: "error", message: result.message });
+    },
+    onError: (error) => setFeedback({ type: "error", message: error.message || "Vérifiez les champs puis réessayez." }),
   });
 
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target;
+    setFormData((previous) => ({ ...previous, [name]: value }));
+    if (feedback) setFeedback(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simuler l'envoi du formulaire
-    console.log("Formulaire soumis:", formData);
-    setSubmitted(true);
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setSubmitted(false), 5000);
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFeedback(null);
+    sendMessage.mutate(formData);
   };
 
   const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email",
-      value: "support@mazigho.com",
-      description: "Nous répondons en 24 heures",
-    },
-    {
-      icon: Phone,
-      title: "Téléphone",
-      value: "+33 1 23 45 67 89",
-      description: "Lun-Ven: 9h-18h (GMT+1)",
-    },
-    {
-      icon: MapPin,
-      title: "Adresse",
-      value: "123 Rue de la Boutique, Paris 75001",
-      description: "Siège social MAZIGHO",
-    },
-    {
-      icon: Clock,
-      title: "Horaires",
-      value: "Ouvert 24/7",
-      description: "Support client disponible",
-    },
+    { icon: Mail, title: "Email", value: "contact@mazigho.com", description: "Réponse dès que possible" },
+    { icon: Phone, title: "Téléphone", value: "+33 1 23 45 67 89", description: "Lun–Ven · 9h–18h" },
+    { icon: MapPin, title: "Adresse", value: "Paris, France", description: "Écrivez-nous avant de vous déplacer" },
+    { icon: Clock, title: "Disponibilité", value: "Support en ligne", description: "Via le formulaire de contact" },
   ];
 
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header />
-
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#211e1b] via-[#3a2d28] to-[#b65f3f] px-4 py-20 text-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="mb-6 font-display text-5xl font-semibold">Nous Contacter</h1>
-          <p className="text-xl text-[#f1d5c6]">
-            Nous sommes là pour répondre à vos questions et vous aider
-          </p>
-        </div>
-      </section>
-
-      {/* Contact Info */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {contactInfo.map((info, index) => {
-              const Icon = info.icon;
-              return (
-                <Card key={index} className="p-6 text-center">
-                  <div className="flex justify-center mb-4">
-                    <div className="bg-teal-100 p-4 rounded-lg">
-                      <Icon size={32} className="text-teal-600" />
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{info.title}</h3>
-                  <p className="text-gray-900 font-semibold mb-2">{info.value}</p>
-                  <p className="text-gray-600 text-sm">{info.description}</p>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form */}
-      <section className="py-16 px-4">
-        <div className="max-w-2xl mx-auto">
-          <Card className="p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Envoyez-nous un Message</h2>
-
-            {submitted && (
-              <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-lg">
-                ✅ Merci ! Votre message a été envoyé avec succès. Nous vous répondrons bientôt.
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Nom *
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    placeholder="Votre nom"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                    placeholder="votre@email.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Sujet *
-                </label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Sujet de votre message"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Message *
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                  placeholder="Votre message..."
-                />
-              </div>
-
-              <Button type="submit" className="w-full">
-                Envoyer le Message
-              </Button>
-            </form>
-          </Card>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Questions Fréquentes</h2>
-          <div className="space-y-4">
-            {[
-              {
-                q: "Quel est le délai de livraison ?",
-                a: "Les commandes sont généralement livrées en 2-3 jours ouvrables. Les livraisons internationales peuvent prendre 5-10 jours.",
-              },
-              {
-                q: "Puis-je retourner un produit ?",
-                a: "Oui, vous pouvez retourner tout produit dans les 30 jours suivant la réception pour un remboursement complet.",
-              },
-              {
-                q: "Acceptez-vous les retours gratuits ?",
-                a: "Oui, les retours sont gratuits pour les clients en France métropolitaine. Des frais peuvent s'appliquer pour les retours internationaux.",
-              },
-              {
-                q: "Quels modes de paiement acceptez-vous ?",
-                a: "Nous acceptons les cartes bancaires, PayPal, Apple Pay, Google Pay et les virements bancaires.",
-              },
-            ].map((faq, index) => (
-              <Card key={index} className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">{faq.q}</h3>
-                <p className="text-gray-600">{faq.a}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
+  return <div className="min-h-screen flex flex-col bg-[#f8f5ef] text-[#211e1b]"><Header /><section className="bg-gradient-to-br from-[#211e1b] via-[#3a2d28] to-[#b65f3f] px-4 py-20 text-white"><div className="mx-auto max-w-4xl text-center"><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#e7a17f]">Service MAZIGHO</p><h1 className="mt-4 font-display text-5xl font-semibold">Nous contacter</h1><p className="mt-5 text-xl text-[#f1d5c6]">Une question sur une commande, un produit ou une livraison ?</p></div></section><section className="px-4 py-14 sm:py-20"><div className="mx-auto max-w-6xl"><div className="mb-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{contactInfo.map(({ icon: Icon, title, value, description }) => <Card key={title} className="border-[#e5dbd0] bg-[#fffdf9] p-6 text-center"><div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f4dfd3] text-[#b65f3f]"><Icon size={23} /></div><h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-[#8b5a45]">{title}</h2><p className="mt-2 font-semibold text-[#211e1b]">{value}</p><p className="mt-1 text-sm text-[#6d6259]">{description}</p></Card>)}</div><Card className="mx-auto max-w-3xl border-[#e5dbd0] bg-[#fffdf9] p-6 sm:p-10"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#b65f3f]">Réponse directe</p><h2 className="mt-2 font-display text-3xl font-semibold">Envoyez-nous un message</h2><p className="mt-3 text-[#6d6259]">Les champs marqués d’un astérisque sont nécessaires pour traiter votre demande.</p>{feedback ? <div role="status" className={`mt-6 rounded-xl border px-4 py-3 text-sm ${feedback.type === "success" ? "border-[#bfe2ce] bg-[#edf8f1] text-[#276749]" : "border-[#efc1b5] bg-[#fff1ed] text-[#9b3d27]"}`}>{feedback.message}</div> : null}<form onSubmit={handleSubmit} className="mt-8 space-y-5"><div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-semibold text-[#514942]">Nom *<input required minLength={2} name="name" value={formData.name} onChange={handleChange} className="mt-2 h-11 w-full rounded-xl border border-[#d5cec4] bg-[#fffdf9] px-3 font-normal text-[#211e1b] outline-none focus:border-[#b65f3f]" placeholder="Votre nom" /></label><label className="block text-sm font-semibold text-[#514942]">Email *<input required type="email" name="email" value={formData.email} onChange={handleChange} className="mt-2 h-11 w-full rounded-xl border border-[#d5cec4] bg-[#fffdf9] px-3 font-normal text-[#211e1b] outline-none focus:border-[#b65f3f]" placeholder="vous@exemple.com" /></label></div><label className="block text-sm font-semibold text-[#514942]">Sujet *<input required minLength={3} name="subject" value={formData.subject} onChange={handleChange} className="mt-2 h-11 w-full rounded-xl border border-[#d5cec4] bg-[#fffdf9] px-3 font-normal text-[#211e1b] outline-none focus:border-[#b65f3f]" placeholder="Le sujet de votre demande" /></label><label className="block text-sm font-semibold text-[#514942]">Message *<textarea required minLength={10} name="message" value={formData.message} onChange={handleChange} rows={6} className="mt-2 w-full rounded-xl border border-[#d5cec4] bg-[#fffdf9] p-3 font-normal text-[#211e1b] outline-none focus:border-[#b65f3f]" placeholder="Expliquez-nous votre demande…" /></label><Button type="submit" disabled={sendMessage.isPending} className="w-full rounded-full bg-[#211e1b] text-white hover:bg-[#3a332f]">{sendMessage.isPending ? <Loader2 className="mr-2 animate-spin" size={17} /> : <Send className="mr-2" size={17} />}{sendMessage.isPending ? "Envoi en cours…" : "Envoyer le message"}</Button></form></Card></div></section><Footer /></div>;
 }

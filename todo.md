@@ -3,6 +3,27 @@
 - [x] Valider visuellement Admin → Produits & fournisseurs en session admin sur mobile, tablette et desktop
 - [x] Enregistrer le checkpoint final après cette validation
 
+## Publication finale FAQ et contact
+- [ ] Enregistrer un checkpoint après les changements FAQ/contact/footer
+
+## Preuves finales FAQ et navigation
+- [x] Ajouter un test de navigation du lien FAQ et des liens légaux vers leurs vraies routes
+- [x] Capturer explicitement le pied de page simplifié sur desktop et mobile
+- [x] Enregistrer un checkpoint après les changements FAQ/contact/footer
+
+## Ajustement demandé — lien FAQ dans le pied de page
+- [x] Retirer les détails des questions fréquentes du pied de page
+- [x] Conserver un lien FAQ unique pointant vers `/faq`
+- [x] Vérifier le rendu responsive et publier la modification
+
+## Nouvelle demande — FAQ, contact et navigation
+- [x] Ajouter un lien FAQ unique dans le pied de page, avec une page FAQ complète accessible séparément
+- [x] Auditer et fiabiliser le formulaire de contact avec états de chargement, succès et erreur
+- [ ] Auditer tous les boutons, onglets et liens du storefront et de l’administration
+- [ ] Relier chaque élément interactif à une vraie page ou action, sans liens fictifs
+- [x] Ajouter des tests de navigation et de soumission du formulaire de contact
+- [x] Valider les parcours desktop/mobile, le typage, les tests, le build et publier
+
 ## Derniers contrôles interface fournisseur
 - [x] Tester que les métadonnées fournisseur restent accessibles uniquement aux procédures admin et absentes du catalogue public
 - [x] Effectuer une validation responsive dédiée de l’écran Admin → Produits & fournisseurs

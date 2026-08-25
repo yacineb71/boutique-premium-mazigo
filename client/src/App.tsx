@@ -13,6 +13,8 @@ import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
+import Legal from "./pages/Legal";
 import ProductDetail from "./pages/ProductDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminProducts from "./pages/AdminProducts";
@@ -41,6 +43,8 @@ function Router() {
       </Route>
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
+      <Route path="/faq" component={FAQ} />
+      <Route path="/legal/:section" component={Legal} />
       <Route path="/product/:id" component={ProductDetail} />
       
       {/* Admin Routes */}
