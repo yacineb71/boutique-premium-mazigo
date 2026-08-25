@@ -2,7 +2,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ShoppingCart, Heart, Star } from "lucide-react";
+import { ArrowRight, ShoppingCart, Heart } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import {
@@ -21,8 +21,7 @@ interface Product {
   category: string;
   price: number;
   image: string;
-  rating: number;
-  reviews: number;
+  popularityRank: number;
   inStock: boolean;
 }
 
@@ -33,8 +32,7 @@ const PRODUCTS: Product[] = [
     category: "Vêtements",
     price: 29.99,
     image: "👕",
-    rating: 4.5,
-    reviews: 128,
+    popularityRank: 12,
     inStock: true,
   },
   {
@@ -43,8 +41,7 @@ const PRODUCTS: Product[] = [
     category: "Cosmétiques",
     price: 49.99,
     image: "💄",
-    rating: 4.8,
-    reviews: 256,
+    popularityRank: 11,
     inStock: true,
   },
   {
@@ -53,8 +50,7 @@ const PRODUCTS: Product[] = [
     category: "Accessoires",
     price: 89.99,
     image: "👜",
-    rating: 4.6,
-    reviews: 89,
+    popularityRank: 9,
     inStock: true,
   },
   {
@@ -63,8 +59,7 @@ const PRODUCTS: Product[] = [
     category: "Accessoires",
     price: 199.99,
     image: "⌚",
-    rating: 4.7,
-    reviews: 156,
+    popularityRank: 10,
     inStock: true,
   },
   {
@@ -73,8 +68,7 @@ const PRODUCTS: Product[] = [
     category: "Cosmétiques",
     price: 79.99,
     image: "🌹",
-    rating: 4.9,
-    reviews: 342,
+    popularityRank: 8,
     inStock: true,
   },
   {
@@ -83,8 +77,7 @@ const PRODUCTS: Product[] = [
     category: "Accessoires",
     price: 39.99,
     image: "🎀",
-    rating: 4.4,
-    reviews: 67,
+    popularityRank: 7,
     inStock: true,
   },
   {
@@ -93,8 +86,7 @@ const PRODUCTS: Product[] = [
     category: "Vêtements",
     price: 59.99,
     image: "👖",
-    rating: 4.5,
-    reviews: 203,
+    popularityRank: 6,
     inStock: true,
   },
   {
@@ -103,8 +95,7 @@ const PRODUCTS: Product[] = [
     category: "Vêtements",
     price: 129.99,
     image: "👗",
-    rating: 4.8,
-    reviews: 178,
+    popularityRank: 5,
     inStock: true,
   },
   {
@@ -113,8 +104,7 @@ const PRODUCTS: Product[] = [
     category: "Jouets",
     price: 24.99,
     image: "🧸",
-    rating: 4.6,
-    reviews: 94,
+    popularityRank: 4,
     inStock: true,
   },
   {
@@ -123,8 +113,7 @@ const PRODUCTS: Product[] = [
     category: "Cadeaux",
     price: 99.99,
     image: "🎁",
-    rating: 4.9,
-    reviews: 287,
+    popularityRank: 3,
     inStock: true,
   },
   {
@@ -133,8 +122,7 @@ const PRODUCTS: Product[] = [
     category: "Vêtements",
     price: 79.99,
     image: "👟",
-    rating: 4.5,
-    reviews: 145,
+    popularityRank: 2,
     inStock: true,
   },
   {
@@ -143,8 +131,7 @@ const PRODUCTS: Product[] = [
     category: "Accessoires",
     price: 44.99,
     image: "🎩",
-    rating: 4.3,
-    reviews: 56,
+    popularityRank: 1,
     inStock: true,
   },
 ];
@@ -297,12 +284,15 @@ export default function Shop() {
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {filteredProducts.map((product) => (
-              <Card key={product.id} className="overflow-hidden rounded-3xl border-[#ded5ca] bg-[#fbf9f5] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
-                <div className="relative bg-gradient-to-br from-[#f1e9df] to-[#ddd1c3] p-8 text-center">
-                  <div className="text-6xl mb-4">{product.image}</div>
+              <Card key={product.id} className="group overflow-hidden rounded-3xl border-[#ded5ca] bg-[#fbf9f5] shadow-sm transition duration-500 ease-out hover:-translate-y-2 hover:scale-[1.015] hover:border-[#c56f4b]/60 hover:shadow-[0_20px_45px_rgba(85,56,43,0.18)] focus-within:-translate-y-2 focus-within:border-[#c56f4b]/60 motion-reduce:transition-none motion-reduce:hover:transform-none">
+                <div className="relative overflow-hidden bg-gradient-to-br from-[#f1e9df] to-[#ddd1c3] p-8 text-center after:absolute after:inset-0 after:bg-[#b65f3f]/10 after:opacity-0 after:transition-opacity after:duration-500 group-hover:after:opacity-100 group-focus-within:after:opacity-100">
+                  <div className="relative z-10 mb-4 text-6xl transition-transform duration-500 ease-out group-hover:scale-110 motion-reduce:transform-none">{product.image}</div>
+                  <Link href={`/product/${product.id}`} className="absolute bottom-4 left-1/2 z-20 inline-flex -translate-x-1/2 translate-y-2 items-center gap-1 rounded-full bg-[#211e1b]/90 px-4 py-2 text-xs font-semibold text-[#f8f5ef] opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 focus-visible:translate-y-0 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c56f4b] motion-reduce:translate-y-0 motion-reduce:transition-none" aria-label={`Voir ${product.name}`}>
+                    Voir le produit <ArrowRight size={14} />
+                  </Link>
                   <button
                     onClick={() => toggleFavorite(product.id)}
-                    className="absolute right-4 top-4 rounded-full border border-[#ded5ca] bg-[#fbf9f5] p-2 shadow-sm transition hover:shadow-md"
+                    className="absolute right-4 top-4 z-30 rounded-full border border-[#ded5ca] bg-[#fbf9f5] p-2 shadow-sm transition hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c56f4b]"
                     aria-label={`Ajouter ${product.name} aux favoris`}
                   >
                     <Heart
@@ -313,24 +303,13 @@ export default function Shop() {
                 </div>
 
                 <div className="p-4">
-                  <Link href={`/product/${product.id}`} className="block">
+                  <Link href={`/product/${product.id}`} className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c56f4b] focus-visible:ring-offset-2">
                     <h3 className="mb-2 line-clamp-2 font-semibold text-[#211e1b] transition hover:text-[#b65f3f]">
                       {product.name}
                     </h3>
                   </Link>
 
                   <p className="mb-3 text-sm text-[#6d6259]">{product.category}</p>
-
-                  <div className="flex items-center gap-1 mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={14}
-                        className={i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
-                      />
-                    ))}
-                    <span className="ml-1 text-xs text-[#8b8178]">({product.reviews})</span>
-                  </div>
 
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-2xl font-semibold text-[#b65f3f]">€{product.price.toFixed(2)}</span>

@@ -1,10 +1,11 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { getLoginUrl } from "@/const";
-import { Menu, Search, ShoppingBag, UserRound, X } from "lucide-react";
+import { Menu, Moon, Search, ShoppingBag, Sun, UserRound, X } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "wouter";
 import { useCart } from "@/hooks/useCart";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const navLinks = [
   { label: "Accueil", href: "/" },
@@ -25,6 +26,7 @@ const categoryLinks = [
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
   const { itemCount } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -52,6 +54,15 @@ export function Header() {
           </nav>
 
           <div className="hidden items-center gap-2 md:flex">
+            <button
+              type="button"
+              onClick={() => toggleTheme?.()}
+              aria-label={theme === "dark" ? "Activer le thème clair" : "Activer le thème sombre"}
+              aria-pressed={theme === "dark"}
+              className="rounded-full p-2 text-[#514942] transition hover:bg-[#eee8df] hover:text-[#b65f3f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b65f3f] dark:text-[#f1d5c6] dark:hover:bg-[#3a332f]"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             <Link href="/shop" aria-label="Rechercher un produit" className="rounded-full p-2 text-[#514942] transition hover:bg-[#eee8df] hover:text-[#b65f3f]">
               <Search size={18} />
             </Link>
@@ -85,16 +96,28 @@ export function Header() {
           <div className="border-t border-[#e8e1d8] pb-5 pt-4 md:hidden">
             <div className="grid gap-1">
               {navLinks.map((link) => (
-                <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-3 py-3 text-sm font-medium text-[#514942] hover:bg-[#eee8df]">{link.label}</Link>
+                <Link key={`${link.label}-${link.href}`} href={link.href} onClick={() => setMobileMenuOpen(false)} className="rounded-lg px-3 py-3 text-sm font-medium text-[#514942] hover:bg-[#eee8df]">{link.label}</Link>
               ))}
             </div>
             <div className="mt-3 border-t border-[#e8e1d8] pt-3">
               <p className="mazigho-eyebrow px-3 pb-2">Nos univers</p>
               {categoryLinks.map((link) => <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm text-[#6d6259] hover:bg-[#eee8df]">{link.label}</Link>)}
             </div>
-            <div className="mt-3 flex gap-2 px-3">
+            <div className="mt-3 grid gap-2 px-3">
+              <button
+                type="button"
+                onClick={() => toggleTheme?.()}
+                aria-label={theme === "dark" ? "Activer le thème clair" : "Activer le thème sombre"}
+                aria-pressed={theme === "dark"}
+                className="flex items-center justify-center gap-2 rounded-full border border-[#d5cec4] px-4 py-2 text-sm text-[#514942] transition hover:bg-[#eee8df] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b65f3f] dark:border-[#6d6259] dark:text-[#f1d5c6] dark:hover:bg-[#3a332f]"
+              >
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                {theme === "dark" ? "Thème clair" : "Thème sombre"}
+              </button>
+              <div className="flex gap-2">
               <Link href="/cart" onClick={() => setMobileMenuOpen(false)} className="flex-1 rounded-full border border-[#d5cec4] px-4 py-2 text-center text-sm">Panier ({itemCount})</Link>
-              {isAuthenticated ? <button onClick={() => logout()} className="flex-1 rounded-full bg-[#211e1b] px-4 py-2 text-sm text-white">Déconnexion</button> : <button onClick={() => { window.location.href = getLoginUrl(); }} className="flex-1 rounded-full bg-[#b65f3f] px-4 py-2 text-sm text-white">Mon compte</button>}
+                {isAuthenticated ? <button onClick={() => logout()} className="flex-1 rounded-full bg-[#211e1b] px-4 py-2 text-sm text-white">Déconnexion</button> : <button onClick={() => { window.location.href = getLoginUrl(); }} className="flex-1 rounded-full bg-[#b65f3f] px-4 py-2 text-sm text-white">Mon compte</button>}
+              </div>
             </div>
           </div>
         )}

@@ -229,3 +229,46 @@
     border-color: rgba(33, 30, 27, 0.12);
   }
 }
+
+@layer components {
+  /* Thème sombre MAZIGHO : charbon profond, ivoire chaud et accents terracotta. */
+  .dark body {
+    background: #211e1b;
+    color: #f8f5ef;
+  }
+
+  .dark [class~="bg-[#f8f5ef]"] { background-color: #211e1b !important; }
+  .dark [class~="bg-[#fbf9f5]"] { background-color: #2b2521 !important; }
+  .dark [class~="bg-[#fbf9f5]/95"] { background-color: rgb(43 37 33 / 0.95) !important; }
+  .dark [class~="bg-[#ede7de]"] { background-color: #3a2d28 !important; }
+  .dark [class~="bg-[#eee8df]"] { background-color: #44362f !important; }
+  .dark [class~="bg-[#f1e9df]"] { background-color: #4a3931 !important; }
+  .dark [class~="bg-white"] { background-color: #2b2521 !important; }
+
+  .dark [class~="text-[#211e1b]"] { color: #f8f5ef !important; }
+  .dark [class~="text-[#514942]"] { color: #eadfd5 !important; }
+  .dark [class~="text-[#6d6259]"] { color: #cfc2b6 !important; }
+  .dark [class~="text-[#8b8178]"] { color: #b8a79b !important; }
+  .dark [class~="text-gray-900"] { color: #f8f5ef !important; }
+  .dark [class~="text-gray-700"], .dark [class~="text-gray-600"] { color: #cfc2b6 !important; }
+
+  .dark [class~="border-[#ded5ca]"],
+  .dark [class~="border-[#d5cec4]"],
+  .dark [class~="border-[#e8e1d8]"] { border-color: #5b463b !important; }
+  .dark [class~="border-gray-200"], .dark [class~="border-gray-300"] { border-color: #5b463b !important; }
+
+  .dark [class~="hover:bg-[#eee8df]"]:hover { background-color: #44362f !important; }
+  .dark [class~="hover:bg-[#e3d9cd]"]:hover { background-color: #554239 !important; }
+  .dark input, .dark select, .dark textarea {
+    color: #f8f5ef;
+    background-color: #2b2521;
+    border-color: #5b463b;
+  }
+  .dark input::placeholder, .dark textarea::placeholder { color: #b8a79b; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}

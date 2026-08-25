@@ -43,17 +43,22 @@ vi.mock("lucide-react", () => {
     Heart: Icon,
     Loader2: Icon,
     Menu: Icon,
+    Moon: Icon,
     Minus: Icon,
     Plus: Icon,
     Search: Icon,
     ShoppingBag: Icon,
     ShoppingCart: Icon,
     Star: Icon,
+    Sun: Icon,
     Trash2: Icon,
     UserRound: Icon,
     X: Icon,
   };
 });
+vi.mock("@/contexts/ThemeContext", () => ({
+  useTheme: () => ({ theme: "light", toggleTheme: vi.fn(), switchable: true }),
+}));
 vi.mock("@/hooks/useCart", () => ({
   useCart: () => ({
     get items() { return journeyState.items; },
@@ -112,6 +117,14 @@ describe("rendered post-redesign purchase journey", () => {
     expect(journeyState.currentLocation).toBe("/shop");
 
     const shop = render(createElement(Shop));
+    const productCard = shop.root.findAllByType("div").find((node) =>
+      typeof node.props.className === "string" &&
+      node.props.className.includes("group") &&
+      node.props.className.includes("hover:-translate-y-2"),
+    );
+    expect(productCard).toBeDefined();
+    const quickViewLink = shop.root.findAllByType("a").find((link) => link.children.join("").includes("Voir le produit"));
+    expect(quickViewLink).toBeDefined();
     const productLink = shop.root.findAllByType("a").find((link) => link.props.href === "/product/1");
     expect(productLink).toBeDefined();
     act(() => productLink!.props.onClick({ preventDefault: vi.fn() }));

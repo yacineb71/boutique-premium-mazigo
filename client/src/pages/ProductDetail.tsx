@@ -2,11 +2,11 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ProductReview, type Review } from "@/components/ProductReview";
+import { ProductReview } from "@/components/ProductReview";
 import { useCart } from "@/hooks/useCart";
 import { useParams, useLocation } from "wouter";
 import React, { useState } from "react";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 // Mock product data
 const PRODUCTS: Record<string, any> = {
@@ -16,8 +16,6 @@ const PRODUCTS: Record<string, any> = {
     category: "Vêtements",
     price: 29.99,
     image: "👕",
-    rating: 4.5,
-    reviews: 128,
     description:
       "T-shirt premium en coton 100% biologique. Confortable, durable et écologique.",
     details: [
@@ -33,8 +31,6 @@ const PRODUCTS: Record<string, any> = {
     category: "Cosmétiques",
     price: 49.99,
     image: "💄",
-    rating: 4.8,
-    reviews: 256,
     description:
       "Crème hydratante luxe pour tous les types de peau. Formule naturelle et efficace.",
     details: [
@@ -45,27 +41,6 @@ const PRODUCTS: Record<string, any> = {
     ],
   },
 };
-
-const SAMPLE_REVIEWS: Review[] = [
-  {
-    id: 1,
-    author: "Marie Dupont",
-    rating: 5,
-    title: "Excellent produit !",
-    comment: "Très satisfait de mon achat. La qualité est excellente et la livraison rapide.",
-    date: "15 mars 2026",
-    verified: true,
-  },
-  {
-    id: 2,
-    author: "Jean Martin",
-    rating: 4,
-    title: "Bon rapport qualité-prix",
-    comment: "Produit de bonne qualité. Je recommande vivement.",
-    date: "10 mars 2026",
-    verified: true,
-  },
-];
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -112,25 +87,6 @@ export default function ProductDetail() {
             {/* Product Info */}
             <div>
               <h1 className="mb-4 font-display text-4xl font-semibold text-[#211e1b]">{product.name}</h1>
-
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={16}
-                      className={
-                        star <= Math.round(product.rating)
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      }
-                    />
-                  ))}
-                </div>
-                <span className="text-[#6d6259]">
-                  {product.rating} ({product.reviews} avis)
-                </span>
-              </div>
 
               <div className="mb-6 text-4xl font-semibold text-[#b65f3f]">€{product.price.toFixed(2)}</div>
 
@@ -182,12 +138,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Reviews Section */}
-          <ProductReview
-            productId={product.id}
-            reviews={SAMPLE_REVIEWS}
-            averageRating={product.rating}
-            totalReviews={product.reviews}
-          />
+          <ProductReview productId={product.id} reviews={[]} averageRating={0} totalReviews={0} />
         </div>
       </div>
 

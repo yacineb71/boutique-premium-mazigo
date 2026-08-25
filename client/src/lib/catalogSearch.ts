@@ -16,8 +16,8 @@ export type CatalogSort = "relevance" | "price-asc" | "price-desc" | "popular";
 export interface SortableCatalogProduct {
   id?: number;
   price: number;
-  rating: number;
-  reviews: number;
+  /** Rang de mise en avant interne, sans signifier une note ou un volume d’avis client. */
+  popularityRank: number;
 }
 
 function getQuery(location: string): URLSearchParams {
@@ -46,7 +46,7 @@ export function sortCatalogProducts<T extends SortableCatalogProduct>(products: 
   }
 
   if (sort === "popular") {
-    return sorted.sort((a, b) => b.reviews - a.reviews || b.rating - a.rating || a.price - b.price);
+    return sorted.sort((a, b) => b.popularityRank - a.popularityRank || a.price - b.price);
   }
 
   return sorted;

@@ -66,26 +66,29 @@ export function ProductReview({
     );
   };
 
+  const hasReviews = reviews.length > 0 && totalReviews > 0;
+
   return (
     <div className="space-y-6">
-      {/* Rating Summary */}
       <Card className="p-6">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Avis Clients</h3>
-        <div className="flex items-center gap-6 mb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-4xl font-bold text-gray-900">{averageRating.toFixed(1)}</span>
-              <div>
-                {renderStars(Math.round(averageRating))}
-                <p className="text-sm text-gray-600 mt-1">{totalReviews} avis</p>
-              </div>
+        <h3 className="mb-4 text-lg font-bold text-gray-900">Avis clients</h3>
+        {hasReviews ? (
+          <div className="mb-6 flex items-center gap-6">
+            <span className="text-4xl font-bold text-gray-900">{averageRating.toFixed(1)}</span>
+            <div>
+              {renderStars(Math.round(averageRating))}
+              <p className="mt-1 text-sm text-gray-600">{totalReviews} avis vérifiés</p>
             </div>
           </div>
-        </div>
+        ) : (
+          <p className="mb-6 text-sm leading-6 text-gray-600">Aucun avis client publié pour le moment.</p>
+        )}
 
-        <Button onClick={() => setShowForm(!showForm)} className="w-full">
-          {showForm ? "Annuler" : "Laisser un Avis"}
-        </Button>
+        {onAddReview && (
+          <Button onClick={() => setShowForm(!showForm)} className="w-full">
+            {showForm ? "Annuler" : "Laisser un avis"}
+          </Button>
+        )}
       </Card>
 
       {/* Review Form */}
@@ -159,27 +162,28 @@ export function ProductReview({
         </Card>
       )}
 
-      {/* Reviews List */}
       <div className="space-y-4">
-        {reviews.map((review) => (
-          <Card key={review.id} className="p-6">
-            <div className="flex justify-between items-start mb-3">
-              <div>
-                <h4 className="font-bold text-gray-900">{review.title}</h4>
-                <p className="text-sm text-gray-600">
-                  par {review.author} • {review.date}
-                </p>
-              </div>
-              {review.verified && (
-                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-                  ✓ Achat Vérifié
-                </span>
-              )}
-            </div>
-            <div className="mb-3">{renderStars(review.rating)}</div>
-            <p className="text-gray-700">{review.comment}</p>
+        {reviews.length === 0 ? (
+          <Card className="p-6">
+            <p className="text-sm text-gray-600">Les avis vérifiés apparaîtront ici après modération.</p>
           </Card>
-        ))}
+        ) : (
+          reviews.map((review) => (
+            <Card key={review.id} className="p-6">
+              <div className="mb-3 flex items-start justify-between">
+                <div>
+                  <h4 className="font-bold text-gray-900">{review.title}</h4>
+                  <p className="text-sm text-gray-600">par {review.author} • {review.date}</p>
+                </div>
+                {review.verified && (
+                  <span className="rounded bg-green-100 px-2 py-1 text-xs text-green-800">✓ Achat vérifié</span>
+                )}
+              </div>
+              <div className="mb-3">{renderStars(review.rating)}</div>
+              <p className="text-gray-700">{review.comment}</p>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );

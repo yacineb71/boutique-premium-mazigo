@@ -7,6 +7,11 @@ const routeState = vi.hoisted(() => ({
   navigateMock: vi.fn(),
 }));
 
+const themeState = vi.hoisted(() => ({
+  theme: "light" as "light" | "dark",
+  toggleMock: vi.fn(),
+}));
+
 routeState.navigateMock.mockImplementation((nextLocation: string) => {
   routeState.currentLocation = nextLocation;
 });
@@ -29,6 +34,9 @@ vi.mock("@/_core/hooks/useAuth", () => ({
 }));
 
 vi.mock("@/hooks/useCart", () => ({ useCart: () => ({ itemCount: 0 }) }));
+vi.mock("@/contexts/ThemeContext", () => ({
+  useTheme: () => ({ theme: themeState.theme, toggleTheme: themeState.toggleMock, switchable: true }),
+}));
 vi.mock("@/components/ui/button", () => ({
   Button: ({ children, ...props }: { children?: unknown; [key: string]: unknown }) => createElement("button", props, children),
 }));
@@ -39,6 +47,51 @@ describe("post-redesign header purchase journey", () => {
   beforeEach(() => {
     routeState.currentLocation = "/";
     routeState.navigateMock.mockClear();
+    themeState.theme = "light";
+    themeState.toggleMock.mockClear();
+  });
+
+  it("exposes an accessible theme toggle in the Header", () => {
+    let renderer: ReactTestRenderer;
+    act(() => {
+      renderer = create(createElement(Header));
+    });
+
+    const themeButton = renderer!.root.findAllByType("button").find((button) =>
+      button.props["aria-label"] === "Activer le thème sombre",
+    );
+    expect(themeButton).toBeDefined();
+    expect(themeButton!.props["aria-pressed"]).toBe(false);
+
+    act(() => {
+      themeButton!.props.onClick();
+    });
+    expect(themeState.toggleMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("opens the mobile menu and keeps the theme control accessible", () => {
+    let renderer: ReactTestRenderer;
+    act(() => {
+      renderer = create(createElement(Header));
+    });
+
+    const menuButton = renderer!.root.findAllByType("button").find((button) =>
+      button.props["aria-label"] === "Ouvrir le menu",
+    );
+    expect(menuButton).toBeDefined();
+
+    act(() => {
+      menuButton!.props.onClick();
+    });
+
+    const mobileThemeButton = renderer!.root.findAllByType("button").find((button) =>
+      button.children.join("").includes("Thème sombre"),
+    );
+    expect(mobileThemeButton).toBeDefined();
+    act(() => {
+      mobileThemeButton!.props.onClick();
+    });
+    expect(themeState.toggleMock).toHaveBeenCalledTimes(1);
   });
 
   it("starts at Header Boutique and follows the validated purchase route sequence", () => {

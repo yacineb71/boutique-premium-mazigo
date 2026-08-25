@@ -1,6 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+export type Theme = "light" | "dark";
+
+export function resolveStoredTheme(defaultTheme: Theme = "light"): Theme {
+  if (typeof window === "undefined") return defaultTheme;
+  const stored = window.localStorage.getItem("theme");
+  return stored === "dark" || stored === "light" ? stored : defaultTheme;
+}
 
 interface ThemeContextType {
   theme: Theme;
@@ -21,13 +27,7 @@ export function ThemeProvider({
   defaultTheme = "light",
   switchable = false,
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (switchable) {
-      const stored = localStorage.getItem("theme");
-      return (stored as Theme) || defaultTheme;
-    }
-    return defaultTheme;
-  });
+  const [theme, setTheme] = useState<Theme>(() => (switchable ? resolveStoredTheme(defaultTheme) : defaultTheme));
 
   useEffect(() => {
     const root = document.documentElement;
@@ -38,7 +38,7 @@ export function ThemeProvider({
     }
 
     if (switchable) {
-      localStorage.setItem("theme", theme);
+      window.localStorage.setItem("theme", theme);
     }
   }, [theme, switchable]);
 

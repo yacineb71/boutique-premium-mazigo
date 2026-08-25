@@ -9,8 +9,7 @@ const PRODUCTS = [
     category: "Vêtements",
     price: 29.99,
     image: "👕",
-    rating: 4.5,
-    reviews: 128,
+    popularityRank: 12,
     inStock: true,
   },
   {
@@ -19,8 +18,7 @@ const PRODUCTS = [
     category: "Cosmétiques",
     price: 49.99,
     image: "💄",
-    rating: 4.8,
-    reviews: 256,
+    popularityRank: 11,
     inStock: true,
   },
   {
@@ -29,8 +27,7 @@ const PRODUCTS = [
     category: "Accessoires",
     price: 89.99,
     image: "👜",
-    rating: 4.6,
-    reviews: 89,
+    popularityRank: 9,
     inStock: true,
   },
   {
@@ -39,8 +36,7 @@ const PRODUCTS = [
     category: "Accessoires",
     price: 199.99,
     image: "⌚",
-    rating: 4.7,
-    reviews: 156,
+    popularityRank: 10,
     inStock: true,
   },
   {
@@ -49,8 +45,7 @@ const PRODUCTS = [
     category: "Cosmétiques",
     price: 79.99,
     image: "🌹",
-    rating: 4.9,
-    reviews: 342,
+    popularityRank: 8,
     inStock: true,
   },
   {
@@ -59,8 +54,7 @@ const PRODUCTS = [
     category: "Accessoires",
     price: 39.99,
     image: "🎀",
-    rating: 4.4,
-    reviews: 67,
+    popularityRank: 7,
     inStock: true,
   },
   {
@@ -69,8 +63,7 @@ const PRODUCTS = [
     category: "Vêtements",
     price: 59.99,
     image: "👖",
-    rating: 4.5,
-    reviews: 203,
+    popularityRank: 6,
     inStock: true,
   },
   {
@@ -79,8 +72,7 @@ const PRODUCTS = [
     category: "Vêtements",
     price: 129.99,
     image: "👗",
-    rating: 4.8,
-    reviews: 178,
+    popularityRank: 5,
     inStock: true,
   },
   {
@@ -89,8 +81,7 @@ const PRODUCTS = [
     category: "Jouets",
     price: 24.99,
     image: "🧸",
-    rating: 4.6,
-    reviews: 94,
+    popularityRank: 4,
     inStock: true,
   },
   {
@@ -99,8 +90,7 @@ const PRODUCTS = [
     category: "Cadeaux",
     price: 99.99,
     image: "🎁",
-    rating: 4.9,
-    reviews: 287,
+    popularityRank: 3,
     inStock: true,
   },
   {
@@ -109,8 +99,7 @@ const PRODUCTS = [
     category: "Vêtements",
     price: 79.99,
     image: "👟",
-    rating: 4.5,
-    reviews: 145,
+    popularityRank: 2,
     inStock: true,
   },
   {
@@ -119,8 +108,7 @@ const PRODUCTS = [
     category: "Accessoires",
     price: 44.99,
     image: "🎩",
-    rating: 4.3,
-    reviews: 56,
+    popularityRank: 1,
     inStock: true,
   },
 ];

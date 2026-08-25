@@ -7,10 +7,10 @@ import {
 } from "./catalogSearch";
 
 const products: SortableCatalogProduct[] = [
-  { id: 1, price: 29.99, rating: 4.5, reviews: 128 },
-  { id: 2, price: 49.99, rating: 4.8, reviews: 256 },
-  { id: 3, price: 89.99, rating: 4.6, reviews: 89 },
-  { id: 4, price: 19.99, rating: 4.9, reviews: 256 },
+  { id: 1, price: 29.99, popularityRank: 2 },
+  { id: 2, price: 49.99, popularityRank: 4 },
+  { id: 3, price: 89.99, popularityRank: 1 },
+  { id: 4, price: 19.99, popularityRank: 4 },
 ];
 
 describe("catalog sorting", () => {
@@ -25,7 +25,7 @@ describe("catalog sorting", () => {
     expect(sortCatalogProducts(products, "price-desc").map((product) => product.id)).toEqual([3, 2, 1, 4]);
   });
 
-  it("sorts popularity by review count, then rating, then price", () => {
+  it("sorts popularity by internal merchandising rank, then price", () => {
     expect(sortCatalogProducts(products, "popular").map((product) => product.id)).toEqual([4, 2, 1, 3]);
   });
 

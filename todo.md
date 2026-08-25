@@ -1,5 +1,19 @@
 
 ## Nouvelle séquence de validation et publication
+- [x] Ajouter des effets de survol interactifs et accessibles aux cartes produits
+- [x] Ajouter un bouton global de bascule clair/sombre dans la navigation
+- [x] Définir les tokens du thème sombre avec la palette MAZIGHO
+- [x] Corriger le fond et le contraste du Header lorsque le thème sombre est activé
+- [x] Valider visuellement le thème sombre activé sur Home, Shop, ProductDetail, Cart, Checkout et Admin avec preuves dédiées
+- [x] Retirer les notes, compteurs et avis fictifs du catalogue, de la fiche produit et de l’administration
+- [x] Vérifier explicitement le bouton de thème dans le Header desktop et dans le menu mobile ouvert, puis revalider les breakpoints
+- [x] Ajouter un test Header avec ouverture du menu mobile et bascule réelle du thème
+- [x] Supprimer la clé React dupliquée entre les liens Boutique et À découvrir du menu mobile
+- [x] Valider explicitement le thème sombre activé sur Home, Shop, ProductDetail, Cart, Checkout et Admin
+- [x] Vérifier les breakpoints mobile, tablette et desktop après ajout du bouton de thème et des effets de survol
+- [x] Ajouter un test d’intégration du toggle confirmant le changement clair/sombre et la persistance localStorage
+- [x] Tester survol, préférence de thème, recherche, tri, panier et responsive
+- [x] Ajouter un test rendu vérifiant l’effet de survol et l’action produit d’une carte Shop
 - [x] Auditer les anciennes couleurs sur toutes les pages publiques et l’administration
 - [x] Centraliser la palette ivoire, charbon et terracotta dans les styles globaux
 - [x] Harmoniser Home, Shop, ProductDetail, Cart, Checkout, About et Contact
