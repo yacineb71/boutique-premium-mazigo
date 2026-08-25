@@ -3194,3 +3194,17 @@
 - [x] Préserver les ratios, le safe space du texte et les performances responsive
 - [x] Intégrer les nouveaux assets sans modifier les règles métier ni les données produit
 - [x] Valider visuellement desktop/mobile, typage, tests, build et publier
+
+## Nouvelle demande — vraies photos lifestyle
+- [ ] Remplacer les visuels abstraits par des photos réalistes de produits, personnes et décors
+- [ ] Générer des scènes photographiques crédibles pour le hero et les catégories
+- [ ] Générer des visuels produits réalistes adaptés aux cartes et fiches
+- [ ] Intégrer les nouvelles photos avec cadrage, alt et formats responsives
+- [ ] Valider le rendu réaliste desktop/mobile, les tests, le build et publier
+
+## Nouvelle demande — photos stock sous licence
+- [x] Sélectionner des photos réalistes de produits, personnes et décors avec licence vérifiable
+- [x] Télécharger et optimiser les photos en formats web adaptés
+- [x] Remplacer les assets génériques dans le hero, les catégories et les cartes produits
+- [x] Conserver les crédits et sources des photos dans la documentation du projet
+- [x] Valider le rendu responsive, les tests, le build et publier

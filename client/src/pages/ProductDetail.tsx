@@ -15,7 +15,7 @@ const PRODUCTS: Record<string, any> = {
     name: "T-Shirt Premium Bleu",
     category: "Vêtements",
     price: 29.99,
-    image: "/manus-storage/mazigho-lifestyle-mode_b8020010.jpg",
+    image: "/manus-storage/mazigho-stock-mode_ab0ed7cb.webp",
     description:
       "T-shirt premium en coton 100% biologique. Confortable, durable et écologique.",
     details: [
@@ -30,7 +30,7 @@ const PRODUCTS: Record<string, any> = {
     name: "Crème Hydratante Luxe",
     category: "Cosmétiques",
     price: 49.99,
-    image: "/manus-storage/mazigho-lifestyle-beaute_c3f430c7.jpg",
+    image: "/manus-storage/mazigho-stock-beaute_c4796701.webp",
     description:
       "Crème hydratante luxe pour tous les types de peau. Formule naturelle et efficace.",
     details: [
