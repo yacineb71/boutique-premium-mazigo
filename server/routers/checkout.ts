@@ -1,8 +1,37 @@
 import { protectedProcedure, router } from "../_core/trpc";
 import { z } from "zod";
 import Stripe from "stripe";
+import { createOrderWithItems, markOrderPaidByStripeSession } from "../db";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+
+type CheckoutDraftItem = { id: number; name: string; price: number; quantity: number; category: string; supplierUrl?: string };
+
+export function paymentStatusToFulfillment(status: string) {
+  return status === "paid" ? "to_order" as const : null;
+}
+
+export function buildOrderDraft(user: { id: number; email?: string | null; name?: string | null }, cartItems: CheckoutDraftItem[], sessionId: string, orderNumber: string) {
+  return {
+    order: {
+      orderNumber,
+      userId: user.id,
+      stripeSessionId: sessionId,
+      status: "awaiting_payment" as const,
+      customerEmail: user.email || null,
+      customerName: user.name || null,
+      total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2),
+    },
+    items: cartItems.map((item) => ({
+      productId: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      unitPrice: item.price.toFixed(2),
+      supplierUrl: item.supplierUrl || null,
+      supplierCost: null,
+    })),
+  };
+}
 
 export const checkoutRouter = router({
   createSession: protectedProcedure
@@ -15,6 +44,7 @@ export const checkoutRouter = router({
             price: z.number(),
             quantity: z.number(),
             category: z.string(),
+            supplierUrl: z.string().url().optional(),
           })
         ),
       })
@@ -50,8 +80,13 @@ export const checkoutRouter = router({
           allow_promotion_codes: true,
         });
 
+        const orderNumber = `MZG-${Date.now().toString(36).toUpperCase()}`;
+        const draft = buildOrderDraft(ctx.user, input.cartItems, session.id, orderNumber);
+        await createOrderWithItems(draft.order, draft.items);
+
         return {
           sessionId: session.id,
+          orderNumber,
           url: session.url,
         };
       } catch (error) {
@@ -65,6 +100,9 @@ export const checkoutRouter = router({
     .query(async ({ input }) => {
       try {
         const session = await stripe.checkout.sessions.retrieve(input.sessionId);
+        if (paymentStatusToFulfillment(session.payment_status)) {
+          await markOrderPaidByStripeSession(input.sessionId);
+        }
         return {
           status: session.payment_status,
           customer_email: session.customer_email,

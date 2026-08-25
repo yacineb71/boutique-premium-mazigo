@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, InsertOrder, InsertOrderItem, InsertProductSupplierMeta, orders, orderItems, productSupplierMeta, users } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,66 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+export async function getProductSupplierMeta(productId: number) {
+  const db = await getDb();
+  if (!db) return undefined;
+  const result = await db.select().from(productSupplierMeta).where(eq(productSupplierMeta.productId, productId)).limit(1);
+  return result[0];
+}
+
+export async function upsertProductSupplierMeta(meta: Omit<InsertProductSupplierMeta, "id" | "createdAt" | "updatedAt">) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(productSupplierMeta).values(meta).onDuplicateKeyUpdate({
+    set: { supplierUrl: meta.supplierUrl ?? null, supplierSku: meta.supplierSku ?? null, supplierCost: meta.supplierCost ?? null, notes: meta.notes ?? null },
+  });
+}
+
+export type CheckoutOrderItem = Omit<InsertOrderItem, "id" | "orderId" | "createdAt">;
+
+export async function createOrderWithItems(order: Omit<InsertOrder, "id" | "createdAt" | "updatedAt">, items: CheckoutOrderItem[]) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.insert(orders).values(order);
+  const created = await db.select({ id: orders.id }).from(orders).where(eq(orders.orderNumber, order.orderNumber)).limit(1);
+  const orderId = created[0]?.id;
+  if (!orderId) throw new Error("Order could not be created");
+  if (items.length > 0) await db.insert(orderItems).values(items.map((item) => ({ ...item, orderId })));
+  return orderId;
+}
+
+export async function getOrdersForUser(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(orders).where(eq(orders.userId, userId)).orderBy(desc(orders.createdAt));
+}
+
+export async function getAllOrders() {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(orders).orderBy(desc(orders.createdAt));
+}
+
+export async function getOrderItems(orderId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(orderItems).where(eq(orderItems.orderId, orderId));
+}
+
+export async function updateOrderItemSupplier(itemId: number, values: Partial<Pick<InsertOrderItem, "supplierUrl" | "supplierCost">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(orderItems).set(values).where(eq(orderItems.id, itemId));
+}
+
+export async function markOrderPaidByStripeSession(stripeSessionId: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(orders).set({ status: "to_order" }).where(eq(orders.stripeSessionId, stripeSessionId));
+}
+
+export async function updateOrderFulfillment(orderId: number, values: Partial<Pick<InsertOrder, "status" | "supplierOrderRef" | "trackingNumber" | "trackingUrl" | "internalNote">>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  await db.update(orders).set(values).where(eq(orders.id, orderId));
+}

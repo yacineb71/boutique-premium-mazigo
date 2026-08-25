@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Orders from "./pages/Orders";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import ProductDetail from "./pages/ProductDetail";
@@ -31,6 +32,13 @@ function Router() {
       <Route path="/shop" component={Shop} />
       <Route path="/cart" component={Cart} />
       <Route path="/checkout" component={Checkout} />
+      <Route path="/orders">
+        {() => (
+          <PrivateRoute requiredRole="user">
+            <Orders />
+          </PrivateRoute>
+        )}
+      </Route>
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/product/:id" component={ProductDetail} />

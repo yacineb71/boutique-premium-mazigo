@@ -1,4 +1,18 @@
 
+## Compléments de fiabilité du fulfillment manuel
+- [x] Relier les métadonnées fournisseur aux produits source et les réserver aux écrans admin
+- [x] Ajouter un test explicite de création de commande et de passage à `to_order` après paiement confirmé
+- [x] Ajouter un nouveau checkpoint après validation du flux manuel complet
+
+## Nouvelle demande — fulfillment dropshipping manuel AliExpress
+- [x] Définir les statuts de commande client et de traitement fournisseur manuel
+- [x] Ajouter les informations fournisseur par produit sans exposer de données internes au client
+- [x] Ajouter le suivi admin : lien produit fournisseur, référence de commande, coût fournisseur, statut et numéro de suivi
+- [x] Ajouter des actions admin pour marquer une commande à commander, commandée, expédiée et livrée
+- [x] Afficher au client uniquement le statut de livraison utile, sans marge ni informations internes
+- [x] Ajouter les tests du parcours commande payée vers fulfillment manuel
+- [x] Valider tests, build et publication du flux manuel
+
 ## Dernier contrôle d’accès sans session
 - [x] Vérifier la redirection sans session sur chaque nouvelle route admin dédiée
 

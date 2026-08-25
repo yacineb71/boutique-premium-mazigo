@@ -1,4 +1,5 @@
-import { publicProcedure, router } from "../_core/trpc";
+import { adminProcedure, router, publicProcedure } from "../_core/trpc";
+import { getProductSupplierMeta, upsertProductSupplierMeta } from "../db";
 import { z } from "zod";
 
 // Mock data - À remplacer par des données réelles de la base de données
@@ -144,4 +145,19 @@ export const productsRouter = router({
   getCategories: publicProcedure.query(async () => {
     return ["Vêtements", "Cosmétiques", "Accessoires", "Cadeaux", "Jouets"];
   }),
+
+  adminSupplierMeta: adminProcedure.input(z.object({ productId: z.number().int().positive() })).query(({ input }) => getProductSupplierMeta(input.productId)),
+
+  upsertSupplierMeta: adminProcedure
+    .input(z.object({
+      productId: z.number().int().positive(),
+      supplierUrl: z.string().url().nullable().optional(),
+      supplierSku: z.string().max(255).nullable().optional(),
+      supplierCost: z.string().regex(/^\d+(\.\d{1,2})?$/).nullable().optional(),
+      notes: z.string().max(5000).nullable().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      await upsertProductSupplierMeta(input);
+      return { success: true } as const;
+    }),
 });
